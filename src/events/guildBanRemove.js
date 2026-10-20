@@ -1,10 +1,13 @@
 import { AuditLogEvent, EmbedBuilder, Events } from 'discord.js';
 import { CORES_LOG, enviarLog } from '../lib/logs.js';
+import { foiAcaoDoBot } from '../lib/moderacao.js';
 
 export default {
   name: Events.GuildBanRemove,
 
   async execute(ban) {
+    if (foiAcaoDoBot('unban', ban.user.id)) return;
+
     let executor = null;
     try {
       const auditoria = await ban.guild.fetchAuditLogs({ type: AuditLogEvent.MemberBanRemove, limit: 3 });
@@ -15,6 +18,9 @@ export default {
     } catch {
       // sem permissão de auditoria
     }
+
+    // Unban feito pelo próprio bot (comando ou tempban) já tem seu registro.
+    if (executor?.id === ban.client.user.id) return;
 
     await enviarLog(
       ban.guild,

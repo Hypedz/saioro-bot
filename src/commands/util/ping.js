@@ -8,7 +8,8 @@ export default {
     .setDescription('Mostra a latência e o tempo online do bot.'),
 
   async execute(interaction) {
-    const enviada = await interaction.reply({ content: 'Calculando...', fetchReply: true });
+    await interaction.reply({ content: 'Calculando...' });
+    const enviada = await interaction.fetchReply();
     const resposta = enviada.createdTimestamp - interaction.createdTimestamp;
     const websocket = Math.round(interaction.client.ws.ping);
     const online = formatarDuracao(interaction.client.uptime ?? 0);

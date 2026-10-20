@@ -1,5 +1,25 @@
 import { db } from '../db.js';
 
+/**
+ * Marca banimentos/unbans feitos pelo bot para o log de auditoria nao
+ * publicar a mesma acao duas vezes. Expira sozinho em 30s.
+ */
+const acoesDoBot = new Map();
+
+export function marcarAcaoDoBot(tipo, userId) {
+  const chave = `${tipo}:${userId}`;
+  acoesDoBot.set(chave, Date.now());
+  setTimeout(() => acoesDoBot.delete(chave), 30_000).unref();
+}
+
+export function foiAcaoDoBot(tipo, userId) {
+  const chave = `${tipo}:${userId}`;
+  const quando = acoesDoBot.get(chave);
+  if (!quando) return false;
+  acoesDoBot.delete(chave);
+  return Date.now() - quando < 30_000;
+}
+
 /** Retorna um texto de erro se o autor nao pode agir sobre o membro. */
 export function problemaComAlvo(interaction, membro) {
   if (!membro) return 'Não encontrei esse membro no servidor.';

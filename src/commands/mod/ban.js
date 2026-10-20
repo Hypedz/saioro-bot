@@ -1,7 +1,8 @@
 import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { CORES, embed } from '../../lib/embeds.js';
 import { CORES_LOG, enviarLog } from '../../lib/logs.js';
-import { avisarNoPrivado, problemaComAlvo } from '../../lib/moderacao.js';
+import { avisarNoPrivado, marcarAcaoDoBot, problemaComAlvo } from '../../lib/moderacao.js';
+import { removerTempban } from '../../lib/tempbans.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -38,7 +39,10 @@ export default {
       `**Motivo:** ${motivo}`,
     );
 
+    marcarAcaoDoBot('ban', usuario.id);
     await membro.ban({ reason: `${motivo} (por ${interaction.user.tag})`, deleteMessageSeconds: dias * 86400 });
+
+    removerTempban(interaction.guild.id, usuario.id);
 
     const painel = embed('🔨 Banimento', `<@${usuario.id}> foi banido.`, CORES.erro).addFields(
       { name: 'Motivo', value: motivo },

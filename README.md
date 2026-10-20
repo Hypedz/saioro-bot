@@ -25,13 +25,15 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/snippet criar/ver/listar/apagar` | Trechos de código salvos por nome |
 | `/status` | Uptime, ping, memória, banco, versões |
 | `/botinfo` | Servidores, usuários, memória, versões, uptime |
-| `/diagnostico` | Confere permissões, intents e o que ainda falta configurar |
+| `/diagnostico` | Confere permissões, canais configurados, intents e o que ainda falta configurar |
 
 ### 🛡️ Moderação
 | Comando | O que faz |
 |---|---|
 | `/ban <membro> [motivo] [apagar]` | Bane, avisa no privado e registra |
 | `/unban <id> [motivo]` | Remove banimento |
+| `/tempban <membro> <duração> [motivo] [apagar]` | Bane por tempo e desbane sozinho (`30m`, `2h`, `7d`) |
+| `/softban <membro> [motivo] [apagar]` | Bane e desbane na hora, só para apagar as mensagens |
 | `/kick <membro> [motivo]` | Expulsa |
 | `/timeout <membro> <minutos> [motivo]` | Castigo (0 = remover) |
 | `/warn <membro> <motivo>` | Advertência com registro numerado |
@@ -55,6 +57,7 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/anuncio [canal] [mencao]` | Formulário → publica embed de anúncio |
 | `/embed [canal]` | Formulário → embed personalizado (cor, imagem, rodapé) |
 | `/verificar [canal]` | Painel com botão que entrega o cargo de verificação |
+| `/regras <texto> [cargo] [canal]` | Publica as regras **já com o botão de verificação** no mesmo embed |
 | `/cargos-painel adicionar/remover/listar/publicar` | Painel de cargos que o membro escolhe clicando (staff monta, membro usa) |
 
 ### 🎲 Diversão
@@ -204,6 +207,7 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 - `/abraco`, `/beijo` e `/gato` dependem de APIs externas; se elas caírem, o comando responde sem GIF (ou com imagem padrão).
 - `/snippet` guarda até 1900 caracteres por trecho.
 - Log de mensagem apagada só mostra o texto com o **MESSAGE CONTENT INTENT** ligado.
+- `/tempban` desbane em até 1 minuto depois do prazo. Se o bot estiver offline na hora, o desbanimento acontece na próxima subida.
 
 ---
 

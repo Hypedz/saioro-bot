@@ -9,12 +9,12 @@ export default {
   async execute(interaction) {
     const { pergunta, painel, autorId } = criarQuiz(interaction.channel, interaction.user.id);
 
-    const mensagem = await interaction.reply({
+    await interaction.reply({
       embeds: [painel],
-      fetchReply: true,
       allowedMentions: { parse: [] },
     });
 
+    const mensagem = await interaction.fetchReply();
     registrarQuiz(mensagem.id, pergunta.correta, autorId);
     await mensagem.edit({ components: montarBotoesQuiz(mensagem.id, pergunta.opcoes) });
   },

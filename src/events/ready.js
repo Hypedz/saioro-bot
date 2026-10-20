@@ -2,6 +2,7 @@ import { ActivityType, Events } from 'discord.js';
 import { backupDiario } from '../lib/backup.js';
 import { tickLembretes } from '../lib/lembretes.js';
 import { tickSorteios } from '../lib/sorteios.js';
+import { tickTempbans } from '../lib/tempbans.js';
 
 function rodarBackup() {
   try {
@@ -20,9 +21,15 @@ function iniciarRotinas(client) {
     tickLembretes(client).catch((erro) => console.error('[ERRO] Lembretes:', erro));
   }, 20_000).unref();
 
+  // Tempbans: desbane quem cumpriu o tempo, a cada minuto.
+  setInterval(() => {
+    tickTempbans(client).catch((erro) => console.error('[ERRO] Tempbans:', erro));
+  }, 60_000).unref();
+
   // Roda uma vez no start, para pegar o que venceu enquanto o bot estava off.
   tickSorteios(client);
   tickLembretes(client).catch(() => {});
+  tickTempbans(client).catch(() => {});
 
   // Backup do banco: no start e a cada 6h (so cria um arquivo por dia).
   rodarBackup();

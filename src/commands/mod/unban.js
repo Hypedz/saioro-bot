@@ -1,6 +1,8 @@
 import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { CORES, embed } from '../../lib/embeds.js';
 import { CORES_LOG, enviarLog } from '../../lib/logs.js';
+import { marcarAcaoDoBot } from '../../lib/moderacao.js';
+import { removerTempban } from '../../lib/tempbans.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -31,7 +33,9 @@ export default {
       });
     }
 
+    marcarAcaoDoBot('unban', id);
     await interaction.guild.bans.remove(id, `${motivo} (por ${interaction.user.tag})`);
+    removerTempban(interaction.guild.id, id);
 
     await interaction.reply({
       embeds: [

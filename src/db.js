@@ -114,6 +114,15 @@ CREATE TABLE IF NOT EXISTS sticky (
   message_id TEXT,
   texto      TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS tempbans (
+  guild_id     TEXT NOT NULL,
+  user_id      TEXT NOT NULL,
+  moderator_id TEXT NOT NULL,
+  motivo       TEXT NOT NULL,
+  expira_em    INTEGER NOT NULL,
+  PRIMARY KEY (guild_id, user_id)
+);
 `);
 
 /** Adiciona colunas novas em bancos que ja existiam (migracao). */

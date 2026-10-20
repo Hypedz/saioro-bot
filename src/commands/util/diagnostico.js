@@ -58,16 +58,58 @@ export default {
     const eu = guild.members.me;
     const cfg = configuracoes(guild.id);
 
-    // 1) Permissoes
+    // 1) Canais configurados (overwrites podem bloquear mesmo com permissao geral)
+    const NOMES_PERMISSAO = {
+      ViewChannel: 'Ver canal',
+      SendMessages: 'Enviar',
+      EmbedLinks: 'Links',
+      ReadMessageHistory: 'Histórico',
+    };
+
+    const canais = [
+      ['Boas-vindas', cfg.boasVindas ?? config.welcomeChannelId],
+      ['Despedida', cfg.despedida ?? config.goodbyeChannelId],
+      ['Logs', cfg.logs],
+      ['Sugestões', cfg.sugestoes],
+    ];
+
+    const checagemCanais = [];
+
+    for (const [nome, id] of canais) {
+      if (!id) continue;
+
+      const canal = guild.channels.cache.get(id) ?? (await guild.channels.fetch(id).catch(() => null));
+      if (!canal) {
+        checagemCanais.push(`❌ ${nome}: canal não existe mais`);
+        continue;
+      }
+
+      const permissoes = canal.permissionsFor(eu);
+      const faltandoAqui = Object.keys(NOMES_PERMISSAO).filter(
+        (chave) => !permissoes?.has(PermissionFlagsBits[chave]),
+      );
+
+      checagemCanais.push(
+        faltandoAqui.length
+          ? `❌ ${nome} (<#${id}>): falta ${faltandoAqui.map((chave) => NOMES_PERMISSAO[chave]).join(', ')}`
+          : `✅ ${nome} (<#${id}>)`,
+      );
+    }
+
+    if (checagemCanais.length === 0) {
+      checagemCanais.push('⚪ Nenhum canal configurado ainda.');
+    }
+
+    // 2) Permissoes
     const faltando = PERMISSOES.filter(
-      ([chave]) => !eu.permissions.has(PermissionFlagsBits[chave]),
+      ([chave]) => !eu.permissions?.has(PermissionFlagsBits[chave]),
     ).map(([, nome]) => nome);
 
     const permissoes = faltando.length
       ? `❌ Faltando: ${faltando.join(', ')}`
       : '✅ Todas as permissões essenciais estão ok.';
 
-    // 2) Intents
+    // 3) Intents
     const temMembros = client.options.intents.has(GatewayIntentBits.GuildMembers);
     const temConteudo = client.options.intents.has(GatewayIntentBits.MessageContent);
 
@@ -78,7 +120,7 @@ export default {
         : '⚠️ MESSAGE CONTENT desligado (log de mensagem apagada fica sem o texto)',
     ].join('\n');
 
-    // 3) Configuracoes
+    // 4) Configuracoes
     const item = (valor, nome) =>
       `${valor ? '✅' : '⚠️'} ${nome}${valor ? '' : ' — não configurado'}`;
 
@@ -92,7 +134,7 @@ export default {
       item(cfg.verificarCargo, 'Cargo de verificação'),
     ].join('\n');
 
-    // 4) Banco e carga
+    // 5) Banco e carga
     const dados = [
       `Banco: **${tamanhoBanco()}**`,
       `Avisos: **${contar('avisos')}**`,
@@ -104,6 +146,7 @@ export default {
 
     const painel = embed('🩺 Diagnóstico', null, CORES.principal).addFields(
       { name: 'Permissões do bot', value: permissoes },
+      { name: 'Canais configurados', value: checagemCanais.join('\n') },
       { name: 'Intents', value: intents },
       { name: 'Configuração', value: configs },
       { name: 'Banco de dados', value: dados },
