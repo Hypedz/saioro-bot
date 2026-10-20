@@ -11,6 +11,7 @@ import {
 } from './sugestoes.js';
 import { responderQuiz } from './quiz.js';
 import { listarCargosPainel } from './cargosPainel.js';
+import { removerEvento } from './eventos.js';
 
 const erro = (interaction, texto, extra = {}) =>
   interaction.reply({ content: texto, flags: MessageFlags.Ephemeral, ...extra });
@@ -121,6 +122,48 @@ async function tratarVerificacao(interaction, cargoId) {
   });
 }
 
+async function tratarEvento(interaction) {
+  if (!interaction.memberPermissions?.has('ManageGuild')) {
+    return erro(interaction, 'Só quem gerencia o servidor pode cancelar eventos.');
+  }
+
+  const eventId = interaction.values[0];
+  const evento = await interaction.guild.scheduledEvents.fetch(eventId).catch(() => null);
+
+  if (!evento) {
+    removerEvento(eventId);
+    return interaction.update({
+      content: 'Esse evento não existe mais.',
+      embeds: [],
+      components: [],
+    });
+  }
+
+  const cancelado = await evento
+    .delete()
+    .then(() => true)
+    .catch((erro) => {
+      console.error('[ERRO] Evento não cancelado:', erro.message);
+      return false;
+    });
+
+  if (!cancelado) {
+    return interaction.update({
+      content: 'Não consegui cancelar o evento. Veja o console do bot.',
+      embeds: [],
+      components: [],
+    });
+  }
+
+  removerEvento(eventId);
+
+  return interaction.update({
+    content: `🗑️ Evento **${evento.name}** cancelado.`,
+    embeds: [],
+    components: [],
+  });
+}
+
 async function tratarCargoPainel(interaction, cargoId) {
   const { guild, member } = interaction;
 
@@ -207,6 +250,10 @@ export async function tratarComponente(interaction) {
 
   if (grupo === 'verificar' && interaction.isButton()) {
     return tratarVerificacao(interaction, acao);
+  }
+
+  if (grupo === 'evento' && interaction.isStringSelectMenu()) {
+    return tratarEvento(interaction);
   }
 
   if (grupo === 'cargo' && interaction.isButton()) {

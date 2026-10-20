@@ -58,6 +58,9 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/embed [canal]` | Formulário → embed personalizado (cor, imagem, rodapé) |
 | `/verificar [canal]` | Painel com botão que entrega o cargo de verificação |
 | `/regras <texto> [cargo] [canal]` | Publica as regras **já com o botão de verificação** no mesmo embed |
+| `/evento criar/listar/cancelar` | Evento nativo do Discord (externo, voz ou palco) com lembrete opcional no canal |
+
+`/evento criar` aceita `2h`, `30m`, `25/12 20:00`, `25/12/2027 20:00` ou só `20:00` (hoje; se já passou, amanhã). Com a opção `lembrete`, o bot avisa no canal X minutos antes — além do aviso nativo para quem marcar interesse.
 | `/cargos-painel adicionar/remover/listar/publicar` | Painel de cargos que o membro escolhe clicando (staff monta, membro usa) |
 
 ### 🎲 Diversão
@@ -208,6 +211,7 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 - `/snippet` guarda até 1900 caracteres por trecho.
 - Log de mensagem apagada só mostra o texto com o **MESSAGE CONTENT INTENT** ligado.
 - `/tempban` desbane em até 1 minuto depois do prazo. Se o bot estiver offline na hora, o desbanimento acontece na próxima subida.
+- `/evento` interpreta datas no fuso do PC onde o bot roda (horário local).
 
 ---
 

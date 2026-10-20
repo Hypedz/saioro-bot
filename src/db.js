@@ -123,6 +123,15 @@ CREATE TABLE IF NOT EXISTS tempbans (
   expira_em    INTEGER NOT NULL,
   PRIMARY KEY (guild_id, user_id)
 );
+
+CREATE TABLE IF NOT EXISTS eventos (
+  event_id   TEXT PRIMARY KEY,
+  guild_id   TEXT NOT NULL,
+  channel_id TEXT NOT NULL,
+  inicio     INTEGER NOT NULL,
+  aviso_em   INTEGER NOT NULL,
+  avisado    INTEGER NOT NULL DEFAULT 0
+);
 `);
 
 /** Adiciona colunas novas em bancos que ja existiam (migracao). */

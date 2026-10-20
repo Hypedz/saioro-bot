@@ -55,9 +55,6 @@ try {
     $codigo = $LASTEXITCODE
 
     $duracao = [int]((Get-Date) - $inicio).TotalSeconds
-    Registrar "node terminou (codigo $codigo) apos ${duracao}s; religando em ${espera}s"
-
-    Start-Sleep -Seconds $espera
 
     # Se ficou de pe por um tempo, volta ao intervalo curto.
     # Se caiu rapido varias vezes, espera mais para nao fazer loop de crash.
@@ -66,6 +63,9 @@ try {
     } else {
       $espera = [Math]::Min($espera * 2, 30)
     }
+
+    Registrar "node terminou (codigo $codigo) apos ${duracao}s; religando em ${espera}s"
+    Start-Sleep -Seconds $espera
   }
 } finally {
   Remove-Item -Path $arquivoPid -Force -ErrorAction SilentlyContinue
