@@ -9,6 +9,7 @@ import {
 } from 'discord.js';
 import { CORES, embed } from '../../lib/embeds.js';
 import { configuracoes } from '../../lib/settings.js';
+import { contarFaq } from '../../lib/faq.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -64,28 +65,41 @@ export default {
     const cargoInvalido =
       cargo && (cargo.managed || cargo.position >= eu.roles.highest.position);
 
+    const temFaq = contarFaq(interaction.guild.id) > 0;
+
     const painel = embed(titulo, texto, CORES.principal);
 
     if (cargoInvalido) {
-      painel.setFooter({ text: 'Nenhum botão: o cargo de verificação está acima do bot ou é gerenciado.' });
+      painel.setFooter({ text: 'Sem botão de verificação: o cargo está acima do bot ou é gerenciado.' });
     } else if (cargo) {
       painel.setFooter({ text: 'Clique em "Li e concordo" para receber o cargo e liberar o servidor.' });
-    } else {
+    } else if (!temFaq) {
       painel.setFooter({ text: 'Nenhum cargo de verificação configurado — o painel saiu sem botão.' });
     }
 
-    const componentes = [];
+    const botoes = [];
+
     if (cargo && !cargoInvalido) {
-      componentes.push(
-        new ActionRowBuilder().addComponents(
-          new ButtonBuilder()
-            .setCustomId(`verificar:${cargo.id}`)
-            .setLabel('Li e concordo')
-            .setEmoji('✅')
-            .setStyle(ButtonStyle.Success),
-        ),
+      botoes.push(
+        new ButtonBuilder()
+          .setCustomId(`verificar:${cargo.id}`)
+          .setLabel('Li e concordo')
+          .setEmoji('✅')
+          .setStyle(ButtonStyle.Success),
       );
     }
+
+    if (temFaq) {
+      botoes.push(
+        new ButtonBuilder()
+          .setCustomId('faq:abrir')
+          .setLabel('Ver FAQ')
+          .setEmoji('📖')
+          .setStyle(ButtonStyle.Secondary),
+      );
+    }
+
+    const componentes = botoes.length ? [new ActionRowBuilder().addComponents(...botoes)] : [];
 
     const mensagem = await canal.send({
       embeds: [painel],
@@ -97,10 +111,10 @@ export default {
       ? `\n⚠️ O cargo **${cargo.name}** está acima do meu ou é gerenciado por integração, então o botão não foi incluído.`
       : cargo
         ? ''
-        : '\n⚠️ Configure um cargo com `/config verificar-cargo` para o botão aparecer.';
+        : '\n⚠️ Configure um cargo com `/config verificar-cargo` para o botão de verificação aparecer.';
 
     await interaction.reply({
-      content: `✅ Regras publicadas em ${canal}: ${mensagem.url}${aviso}`,
+      content: `✅ Regras publicadas em <#${canal.id}>: ${mensagem.url}${aviso}`,
       flags: MessageFlags.Ephemeral,
     });
   },

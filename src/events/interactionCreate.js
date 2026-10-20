@@ -23,6 +23,20 @@ export default {
       return;
     }
 
+    if (interaction.isAutocomplete()) {
+      const comando = interaction.client.commands.get(interaction.commandName);
+
+      if (comando?.autocomplete) {
+        try {
+          await comando.autocomplete(interaction);
+        } catch (erro) {
+          console.error(`[ERRO] Autocomplete /${interaction.commandName}:`, erro);
+        }
+      }
+
+      return;
+    }
+
     if (interaction.isButton() || interaction.isStringSelectMenu()) {
       try {
         await tratarComponente(interaction);

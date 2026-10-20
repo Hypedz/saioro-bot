@@ -132,6 +132,17 @@ CREATE TABLE IF NOT EXISTS eventos (
   aviso_em   INTEGER NOT NULL,
   avisado    INTEGER NOT NULL DEFAULT 0
 );
+
+CREATE TABLE IF NOT EXISTS faq (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  guild_id   TEXT NOT NULL,
+  pergunta   TEXT NOT NULL,
+  resposta   TEXT NOT NULL,
+  categoria  TEXT,
+  autor_id   TEXT NOT NULL,
+  criado_em  INTEGER NOT NULL,
+  UNIQUE (guild_id, pergunta)
+);
 `);
 
 /** Adiciona colunas novas em bancos que ja existiam (migracao). */

@@ -1,5 +1,7 @@
 import { MessageFlags } from 'discord.js';
 import { montarAjuda } from './ajuda.js';
+import { CORES, embed } from './embeds.js';
+import { listarFaq, menuFaq, obterFaq } from './faq.js';
 import { embedSorteio, encerrarSorteio, entrarSorteio, obterSorteio } from './sorteios.js';
 import { votar } from './enquetes.js';
 import {
@@ -164,6 +166,37 @@ async function tratarEvento(interaction) {
   });
 }
 
+async function abrirFaq(interaction) {
+  const itens = listarFaq(interaction.guildId);
+
+  if (itens.length === 0) {
+    return erro(interaction, 'Ainda não há perguntas cadastradas. Avise a staff.');
+  }
+
+  return interaction.reply({
+    content: `📖 **Perguntas frequentes** (${itens.length})`,
+    components: [menuFaq(itens)],
+    flags: MessageFlags.Ephemeral,
+  });
+}
+
+async function mostrarRespostaFaq(interaction) {
+  const item = obterFaq(interaction.guildId, Number(interaction.values[0]));
+
+  if (!item) {
+    return interaction.update({
+      content: 'Essa pergunta não existe mais.',
+      embeds: [],
+      components: [],
+    });
+  }
+
+  const painel = embed(item.pergunta, item.resposta, CORES.principal);
+  if (item.categoria) painel.setFooter({ text: item.categoria });
+
+  return interaction.update({ embeds: [painel], components: [] });
+}
+
 async function tratarCargoPainel(interaction, cargoId) {
   const { guild, member } = interaction;
 
@@ -254,6 +287,14 @@ export async function tratarComponente(interaction) {
 
   if (grupo === 'evento' && interaction.isStringSelectMenu()) {
     return tratarEvento(interaction);
+  }
+
+  if (grupo === 'faq' && interaction.isButton()) {
+    return abrirFaq(interaction);
+  }
+
+  if (grupo === 'faq' && interaction.isStringSelectMenu()) {
+    return mostrarRespostaFaq(interaction);
   }
 
   if (grupo === 'cargo' && interaction.isButton()) {
