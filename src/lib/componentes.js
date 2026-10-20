@@ -1,7 +1,12 @@
-import { MessageFlags } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  MessageFlags,
+} from 'discord.js';
 import { montarAjuda } from './ajuda.js';
 import { CORES, embed } from './embeds.js';
-import { listarFaq, menuFaq, obterFaq } from './faq.js';
+import { listarFaq, menuFaq, obterFaq, resumoFaq } from './faq.js';
 import { embedSorteio, encerrarSorteio, entrarSorteio, obterSorteio } from './sorteios.js';
 import { votar } from './enquetes.js';
 import {
@@ -174,9 +179,27 @@ async function abrirFaq(interaction) {
   }
 
   return interaction.reply({
-    content: `📖 **Perguntas frequentes** (${itens.length})`,
+    content: resumoFaq(itens),
     components: [menuFaq(itens)],
     flags: MessageFlags.Ephemeral,
+  });
+}
+
+async function voltarAoMenuFaq(interaction) {
+  const itens = listarFaq(interaction.guildId);
+
+  if (itens.length === 0) {
+    return interaction.update({
+      content: 'Ainda não há perguntas cadastradas.',
+      embeds: [],
+      components: [],
+    });
+  }
+
+  return interaction.update({
+    content: resumoFaq(itens),
+    embeds: [],
+    components: [menuFaq(itens)],
   });
 }
 
@@ -194,7 +217,15 @@ async function mostrarRespostaFaq(interaction) {
   const painel = embed(item.pergunta, item.resposta, CORES.principal);
   if (item.categoria) painel.setFooter({ text: item.categoria });
 
-  return interaction.update({ embeds: [painel], components: [] });
+  const voltar = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId('faq:menu')
+      .setLabel('Voltar')
+      .setEmoji('⬅️')
+      .setStyle(ButtonStyle.Secondary),
+  );
+
+  return interaction.update({ embeds: [painel], components: [voltar] });
 }
 
 async function tratarCargoPainel(interaction, cargoId) {
@@ -290,7 +321,9 @@ export async function tratarComponente(interaction) {
   }
 
   if (grupo === 'faq' && interaction.isButton()) {
-    return abrirFaq(interaction);
+    return interaction.customId === 'faq:menu'
+      ? voltarAoMenuFaq(interaction)
+      : abrirFaq(interaction);
   }
 
   if (grupo === 'faq' && interaction.isStringSelectMenu()) {

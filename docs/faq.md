@@ -44,5 +44,5 @@ Perguntas iniciais para cadastrar com `/faq adicionar`. Depois disso, o botão *
 
 - `/faq listar` — confere o que já está cadastrado.
 - `/faq remover` — busca a pergunta enquanto você digita.
-- Repetir uma pergunta já existente em `/faq adicionar` **atualiza** a resposta, sem duplicar.
+- Repetir uma pergunta já existente em `/faq adicionar` **atualiza** a resposta, sem duplicar — inclusive se mudar apenas maiúsculas/minúsculas.
 - O menu mostra no máximo 25 perguntas (limite do Discord); o restante continua salvo e aparece em `/faq listar`.

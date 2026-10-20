@@ -12,7 +12,7 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | Comando | O que faz |
 |---|---|
 | `/ping` | Latência de resposta, WebSocket e tempo online |
-| `/help [comando]` | Painel com menu de categorias; com o nome, mostra os detalhes |
+| `/help [comando]` | Painel com menu de categorias; com o nome, mostra detalhes e subcomandos (autocomplete) |
 | `/serverinfo` | Dono, criação, membros, canais, cargos, boosts, verificação |
 | `/userinfo [membro]` | Conta, entrada no servidor, cargos, apelido |
 | `/avatar [membro]` | Avatar em 1024px (e banner) |
@@ -219,6 +219,7 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 - `/abraco`, `/beijo` e `/gato` dependem de APIs externas; se elas caírem, o comando responde sem GIF (ou com imagem padrão).
 - `/snippet` guarda até 1900 caracteres por trecho.
 - `/faq` mostra no máximo 25 perguntas por menu (limite do Discord); o restante continua salvo e aparece em `/faq listar`.
+- Lembrete de `/evento` não é enviado atrasado: se o bot estava offline e o evento já começou, o aviso é descartado.
 - Log de mensagem apagada só mostra o texto com o **MESSAGE CONTENT INTENT** ligado.
 - `/tempban` desbane em até 1 minuto depois do prazo. Se o bot estiver offline na hora, o desbanimento acontece na próxima subida.
 - `/evento` interpreta datas no fuso do PC onde o bot roda (horário local).

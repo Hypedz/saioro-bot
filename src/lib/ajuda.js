@@ -1,4 +1,8 @@
-import { ActionRowBuilder, StringSelectMenuBuilder } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ApplicationCommandOptionType,
+  StringSelectMenuBuilder,
+} from 'discord.js';
 import { CORES, embed } from './embeds.js';
 
 export const CATEGORIAS = {
@@ -18,6 +22,32 @@ function opcoesDoMenu(categoriaAtual) {
   }));
 }
 
+/** Subcomandos (e grupos) de um comando, se houver. */
+export function subcomandos(comando) {
+  return (comando.data.options ?? []).filter((opcao) => {
+    // Builders só expõem o tipo no toJSON(); comandos já serializados têm .type.
+    const tipo = typeof opcao.toJSON === 'function' ? opcao.toJSON().type : opcao.type;
+
+    return (
+      tipo === ApplicationCommandOptionType.Subcommand ||
+      tipo === ApplicationCommandOptionType.SubcommandGroup
+    );
+  });
+}
+
+/** Assinatura curta: "membro <motivo>" ou "ver | adicionar | remover". */
+function assinatura(comando) {
+  const subs = subcomandos(comando);
+  if (subs.length) return ` ${subs.map((sub) => sub.name).join(' | ')}`;
+
+  const opcoes = comando.data.options ?? [];
+  if (!opcoes.length) return '';
+
+  return ` ${opcoes
+    .map((opcao) => (opcao.required ? `<${opcao.name}>` : `[${opcao.name}]`))
+    .join(' ')}`;
+}
+
 /** Monta o painel do /help para uma categoria. */
 export function montarAjuda(client, categoria = 'util') {
   const info = CATEGORIAS[categoria] ?? CATEGORIAS.util;
@@ -28,12 +58,10 @@ export function montarAjuda(client, categoria = 'util') {
 
   const lista = comandos.length
     ? comandos
-        .map((comando) => {
-          const opcoes = comando.data.options?.length
-            ? ` ${comando.data.options.map((o) => (o.required ? `<${o.name}>` : `[${o.name}]`)).join(' ')}`
-            : '';
-          return `**/${comando.data.name}**${opcoes}\n${comando.data.description}`;
-        })
+        .map(
+          (comando) =>
+            `**/${comando.data.name}**${assinatura(comando)}\n${comando.data.description}`,
+        )
         .join('\n\n')
     : '_Nenhum comando nesta categoria ainda._';
 

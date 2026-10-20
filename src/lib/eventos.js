@@ -114,6 +114,12 @@ export async function tickEventos(client) {
       continue;
     }
 
+    // Bot ficou offline e o evento já começou: avisar agora só confunde.
+    if (evento.scheduledStartTimestamp && evento.scheduledStartTimestamp <= agora) {
+      marcarAvisado(registro.event_id);
+      continue;
+    }
+
     const canal = await client.channels.fetch(registro.channel_id).catch(() => null);
     if (canal?.isTextBased()) {
       const quando = Math.floor(evento.scheduledStartTimestamp / 1000);

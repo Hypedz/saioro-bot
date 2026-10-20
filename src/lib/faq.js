@@ -17,21 +17,47 @@ export function obterFaq(guildId, id) {
   return db.prepare('SELECT * FROM faq WHERE guild_id = ? AND id = ?').get(guildId, id) ?? null;
 }
 
-/** Mesma pergunta duas vezes atualiza a resposta, em vez de duplicar. */
+/**
+ * Mesma pergunta (ignorando maiúsculas/minúsculas) atualiza a resposta,
+ * em vez de criar uma duplicata.
+ * @returns {{ id: number, atualizada: boolean }}
+ */
 export function adicionarFaq({ guildId, pergunta, resposta, categoria, autorId }) {
-  db.prepare(`
+  const existente = db
+    .prepare('SELECT id FROM faq WHERE guild_id = ? AND pergunta COLLATE NOCASE = ?')
+    .get(guildId, pergunta);
+
+  if (existente) {
+    db.prepare(`
+      UPDATE faq
+         SET pergunta  = ?,
+             resposta  = ?,
+             categoria = ?,
+             autor_id  = ?,
+             criado_em = ?
+       WHERE id = ?
+    `).run(pergunta, resposta, categoria ?? null, autorId, Date.now(), existente.id);
+
+    return { id: Number(existente.id), atualizada: true };
+  }
+
+  const resultado = db.prepare(`
     INSERT INTO faq (guild_id, pergunta, resposta, categoria, autor_id, criado_em)
     VALUES (?, ?, ?, ?, ?, ?)
-    ON CONFLICT(guild_id, pergunta) DO UPDATE SET
-      resposta  = excluded.resposta,
-      categoria = excluded.categoria,
-      autor_id  = excluded.autor_id,
-      criado_em = excluded.criado_em
   `).run(guildId, pergunta, resposta, categoria ?? null, autorId, Date.now());
+
+  return { id: Number(resultado.lastInsertRowid), atualizada: false };
 }
 
 export function removerFaq(guildId, id) {
   return db.prepare('DELETE FROM faq WHERE guild_id = ? AND id = ?').run(guildId, id).changes;
+}
+
+/** Cabeçalho do menu, avisando quando o Discord corta em 25. */
+export function resumoFaq(itens) {
+  const total = itens.length;
+  const corte = total > 25 ? ` — mostrando 25 de ${total}` : '';
+  return `📖 **Perguntas frequentes** (${total})${corte}`;
 }
 
 /** Menu de selecao com ate 25 perguntas (limite do Discord). */

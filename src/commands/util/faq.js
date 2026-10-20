@@ -1,6 +1,6 @@
 import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { CORES, embed } from '../../lib/embeds.js';
-import { adicionarFaq, listarFaq, menuFaq, removerFaq } from '../../lib/faq.js';
+import { adicionarFaq, listarFaq, menuFaq, removerFaq, resumoFaq } from '../../lib/faq.js';
 
 function podeGerenciar(interaction) {
   return Boolean(interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild));
@@ -62,7 +62,7 @@ export default {
       }
 
       return interaction.reply({
-        content: `📖 **Perguntas frequentes** (${itens.length})`,
+        content: resumoFaq(itens),
         components: [menuFaq(itens)],
         flags: MessageFlags.Ephemeral,
       });
@@ -80,7 +80,7 @@ export default {
       const resposta = interaction.options.getString('resposta', true).trim();
       const categoria = interaction.options.getString('categoria')?.trim() || null;
 
-      adicionarFaq({
+      const { atualizada } = adicionarFaq({
         guildId: guild.id,
         pergunta,
         resposta,
@@ -88,7 +88,11 @@ export default {
         autorId: interaction.user.id,
       });
 
-      const painel = embed('✅ Pergunta salva', `**${pergunta}**\n\n${resposta}`, CORES.sucesso);
+      const painel = embed(
+        atualizada ? '♻️ Pergunta atualizada' : '✅ Pergunta salva',
+        `**${pergunta}**\n\n${resposta}`,
+        CORES.sucesso,
+      );
       if (categoria) painel.setFooter({ text: categoria });
 
       return interaction.reply({ embeds: [painel], flags: MessageFlags.Ephemeral });
