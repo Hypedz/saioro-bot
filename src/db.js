@@ -72,4 +72,47 @@ CREATE TABLE IF NOT EXISTS enquete_votos (
   opcao      INTEGER NOT NULL,
   PRIMARY KEY (message_id, user_id)
 );
+
+CREATE TABLE IF NOT EXISTS sugestoes (
+  message_id TEXT PRIMARY KEY,
+  channel_id TEXT NOT NULL,
+  guild_id   TEXT NOT NULL,
+  autor_id   TEXT NOT NULL,
+  texto      TEXT NOT NULL,
+  anonimo    INTEGER NOT NULL DEFAULT 0,
+  status     TEXT NOT NULL DEFAULT 'aberta',
+  criado_em  INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS sugestao_votos (
+  message_id TEXT NOT NULL,
+  user_id    TEXT NOT NULL,
+  voto       INTEGER NOT NULL,
+  PRIMARY KEY (message_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS snippets (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  guild_id   TEXT NOT NULL,
+  nome       TEXT NOT NULL,
+  conteudo   TEXT NOT NULL,
+  autor_id   TEXT NOT NULL,
+  criado_em  INTEGER NOT NULL,
+  UNIQUE (guild_id, nome)
+);
 `);
+
+/** Adiciona colunas novas em bancos que ja existiam (migracao). */
+function migrar(tabela, coluna, tipo) {
+  const colunas = db
+    .prepare('SELECT name FROM pragma_table_info(?)')
+    .all(tabela)
+    .map((linha) => linha.name);
+
+  if (!colunas.includes(coluna)) {
+    db.exec(`ALTER TABLE ${tabela} ADD COLUMN ${coluna} ${tipo}`);
+  }
+}
+
+migrar('configuracoes', 'sugestoes', 'TEXT');
+migrar('configuracoes', 'verificar_cargo', 'TEXT');

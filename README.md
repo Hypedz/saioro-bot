@@ -16,6 +16,14 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/serverinfo` | Dono, criação, membros, canais, cargos, boosts, verificação |
 | `/userinfo [membro]` | Conta, entrada no servidor, cargos, apelido |
 | `/avatar [membro]` | Avatar em 1024px (e banner) |
+| `/banner [membro]` | Banner do usuário em 1024px |
+| `/servericon` | Ícone (4096px) e banner do servidor |
+| `/emoji <emoji>` | Dados de um emoji (ID, animado, link) |
+| `/timestamp <quando>` | Gera códigos `<t:…>` para datas |
+| `/canalinfo [canal]` | Tipo, criação, tópico, modo lento, NSFW |
+| `/cargos` | Lista cargos com membros e cor |
+| `/snippet criar/ver/listar/apagar` | Trechos de código salvos por nome |
+| `/status` | Uptime, ping, memória, banco, versões |
 | `/botinfo` | Servidores, usuários, memória, versões, uptime |
 
 ### 🛡️ Moderação
@@ -32,6 +40,8 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/lock [canal] [motivo]` | Tranca o canal para @everyone |
 | `/unlock [canal]` | Destranca |
 | `/limpar <quantidade> [usuario]` | Apaga até 100 mensagens (de todos ou de uma pessoa) |
+| `/nick <membro> [apelido]` | Troca/remove o apelido |
+| `/punicoes [membro] [limite]` | Histórico de punições do servidor |
 
 ### 🎉 Social
 | Comando | O que faz |
@@ -39,6 +49,10 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/sorteio <prêmio> <tempo> [vencedores]` | Botão **Participar**, contador e sorteio automático |
 | `/enquete <pergunta> <opções>` | Votação por botões com barra de resultado |
 | `/lembrete criar / listar / cancelar` | Lembretes pessoais (`30s`, `10m`, `2h`, `1d`) |
+| `/sugestao <texto> [anonimo]` | Publica com botões 👍/👎 e aprovação da staff |
+| `/anuncio [canal] [mencao]` | Formulário → publica embed de anúncio |
+| `/embed [canal]` | Formulário → embed personalizado (cor, imagem, rodapé) |
+| `/verificar [canal]` | Painel com botão que entrega o cargo de verificação |
 
 ### 🎲 Diversão
 | Comando | O que faz |
@@ -48,6 +62,12 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/ship <pessoa1> [pessoa2]` | Compatibilidade (resultado estável para o mesmo par) |
 | `/bola8 <pergunta>` | Bola 8 |
 | `/escolha <opções>` | Sorteia entre opções separadas por `\|` |
+| `/ppt <escolha>` | Pedra, papel e tesoura contra o bot |
+| `/quiz` | Pergunta com 4 botões de resposta |
+| `/abraco <membro>` | Abraço com GIF (API externa, com fallback) |
+| `/beijo <membro>` | Beijo com GIF (API externa, com fallback) |
+| `/piada` | Piada aleatória |
+| `/gato` | Foto aleatória de gato (API externa, com fallback) |
 
 ### ⚙️ Configuração
 `/config` (só quem tem **Gerenciar Servidor**):
@@ -58,7 +78,9 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `boas-vindas <canal>` | Canal de boas-vindas |
 | `despedida <canal>` | Canal de despedida |
 | `logs <canal>` | Canal de auditoria |
+| `sugestoes <canal>` | Onde o `/sugestao` publica |
 | `cargo-auto <cargo>` | Cargo dado automaticamente ao entrar |
+| `verificar-cargo <cargo>` | Cargo entregue pelo botão do `/verificar` |
 | `desativar <opção>` | Desliga uma das configurações |
 
 O que vai para o canal de logs: mensagem **apagada** (com autor e quem apagou, se tiver permissão de auditoria), mensagem **editada** (antes/depois), **entrada/saída** de membros e **punições**.
@@ -164,6 +186,15 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 | `/ban` falha | Cargo do bot precisa estar **acima** do cargo do alvo. |
 | Log sem conteúdo | Ligue o **MESSAGE CONTENT INTENT** (opcional). |
 | `Não consegui apagar` | Mensagens com mais de 14 dias o Discord não deixa apagar em massa. |
+
+---
+
+## Limitações conhecidas
+
+- `/quiz` guarda as respostas em memória: se o bot reiniciar, os botões respondem "expirou".
+- `/abraco`, `/beijo` e `/gato` dependem de APIs externas; se elas caírem, o comando responde sem GIF (ou com imagem padrão).
+- `/snippet` guarda até 1900 caracteres por trecho.
+- Log de mensagem apagada só mostra o texto com o **MESSAGE CONTENT INTENT** ligado.
 
 ---
 

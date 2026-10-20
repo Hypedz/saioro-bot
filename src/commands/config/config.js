@@ -40,6 +40,20 @@ export default {
     )
     .addSubcommand((sub) =>
       sub
+        .setName('sugestoes')
+        .setDescription('Define o canal onde o /sugestao publica')
+        .addChannelOption((o) =>
+          o.setName('canal').setDescription('Canal de texto').setRequired(true).addChannelTypes(...CANAIS),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub
+        .setName('verificar-cargo')
+        .setDescription('Cargo entregue pelo botão do painel /verificar')
+        .addRoleOption((o) => o.setName('cargo').setDescription('Cargo').setRequired(true)),
+    )
+    .addSubcommand((sub) =>
+      sub
         .setName('cargo-auto')
         .setDescription('Define o cargo dado automaticamente a quem entra')
         .addRoleOption((o) => o.setName('cargo').setDescription('Cargo').setRequired(true)),
@@ -58,6 +72,8 @@ export default {
               { name: 'Despedida', value: 'despedida' },
               { name: 'Logs', value: 'logs' },
               { name: 'Cargo automático', value: 'cargoAuto' },
+              { name: 'Sugestões', value: 'sugestoes' },
+              { name: 'Cargo de verificação', value: 'verificarCargo' },
             ),
         ),
     ),
@@ -82,13 +98,15 @@ export default {
         { name: 'Boas-vindas', value: valor(cfg.boasVindas, 'canal'), inline: true },
         { name: 'Despedida', value: valor(cfg.despedida, 'canal'), inline: true },
         { name: 'Logs', value: valor(cfg.logs, 'canal'), inline: true },
+        { name: 'Sugestões', value: valor(cfg.sugestoes, 'canal'), inline: true },
         { name: 'Cargo automático', value: valor(cfg.cargoAuto, 'cargo'), inline: true },
+        { name: 'Cargo de verificação', value: valor(cfg.verificarCargo, 'cargo'), inline: true },
       );
 
       return interaction.reply({ embeds: [painel], flags: MessageFlags.Ephemeral });
     }
 
-    if (sub === 'cargo-auto') {
+    if (sub === 'cargo-auto' || sub === 'verificar-cargo') {
       const cargo = interaction.options.getRole('cargo', true);
       const eu = interaction.guild.members.me;
 
@@ -113,10 +131,20 @@ export default {
         });
       }
 
-      salvarConfiguracoes(guildId, { cargoAuto: cargo.id });
+      salvarConfiguracoes(guildId, {
+        [sub === 'cargo-auto' ? 'cargoAuto' : 'verificarCargo']: cargo.id,
+      });
 
       return interaction.reply({
-        embeds: [embed('✅ Cargo automático', `Quem entrar vai receber ${cargo}.`, CORES.sucesso)],
+        embeds: [
+          embed(
+            sub === 'cargo-auto' ? '✅ Cargo automático' : '✅ Cargo de verificação',
+            sub === 'cargo-auto'
+              ? `Quem entrar vai receber ${cargo}.`
+              : `O botão do /verificar vai entregar ${cargo}.`,
+            CORES.sucesso,
+          ),
+        ],
         flags: MessageFlags.Ephemeral,
       });
     }
@@ -140,7 +168,12 @@ export default {
       });
     }
 
-    const mapa = { 'boas-vindas': 'boasVindas', despedida: 'despedida', logs: 'logs' };
+    const mapa = {
+      'boas-vindas': 'boasVindas',
+      despedida: 'despedida',
+      logs: 'logs',
+      sugestoes: 'sugestoes',
+    };
     const campo = mapa[sub];
 
     salvarConfiguracoes(guildId, { [campo]: canal.id });

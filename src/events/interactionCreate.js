@@ -1,10 +1,28 @@
 import { Events, MessageFlags } from 'discord.js';
 import { tratarComponente } from '../lib/componentes.js';
+import { tratarModal } from '../lib/modais.js';
 
 export default {
   name: Events.InteractionCreate,
 
   async execute(interaction) {
+    if (interaction.isModalSubmit()) {
+      try {
+        await tratarModal(interaction);
+      } catch (erro) {
+        console.error('[ERRO] Falha no formulário:', erro);
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction
+            .reply({
+              content: 'Deu erro ao publicar. Veja o console do bot.',
+              flags: MessageFlags.Ephemeral,
+            })
+            .catch(() => {});
+        }
+      }
+      return;
+    }
+
     if (interaction.isButton() || interaction.isStringSelectMenu()) {
       try {
         await tratarComponente(interaction);

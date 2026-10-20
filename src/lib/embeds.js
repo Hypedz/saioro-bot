@@ -37,3 +37,19 @@ export function barra(parte, total, tamanho = 12) {
   const cheio = Math.max(0, Math.min(tamanho, Math.round((parte / total) * tamanho)));
   return '█'.repeat(cheio) + '░'.repeat(tamanho - cheio);
 }
+
+/** "#5865f2", "5865f2" ou "#F2A" -> numero. Retorna o padrao se nao entender. */
+export function parseCor(texto, padrao = CORES.principal) {
+  const bruto = String(texto ?? '').trim().replace(/^#/, '');
+  if (!/^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(bruto)) return padrao;
+
+  const completo =
+    bruto.length === 3
+      ? bruto
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : bruto;
+
+  return Number.parseInt(completo, 16);
+}
