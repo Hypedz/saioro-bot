@@ -38,6 +38,12 @@ try {
       ? '[OK] Escopo: servidor (aparecem na hora).'
       : '[OK] Escopo: global (pode levar ate 1 hora para aparecer).',
   );
+
+  // Com GUILD_ID, os comandos globais so duplicariam a lista no cliente.
+  if (config.guildId) {
+    const globais = await rest.put(Routes.applicationCommands(config.clientId), { body: [] });
+    console.log(`[OK] Comandos globais antigos removidos (${globais.length}).`);
+  }
 } catch (erro) {
   console.error('[ERRO] Falha ao registrar:', erro);
   process.exit(1);
