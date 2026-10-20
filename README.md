@@ -77,7 +77,7 @@ Se aparecer `[ONLINE] Logado como SeuBot#1234`, funcionou.
 
 O que acontece fica salvo em `bot.log` (e os erros em `bot.err.log`).
 
-> O bot só fica online enquanto o processo está rodando. Ao reiniciar o PC ele **não** volta sozinho — veja "Deixar ligado 24h" abaixo.
+> O bot só fica online enquanto o processo está rodando. Ele **sobe sozinho** quando você liga o PC (veja "Deixar ligado 24h" abaixo).
 
 ---
 
@@ -105,6 +105,8 @@ bot-discord/
 │  ├─ deploy-commands.js  registra os slash commands no Discord
 │  ├─ commands/           um arquivo por comando
 │  └─ events/             ready, interactionCreate, entrar/sair
+├─ scripts/
+│  └─ iniciar-oculto.ps1  lançador usado pela inicialização do Windows
 └─ README.md
 ```
 
@@ -146,7 +148,18 @@ O `index.js` carrega tudo que estiver em `src/commands/` — não precisa regist
 
 ## Deixar ligado 24h
 
-`ligar.bat` resolve enquanto o PC estiver ligado. Para não depender do PC:
+**Já configurado:** o bot sobe sozinho junto com o Windows. O atalho fica em:
 
-- **Iniciar junto com o Windows**: crie uma Tarefa Agendada apontando para `ligar.bat` no logon.
-- **Hospedar na nuvem** (Railway, Fly.io, Discloud, VPS): suba o repositório, defina as variáveis do `.env` no painel do serviço e o comando de start `npm start`. Aí o bot fica online mesmo com o PC desligado.
+```
+%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\Bot Discord.vbs
+```
+
+Ele roda `scripts\iniciar-oculto.ps1`, que:
+
+- abre o bot **sem janela**;
+- **não abre duas cópias** se o bot já estiver rodando;
+- grava a saída em `bot.log` e os erros em `bot.err.log`.
+
+Para **desativar**, apague `Bot Discord.vbs` da pasta Inicialização (ou abra `shell:startup`).
+
+> Isso funciona enquanto o PC estiver ligado. Se quiser o bot online com o PC desligado, hospede na nuvem (Railway, Fly.io, Discloud, VPS): suba o repositório, defina as variáveis do `.env` no painel do serviço e use `npm start` como comando de start.
