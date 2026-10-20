@@ -100,6 +100,20 @@ CREATE TABLE IF NOT EXISTS snippets (
   criado_em  INTEGER NOT NULL,
   UNIQUE (guild_id, nome)
 );
+
+CREATE TABLE IF NOT EXISTS cargos_painel (
+  guild_id TEXT NOT NULL,
+  role_id  TEXT NOT NULL,
+  emoji    TEXT,
+  PRIMARY KEY (guild_id, role_id)
+);
+
+CREATE TABLE IF NOT EXISTS sticky (
+  channel_id TEXT PRIMARY KEY,
+  guild_id   TEXT NOT NULL,
+  message_id TEXT,
+  texto      TEXT NOT NULL
+);
 `);
 
 /** Adiciona colunas novas em bancos que ja existiam (migracao). */
@@ -116,3 +130,6 @@ function migrar(tabela, coluna, tipo) {
 
 migrar('configuracoes', 'sugestoes', 'TEXT');
 migrar('configuracoes', 'verificar_cargo', 'TEXT');
+migrar('configuracoes', 'boas_vindas_texto', 'TEXT');
+migrar('configuracoes', 'boas_vindas_dm', 'TEXT');
+migrar('configuracoes', 'boas_vindas_imagem', 'TEXT');

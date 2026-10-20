@@ -25,6 +25,7 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/snippet criar/ver/listar/apagar` | Trechos de código salvos por nome |
 | `/status` | Uptime, ping, memória, banco, versões |
 | `/botinfo` | Servidores, usuários, memória, versões, uptime |
+| `/diagnostico` | Confere permissões, intents e o que ainda falta configurar |
 
 ### 🛡️ Moderação
 | Comando | O que faz |
@@ -42,6 +43,7 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/limpar <quantidade> [usuario]` | Apaga até 100 mensagens (de todos ou de uma pessoa) |
 | `/nick <membro> [apelido]` | Troca/remove o apelido |
 | `/punicoes [membro] [limite]` | Histórico de punições do servidor |
+| `/sticky definir/remover/ver` | Mensagem que volta ao fim do canal sempre que alguém fala |
 
 ### 🎉 Social
 | Comando | O que faz |
@@ -53,6 +55,7 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/anuncio [canal] [mencao]` | Formulário → publica embed de anúncio |
 | `/embed [canal]` | Formulário → embed personalizado (cor, imagem, rodapé) |
 | `/verificar [canal]` | Painel com botão que entrega o cargo de verificação |
+| `/cargos-painel adicionar/remover/listar/publicar` | Painel de cargos que o membro escolhe clicando (staff monta, membro usa) |
 
 ### 🎲 Diversão
 | Comando | O que faz |
@@ -81,9 +84,12 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `sugestoes <canal>` | Onde o `/sugestao` publica |
 | `cargo-auto <cargo>` | Cargo dado automaticamente ao entrar |
 | `verificar-cargo <cargo>` | Cargo entregue pelo botão do `/verificar` |
+| `boas-vindas-texto <texto>` | Texto do embed (use `{membro}`, `{nome}`, `{servidor}`, `{total}`) |
+| `boas-vindas-dm <texto>` | Mensagem no privado de quem entra |
+| `boas-vindas-imagem <url>` | Imagem que aparece nas boas-vindas |
 | `desativar <opção>` | Desliga uma das configurações |
 
-O que vai para o canal de logs: mensagem **apagada** (com autor e quem apagou, se tiver permissão de auditoria), mensagem **editada** (antes/depois), **entrada/saída** de membros e **punições**.
+O que vai para o canal de logs: mensagem **apagada** (com autor e quem apagou, se tiver permissão de auditoria), mensagem **editada** (antes/depois), **entrada/saída** de membros, **punições**, **voz** (entrou/saiu/mudou de canal), **cargos e apelidos** alterados, **canais criados/apagados** e **banimentos** (inclusive os feitos fora do bot).
 
 ---
 
@@ -135,7 +141,9 @@ Permissões que o bot precisa (já vêm no link de convite):
 bot-discord/
 ├─ ligar.bat / parar.bat       controlar o bot
 ├─ scripts/iniciar-oculto.ps1  lançador do logon do Windows
+├─ scripts/supervisor.ps1      religa o bot se ele cair
 ├─ dados/bot.db                banco SQLite (não vai para o Git)
+├─ dados/backups/              cópia diária do banco (7 dias)
 ├─ src/
 │  ├─ index.js                 loader (comandos por categoria + eventos)
 │  ├─ db.js                    schema do SQLite
@@ -186,6 +194,7 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 | `/ban` falha | Cargo do bot precisa estar **acima** do cargo do alvo. |
 | Log sem conteúdo | Ligue o **MESSAGE CONTENT INTENT** (opcional). |
 | `Não consegui apagar` | Mensagens com mais de 14 dias o Discord não deixa apagar em massa. |
+| O bot reiniciou sozinho | O supervisor fez o trabalho dele. Veja o motivo em `bot.err.log` e `supervisor.log`. |
 
 ---
 
@@ -201,5 +210,12 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 ## Deixar ligado 24h
 
 Já configurado: atalho em `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\Bot Discord.vbs`, que roda `scripts/iniciar-oculto.ps1` sem janela e sem abrir duas cópias.
+
+Quem mantém o bot de pé é o **`scripts/supervisor.ps1`**: se o processo do Node cair, ele religa em 5 segundos (e espera mais se o erro se repetir muitas vezes seguidas). Tudo fica registrado em `supervisor.log`.
+
+- `ligar.bat` → inicia o supervisor
+- `parar.bat` → para o supervisor e o bot
+
+**Backup automático:** na subida e a cada 6 horas, o bot cria uma cópia consistente do banco em `dados/backups/bot-AAAA-MM-DD.db` (uma por dia, mantendo as 7 últimas). Para restaurar, pare o bot e copie o arquivo escolhido por cima de `dados/bot.db`.
 
 Isso vale enquanto o PC estiver ligado. Para 24h de verdade, hospede na nuvem (Railway, Fly.io, Discloud, VPS): suba o repositório, defina as variáveis do `.env` no painel e use `npm start`. Nesse caso, troque o SQLite por um volume persistente, senão os dados somem a cada deploy.

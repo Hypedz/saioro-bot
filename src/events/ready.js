@@ -1,6 +1,15 @@
 import { ActivityType, Events } from 'discord.js';
+import { backupDiario } from '../lib/backup.js';
 import { tickLembretes } from '../lib/lembretes.js';
 import { tickSorteios } from '../lib/sorteios.js';
+
+function rodarBackup() {
+  try {
+    backupDiario();
+  } catch (erro) {
+    console.error('[ERRO] Backup falhou:', erro.message);
+  }
+}
 
 function iniciarRotinas(client) {
   // Sorteios: verifica a cada 15s se algum terminou.
@@ -14,6 +23,10 @@ function iniciarRotinas(client) {
   // Roda uma vez no start, para pegar o que venceu enquanto o bot estava off.
   tickSorteios(client);
   tickLembretes(client).catch(() => {});
+
+  // Backup do banco: no start e a cada 6h (so cria um arquivo por dia).
+  rodarBackup();
+  setInterval(rodarBackup, 6 * 60 * 60 * 1000).unref();
 }
 
 export default {

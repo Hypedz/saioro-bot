@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Iniciar o bot (segundo plano)
+title Iniciar o bot (segundo plano + auto-restart)
 cd /d "%~dp0"
 
 if not exist ".env" (
@@ -13,5 +13,12 @@ if not exist "node_modules" (
     call npm install || (echo [ERRO] npm install falhou. & pause & exit /b 1)
 )
 
-powershell -NoProfile -Command "$p = Get-CimInstance Win32_Process -Filter 'Name=''node.exe''' | Where-Object { $_.CommandLine -like '*src\index.js*' }; if ($p) { Write-Host 'O bot ja estava rodando. Use parar.bat para reiniciar.' } else { Start-Process -FilePath 'node' -ArgumentList 'src\index.js' -WorkingDirectory '%~dp0' -RedirectStandardOutput '%~dp0bot.log' -RedirectStandardError '%~dp0bot.err.log' -WindowStyle Hidden; Start-Sleep 5; Get-Content '%~dp0bot.log' }"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\iniciar-oculto.ps1"
+
+timeout /t 4 /nobreak >nul
+echo.
+echo --- ultimas linhas do bot.log ---
+powershell -NoProfile -Command "if (Test-Path '%~dp0bot.log') { Get-Content '%~dp0bot.log' -Tail 15 }"
+echo.
+echo O supervisor religa o bot sozinho se ele cair. Para parar tudo, use parar.bat.
 pause

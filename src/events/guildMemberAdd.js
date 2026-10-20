@@ -1,7 +1,7 @@
 import { EmbedBuilder, Events } from 'discord.js';
 import { config } from '../config.js';
 import { CORES_LOG, enviarLog } from '../lib/logs.js';
-import { configuracoes } from '../lib/settings.js';
+import { configuracoes, formatarBoasVindas } from '../lib/settings.js';
 
 export default {
   name: Events.GuildMemberAdd,
@@ -21,6 +21,15 @@ export default {
     if (canalId) {
       const canal = member.guild.channels.cache.get(canalId);
       if (canal?.isTextBased()) {
+        const descricao = cfg.boasVindasTexto
+          ? formatarBoasVindas(cfg.boasVindasTexto, member)
+          : [
+              `Bem-vindo(a), <@${member.id}>!`,
+              '',
+              `Agora somos **${member.guild.memberCount}** membros.`,
+              'Use `/help` para ver os comandos.',
+            ].join('\n');
+
         const embed = new EmbedBuilder()
           .setColor(0x2ecc71)
           .setAuthor({
@@ -28,18 +37,20 @@ export default {
             iconURL: member.user.displayAvatarURL(),
           })
           .setThumbnail(member.user.displayAvatarURL({ size: 256 }))
-          .setDescription(
-            [
-              `Bem-vindo(a), <@${member.id}>!`,
-              '',
-              `Agora somos **${member.guild.memberCount}** membros.`,
-              'Use `/help` para ver os comandos.',
-            ].join('\n'),
-          )
+          .setDescription(descricao)
           .setTimestamp();
+
+        if (cfg.boasVindasImagem) embed.setImage(cfg.boasVindasImagem);
 
         await canal.send({ embeds: [embed] }).catch(() => {});
       }
+    }
+
+    // Mensagem no privado (opcional)
+    if (cfg.boasVindasDm) {
+      await member
+        .send({ content: formatarBoasVindas(cfg.boasVindasDm, member) })
+        .catch((erro) => console.warn('[AVISO] DM de boas-vindas não entregue:', erro.message));
     }
 
     // Log de entrada

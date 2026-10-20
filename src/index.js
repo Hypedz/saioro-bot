@@ -1,3 +1,4 @@
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -12,6 +13,20 @@ if (faltando.length > 0) {
   console.error('       Copie o .env.example para .env e preencha os valores.\n');
   process.exit(1);
 }
+
+// Marca o processo atual para o supervisor e o parar.bat nao abrirem outro bot.
+const pastaDados = path.join(aqui, '..', 'dados');
+const arquivoPid = path.join(pastaDados, 'bot.pid');
+mkdirSync(pastaDados, { recursive: true });
+writeFileSync(arquivoPid, String(process.pid));
+
+process.on('exit', () => {
+  try {
+    rmSync(arquivoPid, { force: true });
+  } catch {
+    // sem problema: o supervisor valida o PID antes de confiar no arquivo
+  }
+});
 
 const client = new Client({
   intents: [

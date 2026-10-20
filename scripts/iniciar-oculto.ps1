@@ -1,24 +1,28 @@
-# Liga o bot em segundo plano, sem janela.
-# Usado pela Tarefa Agendada "Bot Discord" no logon do Windows.
+# Liga o bot em segundo plano, sem janela, com auto-restart (supervisor).
+# Usado pelo atalho da pasta Inicializar do Windows.
 # Tambem pode ser rodado na mao: powershell -File scripts\iniciar-oculto.ps1
 
 $raiz = Split-Path -Parent $PSScriptRoot
-$log = Join-Path $raiz 'bot.log'
-$logErro = Join-Path $raiz 'bot.err.log'
+$logSup = Join-Path $raiz 'supervisor.log'
+$pastaDados = Join-Path $raiz 'dados'
+$supervisor = Join-Path $PSScriptRoot 'supervisor.ps1'
 
-# Trava: se ja existe um node rodando este bot, nao abre outro.
-$jaRodando = Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
-  Where-Object { $_.CommandLine -like '*src\index.js*' }
+. (Join-Path $PSScriptRoot 'processos.ps1')
 
-if ($jaRodando) {
-  "$(Get-Date -Format 'dd/MM/yyyy HH:mm:ss')  ja estava rodando (PID $($jaRodando.ProcessId))" |
-    Out-File -FilePath $log -Append -Encoding utf8
+New-Item -ItemType Directory -Force -Path $pastaDados | Out-Null
+
+# Trava: se ja existe bot ou supervisor rodando, nao abre outro.
+$supPid = Ler-PidVivo (Join-Path $pastaDados 'supervisor.pid') 'powershell'
+$botPid = Ler-PidVivo (Join-Path $pastaDados 'bot.pid') 'node'
+
+if ($supPid -or $botPid) {
+  $ids = @($supPid, $botPid) | Where-Object { $_ }
+  "$(Get-Date -Format 'dd/MM/yyyy HH:mm:ss')  iniciar: ja estava rodando (PID $($ids -join ', '))" |
+    Out-File -FilePath $logSup -Append -Encoding utf8
   exit 0
 }
 
-Start-Process -FilePath 'node' `
-  -ArgumentList 'src\index.js' `
+Start-Process -FilePath 'powershell.exe' `
+  -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$supervisor`"" `
   -WorkingDirectory $raiz `
-  -RedirectStandardOutput $log `
-  -RedirectStandardError $logErro `
   -WindowStyle Hidden

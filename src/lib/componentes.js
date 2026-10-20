@@ -10,6 +10,7 @@ import {
   votarSugestao,
 } from './sugestoes.js';
 import { responderQuiz } from './quiz.js';
+import { listarCargosPainel } from './cargosPainel.js';
 
 const erro = (interaction, texto, extra = {}) =>
   interaction.reply({ content: texto, flags: MessageFlags.Ephemeral, ...extra });
@@ -120,6 +121,40 @@ async function tratarVerificacao(interaction, cargoId) {
   });
 }
 
+async function tratarCargoPainel(interaction, cargoId) {
+  const { guild, member } = interaction;
+
+  const noPainel = listarCargosPainel(guild.id).some((item) => item.role_id === cargoId);
+  if (!noPainel) {
+    return erro(interaction, 'Esse cargo saiu do painel. Avise a staff.');
+  }
+
+  const cargo = guild.roles.cache.get(cargoId) ?? (await guild.roles.fetch(cargoId).catch(() => null));
+  if (!cargo) return erro(interaction, 'Esse cargo não existe mais. Avise a staff.');
+
+  const eu = guild.members.me;
+  if (!eu.permissions.has('ManageRoles')) {
+    return erro(interaction, 'Preciso da permissão **Gerenciar Cargos** para isso.');
+  }
+  if (cargo.managed || cargo.position >= eu.roles.highest.position) {
+    return erro(interaction, 'Não posso entregar esse cargo. Avise a staff.');
+  }
+
+  if (member.roles.cache.has(cargo.id)) {
+    await member.roles.remove(cargo, 'Painel de cargos');
+    return interaction.reply({
+      content: `➖ Cargo **${cargo.name}** removido.`,
+      flags: MessageFlags.Ephemeral,
+    });
+  }
+
+  await member.roles.add(cargo, 'Painel de cargos');
+  return interaction.reply({
+    content: `➕ Cargo **${cargo.name}** adicionado.`,
+    flags: MessageFlags.Ephemeral,
+  });
+}
+
 async function tratarQuiz(interaction, messageId, indice) {
   const resultado = responderQuiz(messageId, interaction.user.id, Number(indice));
   if (!resultado.ok) return erro(interaction, resultado.motivo);
@@ -172,6 +207,10 @@ export async function tratarComponente(interaction) {
 
   if (grupo === 'verificar' && interaction.isButton()) {
     return tratarVerificacao(interaction, acao);
+  }
+
+  if (grupo === 'cargo' && interaction.isButton()) {
+    return tratarCargoPainel(interaction, acao);
   }
 
   if (grupo === 'quiz' && interaction.isButton()) {

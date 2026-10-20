@@ -14,6 +14,9 @@ export function configuracoes(guildId) {
     cargoAuto: linha?.cargo_auto ?? null,
     sugestoes: linha?.sugestoes ?? null,
     verificarCargo: linha?.verificar_cargo ?? null,
+    boasVindasTexto: linha?.boas_vindas_texto ?? null,
+    boasVindasDm: linha?.boas_vindas_dm ?? null,
+    boasVindasImagem: linha?.boas_vindas_imagem ?? null,
   };
 
   cache.set(guildId, cfg);
@@ -25,15 +28,21 @@ export function salvarConfiguracoes(guildId, mudancas) {
   const atual = { ...configuracoes(guildId), ...mudancas };
 
   db.prepare(`
-    INSERT INTO configuracoes (guild_id, boas_vindas, despedida, logs, cargo_auto, sugestoes, verificar_cargo)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO configuracoes (
+      guild_id, boas_vindas, despedida, logs, cargo_auto, sugestoes, verificar_cargo,
+      boas_vindas_texto, boas_vindas_dm, boas_vindas_imagem
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(guild_id) DO UPDATE SET
-      boas_vindas    = excluded.boas_vindas,
-      despedida      = excluded.despedida,
-      logs           = excluded.logs,
-      cargo_auto     = excluded.cargo_auto,
-      sugestoes      = excluded.sugestoes,
-      verificar_cargo = excluded.verificar_cargo
+      boas_vindas         = excluded.boas_vindas,
+      despedida           = excluded.despedida,
+      logs                = excluded.logs,
+      cargo_auto          = excluded.cargo_auto,
+      sugestoes           = excluded.sugestoes,
+      verificar_cargo     = excluded.verificar_cargo,
+      boas_vindas_texto   = excluded.boas_vindas_texto,
+      boas_vindas_dm      = excluded.boas_vindas_dm,
+      boas_vindas_imagem  = excluded.boas_vindas_imagem
   `).run(
     guildId,
     atual.boasVindas,
@@ -42,8 +51,20 @@ export function salvarConfiguracoes(guildId, mudancas) {
     atual.cargoAuto,
     atual.sugestoes,
     atual.verificarCargo,
+    atual.boasVindasTexto,
+    atual.boasVindasDm,
+    atual.boasVindasImagem,
   );
 
   cache.set(guildId, atual);
   return atual;
+}
+
+/** Troca as variaveis {membro}, {nome}, {servidor} e {total} no texto. */
+export function formatarBoasVindas(texto, membro) {
+  return texto
+    .replaceAll('{membro}', `<@${membro.id}>`)
+    .replaceAll('{nome}', membro.user.username)
+    .replaceAll('{servidor}', membro.guild.name)
+    .replaceAll('{total}', String(membro.guild.memberCount));
 }

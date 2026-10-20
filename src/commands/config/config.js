@@ -60,6 +60,34 @@ export default {
     )
     .addSubcommand((sub) =>
       sub
+        .setName('boas-vindas-texto')
+        .setDescription('Texto da mensagem de boas-vindas')
+        .addStringOption((o) =>
+          o
+            .setName('texto')
+            .setDescription('Use {membro}, {nome}, {servidor} e {total}')
+            .setRequired(true)
+            .setMaxLength(1500),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub
+        .setName('boas-vindas-dm')
+        .setDescription('Mensagem enviada no privado de quem entra')
+        .addStringOption((o) =>
+          o.setName('texto').setDescription('Use {nome} e {servidor}').setRequired(true).setMaxLength(1500),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub
+        .setName('boas-vindas-imagem')
+        .setDescription('Imagem que aparece nas boas-vindas')
+        .addStringOption((o) =>
+          o.setName('url').setDescription('Link da imagem (https://...)').setRequired(true).setMaxLength(500),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub
         .setName('desativar')
         .setDescription('Desliga uma das configurações')
         .addStringOption((o) =>
@@ -74,6 +102,9 @@ export default {
               { name: 'Cargo automático', value: 'cargoAuto' },
               { name: 'Sugestões', value: 'sugestoes' },
               { name: 'Cargo de verificação', value: 'verificarCargo' },
+              { name: 'Texto de boas-vindas', value: 'boasVindasTexto' },
+              { name: 'Boas-vindas no privado', value: 'boasVindasDm' },
+              { name: 'Imagem de boas-vindas', value: 'boasVindasImagem' },
             ),
         ),
     ),
@@ -101,9 +132,57 @@ export default {
         { name: 'Sugestões', value: valor(cfg.sugestoes, 'canal'), inline: true },
         { name: 'Cargo automático', value: valor(cfg.cargoAuto, 'cargo'), inline: true },
         { name: 'Cargo de verificação', value: valor(cfg.verificarCargo, 'cargo'), inline: true },
+        {
+          name: 'Boas-vindas personalizada',
+          value: [
+            cfg.boasVindasTexto ? '✅ texto' : '⚪ texto padrão',
+            cfg.boasVindasDm ? '✅ DM' : '⚪ sem DM',
+            cfg.boasVindasImagem ? '✅ imagem' : '⚪ sem imagem',
+          ].join(' • '),
+          inline: false,
+        },
       );
 
       return interaction.reply({ embeds: [painel], flags: MessageFlags.Ephemeral });
+    }
+
+    if (sub === 'boas-vindas-texto' || sub === 'boas-vindas-dm') {
+      const texto = interaction.options.getString('texto', true);
+      const campo = sub === 'boas-vindas-texto' ? 'boasVindasTexto' : 'boasVindasDm';
+      salvarConfiguracoes(guildId, { [campo]: texto });
+
+      return interaction.reply({
+        embeds: [
+          embed(
+            '✅ Boas-vindas personalizada',
+            `Salvo.\nVariaveis: \`{membro}\`, \`{nome}\`, \`{servidor}\`, \`{total}\`.\n\n**Prévia:**\n${texto
+              .replaceAll('{membro}', `<@${interaction.user.id}>`)
+              .replaceAll('{nome}', interaction.user.username)
+              .replaceAll('{servidor}', interaction.guild.name)
+              .replaceAll('{total}', String(interaction.guild.memberCount))}`,
+            CORES.sucesso,
+          ),
+        ],
+        flags: MessageFlags.Ephemeral,
+      });
+    }
+
+    if (sub === 'boas-vindas-imagem') {
+      const url = interaction.options.getString('url', true).trim();
+
+      if (!/^https?:\/\/\S+$/i.test(url)) {
+        return interaction.reply({
+          content: 'A URL precisa começar com `http://` ou `https://`.',
+          flags: MessageFlags.Ephemeral,
+        });
+      }
+
+      salvarConfiguracoes(guildId, { boasVindasImagem: url });
+
+      return interaction.reply({
+        embeds: [embed('✅ Imagem salva', 'Ela aparece no embed de boas-vindas.', CORES.sucesso)],
+        flags: MessageFlags.Ephemeral,
+      });
     }
 
     if (sub === 'cargo-auto' || sub === 'verificar-cargo') {
