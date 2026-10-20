@@ -1,7 +1,7 @@
 import { readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import { config, missingConfig } from './config.js';
 
 const aqui = path.dirname(fileURLToPath(import.meta.url));
@@ -14,35 +14,54 @@ if (faltando.length > 0) {
 }
 
 const client = new Client({
-  // Guilds: servidores e comandos de barra.
-  // GuildMembers: entrar/sair de membros (precisa ativar o intent no portal).
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+  ],
+  partials: [Partials.Channel, Partials.GuildMember, Partials.Message, Partials.User],
 });
 
 client.commands = new Collection();
 
+/** Carrega src/commands/<categoria>/<comando>.js e marca a categoria. */
 async function carregarComandos() {
-  const pasta = path.join(aqui, 'commands');
-  const arquivos = (await readdir(pasta)).filter((f) => f.endsWith('.js'));
+  const base = path.join(aqui, 'commands');
+  const categorias = (await readdir(base, { withFileTypes: true })).filter((item) =>
+    item.isDirectory(),
+  );
 
-  for (const arquivo of arquivos) {
-    const modulo = await import(pathToFileURL(path.join(pasta, arquivo)).href);
-    const comando = modulo.default ?? modulo;
+  for (const categoria of categorias) {
+    const pasta = path.join(base, categoria.name);
+    const arquivos = (await readdir(pasta)).filter((arquivo) => arquivo.endsWith('.js'));
 
-    if (!comando?.data || typeof comando.execute !== 'function') {
-      console.warn(`[AVISO] ${arquivo} nao exporta { data, execute } - ignorado.`);
-      continue;
+    for (const arquivo of arquivos) {
+      const modulo = await import(pathToFileURL(path.join(pasta, arquivo)).href);
+      const comando = modulo.default ?? modulo;
+
+      if (!comando?.data || typeof comando.execute !== 'function') {
+        console.warn(`[AVISO] ${categoria.name}/${arquivo} nao exporta { data, execute } - ignorado.`);
+        continue;
+      }
+
+      comando.categoria = categoria.name;
+      client.commands.set(comando.data.name, comando);
     }
-
-    client.commands.set(comando.data.name, comando);
   }
 
-  console.log(`[OK] ${client.commands.size} comando(s) carregado(s).`);
+  const porCategoria = [...client.commands.values()].reduce((mapa, comando) => {
+    mapa[comando.categoria] = (mapa[comando.categoria] ?? 0) + 1;
+    return mapa;
+  }, {});
+
+  console.log(`[OK] ${client.commands.size} comando(s) carregado(s):`);
+  for (const [categoria, total] of Object.entries(porCategoria)) {
+    console.log(`     ${categoria}: ${total}`);
+  }
 }
 
 async function carregarEventos() {
   const pasta = path.join(aqui, 'events');
-  const arquivos = (await readdir(pasta)).filter((f) => f.endsWith('.js'));
+  const arquivos = (await readdir(pasta)).filter((arquivo) => arquivo.endsWith('.js'));
 
   for (const arquivo of arquivos) {
     const modulo = await import(pathToFileURL(path.join(pasta, arquivo)).href);

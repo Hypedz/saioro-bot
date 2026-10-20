@@ -1,4 +1,4 @@
-import { Routes, REST } from 'discord.js';
+import { REST, Routes } from 'discord.js';
 import { readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -11,15 +11,17 @@ if (!config.token || !config.clientId) {
   process.exit(1);
 }
 
-const pasta = path.join(aqui, 'commands');
-const arquivos = (await readdir(pasta)).filter((f) => f.endsWith('.js'));
+const base = path.join(aqui, 'commands');
+const categorias = (await readdir(base, { withFileTypes: true })).filter((item) => item.isDirectory());
 const comandos = [];
 
-for (const arquivo of arquivos) {
-  const modulo = await import(pathToFileURL(path.join(pasta, arquivo)).href);
-  const comando = modulo.default ?? modulo;
-  if (!comando?.data) continue;
-  comandos.push(comando.data.toJSON());
+for (const categoria of categorias) {
+  const pasta = path.join(base, categoria.name);
+  for (const arquivo of (await readdir(pasta)).filter((f) => f.endsWith('.js'))) {
+    const modulo = await import(pathToFileURL(path.join(pasta, arquivo)).href);
+    const comando = modulo.default ?? modulo;
+    if (comando?.data) comandos.push(comando.data.toJSON());
+  }
 }
 
 const rest = new REST().setToken(config.token);
