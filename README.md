@@ -98,6 +98,13 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 
 O que vai para o canal de logs: mensagem **apagada** (com autor e quem apagou, se tiver permissão de auditoria), mensagem **editada** (antes/depois), **entrada/saída** de membros, **punições**, **voz** (entrou/saiu/mudou de canal), **cargos e apelidos** alterados, **canais criados/apagados** e **banimentos** (inclusive os feitos fora do bot).
 
+### Textos prontos
+
+| Arquivo | Conteúdo |
+|---|---|
+| [`docs/regras.md`](docs/regras.md) | Regras em tom formal, prontas para `/regras`, com versão mais rígida opcional |
+| [`docs/faq.md`](docs/faq.md) | Seis perguntas iniciais com respostas formais para cadastrar em `/faq adicionar` |
+
 ---
 
 ## Primeira vez
@@ -151,6 +158,7 @@ bot-discord/
 ├─ scripts/supervisor.ps1      religa o bot se ele cair
 ├─ dados/bot.db                banco SQLite (não vai para o Git)
 ├─ dados/backups/              cópia diária do banco (7 dias)
+├─ docs/                       regras.md e faq.md (textos prontos para colar)
 ├─ src/
 │  ├─ index.js                 loader (comandos por categoria + eventos)
 │  ├─ db.js                    schema do SQLite
