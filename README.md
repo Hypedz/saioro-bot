@@ -61,19 +61,23 @@ notepad .env
 
 ## Passo 6 — Rodar
 
-Dê dois cliques em **`iniciar.bat`**.
-
-Ou pelo terminal:
+Primeira vez (registra os comandos):
 
 ```powershell
-npm install      # só na primeira vez
-npm run deploy   # registra os slash commands
-npm start        # liga o bot
+npm install
+npm run deploy
 ```
+
+No dia a dia:
+
+- **`ligar.bat`** — liga o bot em segundo plano (sem janela) e mostra o log.
+- **`parar.bat`** — desliga o bot.
 
 Se aparecer `[ONLINE] Logado como SeuBot#1234`, funcionou.
 
-Para desligar: `Ctrl + C` no terminal.
+O que acontece fica salvo em `bot.log` (e os erros em `bot.err.log`).
+
+> O bot só fica online enquanto o processo está rodando. Ao reiniciar o PC ele **não** volta sozinho — veja "Deixar ligado 24h" abaixo.
 
 ---
 
@@ -92,7 +96,8 @@ Para desligar: `Ctrl + C` no terminal.
 
 ```
 bot-discord/
-├─ iniciar.bat            atalho para rodar tudo
+├─ ligar.bat              liga o bot em segundo plano
+├─ parar.bat              desliga o bot
 ├─ .env.example           modelo de configuração
 ├─ src/
 │  ├─ index.js            liga o bot, carrega comandos e eventos
@@ -136,3 +141,12 @@ O `index.js` carrega tudo que estiver em `src/commands/` — não precisa regist
 | `Used disallowed intents` | Ligue o **SERVER MEMBERS INTENT** no portal (Passo 3). |
 | Comando não aparece | Faltou `npm run deploy` ou o bot foi convidado sem o escopo `applications.commands`. |
 | `/limpar` não apaga | O bot precisa de **Gerenciar Mensagens** e não consegue apagar mensagens com mais de 14 dias. |
+
+---
+
+## Deixar ligado 24h
+
+`ligar.bat` resolve enquanto o PC estiver ligado. Para não depender do PC:
+
+- **Iniciar junto com o Windows**: crie uma Tarefa Agendada apontando para `ligar.bat` no logon.
+- **Hospedar na nuvem** (Railway, Fly.io, Discloud, VPS): suba o repositório, defina as variáveis do `.env` no painel do serviço e o comando de start `npm start`. Aí o bot fica online mesmo com o PC desligado.
