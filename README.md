@@ -74,7 +74,7 @@ Automáticos, aparecem no cartão e em `/perfil emblemas` (que mostra o progress
 
 | Emblema | Como ganhar |
 |---|---|
-| 🏛️ Fundador | Dono do servidor ou um dos primeiros membros |
+| 🏛️ Fundador | Dono do bot (conta que criou a aplicação) |
 | 🕰️ Veterano | 1 ano de servidor |
 | 💡 Sugestor | 10 sugestões enviadas |
 | 🌟 Ideia aprovada | 3 sugestões aprovadas |

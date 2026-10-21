@@ -9,12 +9,9 @@ export const EMBLEMAS = [
     id: 'fundador',
     emoji: '🏛️',
     nome: 'Fundador',
-    descricao: 'Estava no servidor desde a criação',
-    conquistado: ({ membro }) =>
-      membro.id === membro.guild.ownerId ||
-      (Boolean(membro.guild.createdTimestamp) &&
-        membro.joinedTimestamp <= membro.guild.createdTimestamp + 3 * DIA),
-    progresso: () => 'dono ou um dos primeiros membros',
+    descricao: 'Dono do bot',
+    conquistado: ({ membro, donoId }) => Boolean(donoId) && membro.id === donoId,
+    progresso: () => 'exclusivo do dono do bot',
   },
   {
     id: 'veterano',
@@ -52,8 +49,8 @@ export const EMBLEMAS = [
 ];
 
 /** Lista completa, com conquistados e progresso. */
-export function calcularEmblemas(membro, contagens, agora = Date.now()) {
-  const contexto = { membro, contagens, agora };
+export function calcularEmblemas(membro, contagens, { donoId = null, agora = Date.now() } = {}) {
+  const contexto = { membro, contagens, donoId, agora };
 
   return EMBLEMAS.map((emblema) => ({
     id: emblema.id,
@@ -65,6 +62,6 @@ export function calcularEmblemas(membro, contagens, agora = Date.now()) {
   }));
 }
 
-export function emblemasConquistados(membro, contagens, agora = Date.now()) {
-  return calcularEmblemas(membro, contagens, agora).filter((emblema) => emblema.conquistado);
+export function emblemasConquistados(membro, contagens, opcoes = {}) {
+  return calcularEmblemas(membro, contagens, opcoes).filter((emblema) => emblema.conquistado);
 }

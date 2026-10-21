@@ -47,9 +47,23 @@ export default {
   name: Events.ClientReady,
   once: true,
 
-  execute(client) {
+  async execute(client) {
     console.log(`[ONLINE] Logado como ${client.user.tag}`);
     console.log(`[ONLINE] Servidores: ${client.guilds.cache.size} | Comandos: ${client.commands.size}`);
+
+    try {
+      const aplicacao = await client.application.fetch();
+      // User (app pessoal) tem .id; Team tem .ownerId (dono da equipe).
+      client.donoId = aplicacao.owner?.ownerId ?? aplicacao.owner?.id ?? null;
+
+      console.log(
+        client.donoId
+          ? `[INFO] Dono do bot: ${client.donoId} (emblema Fundador)`
+          : '[AVISO] Dono do bot não identificado: o emblema Fundador ficará sem dono.',
+      );
+    } catch (erro) {
+      console.error('[ERRO] Não consegui identificar o dono do bot:', erro.message);
+    }
 
     client.user.setActivity('/help', { type: ActivityType.Listening });
     iniciarRotinas(client);

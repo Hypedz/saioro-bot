@@ -153,7 +153,7 @@ export function contagens(guildId, userId) {
 }
 
 /** Cartão público do membro, já com os campos que ele escolheu mostrar. */
-export function montarPerfil(membro, perfil) {
+export function montarPerfil(membro, perfil, donoId = null) {
   const nome = perfil.titulo?.trim() || membro.displayName;
 
   const painel = new EmbedBuilder()
@@ -197,7 +197,7 @@ export function montarPerfil(membro, perfil) {
   const dados = contagens(membro.guild.id, membro.id);
 
   if (perfil.mostrar_emblemas) {
-    const conquistados = emblemasConquistados(membro, dados);
+    const conquistados = emblemasConquistados(membro, dados, { donoId });
 
     campos.push({
       name: 'Emblemas',
@@ -337,7 +337,7 @@ export async function tratarModalPerfil(interaction) {
 
   return interaction.reply({
     content: '✅ Perfil atualizado. Use `/perfil ver` para mostrar aos outros.',
-    embeds: [montarPerfil(interaction.member, perfil)],
+    embeds: [montarPerfil(interaction.member, perfil, interaction.client.donoId)],
     components: botoesPerfil(alvoId, interaction.user.id),
     flags: MessageFlags.Ephemeral,
   });

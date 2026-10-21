@@ -54,7 +54,7 @@ export default {
       const perfil = obterPerfil(guild.id, alvo.id);
 
       return interaction.reply({
-        embeds: [montarPerfil(alvo, perfil)],
+        embeds: [montarPerfil(alvo, perfil, interaction.client.donoId)],
         components: botoesPerfil(alvo.id, userId),
         allowedMentions: { parse: [] },
       });
@@ -74,7 +74,9 @@ export default {
     }
 
     if (sub === 'emblemas') {
-      const lista = calcularEmblemas(interaction.member, contagens(guild.id, userId));
+      const lista = calcularEmblemas(interaction.member, contagens(guild.id, userId), {
+        donoId: interaction.client.donoId,
+      });
       const conquistados = lista.filter((emblema) => emblema.conquistado).length;
 
       const linhas = lista.map(

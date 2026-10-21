@@ -170,7 +170,9 @@ export default {
       .map((linha) => {
         const membro = porId.get(linha.user_id);
         const dados = contagens(guild.id, membro.id);
-        const emblemas = emblemasConquistados(membro, dados).length;
+        const emblemas = emblemasConquistados(membro, dados, {
+          donoId: interaction.client.donoId,
+        }).length;
 
         return {
           membro,
