@@ -61,11 +61,26 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/regras <texto> [cargo] [canal]` | Publica as regras **já com o botão de verificação** no mesmo embed; se houver FAQ, inclui o botão **Ver FAQ** |
 | `/evento criar/listar/cancelar` | Evento nativo do Discord (externo, voz ou palco) com lembrete opcional no canal |
 | `/cargos-painel adicionar/remover/listar/publicar` | Painel de cargos que o membro escolhe clicando (staff monta, membro usa) |
-| `/perfil ver/editar/campos/remover` | Cartão personalizável: título, bio, pronomes, cor, imagem e quais campos aparecem |
+| `/perfil ver/editar/campos/emblemas/remover` | Cartão personalizável: título, bio, pronomes, cor, imagem, campos e emblemas automáticos |
+| `/top [categoria] [limite]` | Ranking de sugestões, sorteios ou geral, com emblemas de cada pessoa |
 
 `/evento criar` aceita `2h`, `30m`, `25/12 20:00`, `25/12/2027 20:00` ou só `20:00` (hoje; se já passou, amanhã). Com a opção `lembrete`, o bot avisa no canal X minutos antes — além do aviso nativo para quem marcar interesse.
 
-O `/perfil` mostra um cartão com título, bio, pronomes, cor e imagem. Em **Campos**, cada pessoa escolhe se aparecem entrada no servidor, cargos, pronomes, sugestões enviadas e sorteios participados. Os botões de edição só aparecem para o dono do cartão.
+O `/perfil` mostra um cartão com título, bio, pronomes, cor e imagem. Em **Campos**, cada pessoa escolhe se aparecem entrada no servidor, cargos, pronomes, emblemas, sugestões enviadas e sorteios participados. Os botões de edição só aparecem para o dono do cartão.
+
+### 🎖️ Emblemas
+
+Automáticos, aparecem no cartão e em `/perfil emblemas` (que mostra o progresso):
+
+| Emblema | Como ganhar |
+|---|---|
+| 🏛️ Fundador | Dono do servidor ou um dos primeiros membros |
+| 🕰️ Veterano | 1 ano de servidor |
+| 💡 Sugestor | 10 sugestões enviadas |
+| 🌟 Ideia aprovada | 3 sugestões aprovadas |
+| 🎟️ Participante | 5 sorteios participados |
+
+`/top` soma sugestões e sorteios no ranking **geral** (1 ponto cada) e mostra quantos emblemas cada pessoa tem. Quem saiu do servidor não aparece.
 
 ### 🎲 Diversão
 | Comando | O que faz |
@@ -169,7 +184,7 @@ bot-discord/
 │  ├─ commands/
 │  │  ├─ util/                 ping, help, serverinfo, userinfo, avatar, botinfo, faq
 │  │  ├─ mod/                  ban, unban, kick, timeout, warn, warns, delwarn, slowmode, lock, unlock, limpar
-│  │  ├─ social/               sorteio, enquete, lembrete, evento, regras, perfil
+│  │  ├─ social/               sorteio, enquete, lembrete, evento, regras, perfil, top
 │  │  ├─ fun/                  dado, moeda, ship, bola8, escolha
 │  │  └─ config/               config
 │  ├─ events/                  ready, interactionCreate, membros, mensagens

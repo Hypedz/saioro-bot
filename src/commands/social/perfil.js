@@ -7,11 +7,14 @@ import {
 } from 'discord.js';
 import {
   botoesPerfil,
+  contagens,
   modalPerfil,
   montarPerfil,
   obterPerfil,
   selecaoCampos,
 } from '../../lib/perfis.js';
+import { calcularEmblemas } from '../../lib/emblemas.js';
+import { CORES, embed } from '../../lib/embeds.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -26,6 +29,9 @@ export default {
     .addSubcommand((sub) => sub.setName('editar').setDescription('Abre o formulário de edição'))
     .addSubcommand((sub) =>
       sub.setName('campos').setDescription('Escolhe o que aparece no cartão'),
+    )
+    .addSubcommand((sub) =>
+      sub.setName('emblemas').setDescription('Lista os emblemas automáticos e seu progresso'),
     )
     .addSubcommand((sub) =>
       sub.setName('remover').setDescription('Volta o cartão ao padrão (apaga a personalização)'),
@@ -63,6 +69,27 @@ export default {
         content:
           '🎛️ Marque o que deve aparecer no seu cartão. Desmarcar tudo deixa apenas título, bio e imagem.',
         components: [selecaoCampos(obterPerfil(guild.id, userId), userId)],
+        flags: MessageFlags.Ephemeral,
+      });
+    }
+
+    if (sub === 'emblemas') {
+      const lista = calcularEmblemas(interaction.member, contagens(guild.id, userId));
+      const conquistados = lista.filter((emblema) => emblema.conquistado).length;
+
+      const linhas = lista.map(
+        (emblema) =>
+          `${emblema.conquistado ? '✅' : '⬜'} ${emblema.emoji} **${emblema.nome}** — ${emblema.descricao}\n> \`${emblema.progresso}\``,
+      );
+
+      return interaction.reply({
+        embeds: [
+          embed(
+            `🎖️ Emblemas (${conquistados}/${lista.length})`,
+            linhas.join('\n\n'),
+            CORES.principal,
+          ),
+        ],
         flags: MessageFlags.Ephemeral,
       });
     }

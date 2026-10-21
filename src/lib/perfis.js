@@ -11,6 +11,7 @@ import {
 } from 'discord.js';
 import { db } from '../db.js';
 import { CORES, parseCor } from './embeds.js';
+import { emblemasConquistados } from './emblemas.js';
 
 /** Campos que a pessoa pode esconder do cartão. */
 export const CAMPOS = [
@@ -31,6 +32,12 @@ export const CAMPOS = [
     coluna: 'mostrar_pronomes',
     label: 'Pronomes',
     descricao: 'Só aparece se você preencher',
+  },
+  {
+    valor: 'emblemas',
+    coluna: 'mostrar_emblemas',
+    label: 'Emblemas',
+    descricao: 'Conquistas automáticas, como Veterano e Sugestor',
   },
   {
     valor: 'sugestoes',
@@ -58,6 +65,7 @@ function padrao(guildId, userId) {
     mostrar_entrada: 1,
     mostrar_cargos: 1,
     mostrar_pronomes: 1,
+    mostrar_emblemas: 1,
     mostrar_sugestoes: 1,
     mostrar_sorteios: 1,
     atualizado_em: null,
@@ -93,14 +101,15 @@ export function salvarCampos(guildId, userId, valores) {
   db.prepare(`
     INSERT INTO perfis (
       guild_id, user_id,
-      mostrar_entrada, mostrar_cargos, mostrar_pronomes, mostrar_sugestoes, mostrar_sorteios,
-      atualizado_em
+      mostrar_entrada, mostrar_cargos, mostrar_pronomes, mostrar_emblemas,
+      mostrar_sugestoes, mostrar_sorteios, atualizado_em
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(guild_id, user_id) DO UPDATE SET
       mostrar_entrada   = excluded.mostrar_entrada,
       mostrar_cargos    = excluded.mostrar_cargos,
       mostrar_pronomes  = excluded.mostrar_pronomes,
+      mostrar_emblemas  = excluded.mostrar_emblemas,
       mostrar_sugestoes = excluded.mostrar_sugestoes,
       mostrar_sorteios  = excluded.mostrar_sorteios,
       atualizado_em     = excluded.atualizado_em
@@ -119,6 +128,16 @@ export function contagens(guildId, userId) {
       .get(guildId, userId)?.total ?? 0,
   );
 
+  const aprovadas = Number(
+    db
+      .prepare(`
+        SELECT COUNT(*) AS total
+          FROM sugestoes
+         WHERE guild_id = ? AND autor_id = ? AND status = 'aprovada'
+      `)
+      .get(guildId, userId)?.total ?? 0,
+  );
+
   const sorteios = Number(
     db
       .prepare(`
@@ -130,7 +149,7 @@ export function contagens(guildId, userId) {
       .get(guildId, userId)?.total ?? 0,
   );
 
-  return { sugestoes, sorteios };
+  return { sugestoes, aprovadas, sorteios };
 }
 
 /** Cartão público do membro, já com os campos que ele escolheu mostrar. */
@@ -175,15 +194,26 @@ export function montarPerfil(membro, perfil) {
     campos.push({ name: 'Cargos', value: mostrados.join(' ') || 'Nenhum', inline: true });
   }
 
-  if (perfil.mostrar_sugestoes || perfil.mostrar_sorteios) {
-    const { sugestoes, sorteios } = contagens(membro.guild.id, membro.id);
+  const dados = contagens(membro.guild.id, membro.id);
 
-    if (perfil.mostrar_sugestoes) {
-      campos.push({ name: 'Sugestões enviadas', value: String(sugestoes), inline: true });
-    }
-    if (perfil.mostrar_sorteios) {
-      campos.push({ name: 'Sorteios participados', value: String(sorteios), inline: true });
-    }
+  if (perfil.mostrar_emblemas) {
+    const conquistados = emblemasConquistados(membro, dados);
+
+    campos.push({
+      name: 'Emblemas',
+      value: conquistados.length
+        ? conquistados.map((emblema) => `${emblema.emoji} ${emblema.nome}`).join(' · ')
+        : 'Nenhum ainda — veja `/perfil emblemas`',
+      inline: false,
+    });
+  }
+
+  if (perfil.mostrar_sugestoes) {
+    campos.push({ name: 'Sugestões enviadas', value: String(dados.sugestoes), inline: true });
+  }
+
+  if (perfil.mostrar_sorteios) {
+    campos.push({ name: 'Sorteios participados', value: String(dados.sorteios), inline: true });
   }
 
   if (campos.length) painel.addFields(campos);

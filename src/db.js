@@ -155,11 +155,15 @@ CREATE TABLE IF NOT EXISTS perfis (
   mostrar_entrada   INTEGER NOT NULL DEFAULT 1,
   mostrar_cargos    INTEGER NOT NULL DEFAULT 1,
   mostrar_pronomes  INTEGER NOT NULL DEFAULT 1,
+  mostrar_emblemas  INTEGER NOT NULL DEFAULT 1,
   mostrar_sugestoes INTEGER NOT NULL DEFAULT 1,
   mostrar_sorteios  INTEGER NOT NULL DEFAULT 1,
   atualizado_em     INTEGER,
   PRIMARY KEY (guild_id, user_id)
 );
+
+CREATE INDEX IF NOT EXISTS idx_sugestoes_autor ON sugestoes (guild_id, autor_id);
+CREATE INDEX IF NOT EXISTS idx_sorteio_part_user ON sorteio_participantes (user_id);
 `);
 
 /** Adiciona colunas novas em bancos que ja existiam (migracao). */
@@ -179,3 +183,4 @@ migrar('configuracoes', 'verificar_cargo', 'TEXT');
 migrar('configuracoes', 'boas_vindas_texto', 'TEXT');
 migrar('configuracoes', 'boas_vindas_dm', 'TEXT');
 migrar('configuracoes', 'boas_vindas_imagem', 'TEXT');
+migrar('perfis', 'mostrar_emblemas', 'INTEGER NOT NULL DEFAULT 1');
