@@ -19,6 +19,13 @@ import {
 import { responderQuiz } from './quiz.js';
 import { listarCargosPainel } from './cargosPainel.js';
 import { removerEvento } from './eventos.js';
+import {
+  modalPerfil,
+  obterPerfil,
+  removerPerfil,
+  salvarCampos,
+  selecaoCampos,
+} from './perfis.js';
 
 const erro = (interaction, texto, extra = {}) =>
   interaction.reply({ content: texto, flags: MessageFlags.Ephemeral, ...extra });
@@ -281,6 +288,49 @@ async function tratarQuiz(interaction, messageId, indice) {
   });
 }
 
+async function tratarPerfil(interaction, acao, alvoId) {
+  if (interaction.user.id !== alvoId) {
+    return erro(interaction, 'Só a própria pessoa pode alterar este perfil.');
+  }
+
+  if (acao === 'editar' && interaction.isButton()) {
+    return interaction.showModal(modalPerfil(obterPerfil(interaction.guildId, alvoId), alvoId));
+  }
+
+  if (acao === 'campos' && interaction.isButton()) {
+    return interaction.reply({
+      content:
+        '🎛️ Marque o que deve aparecer no seu cartão. Desmarcar tudo deixa apenas título, bio e imagem.',
+      components: [selecaoCampos(obterPerfil(interaction.guildId, alvoId), alvoId)],
+      flags: MessageFlags.Ephemeral,
+    });
+  }
+
+  if (acao === 'campos' && interaction.isStringSelectMenu()) {
+    salvarCampos(interaction.guildId, alvoId, interaction.values);
+
+    return interaction.update({
+      content: '✅ Campos atualizados. Use `/perfil ver` para conferir.',
+      components: [selecaoCampos(obterPerfil(interaction.guildId, alvoId), alvoId)],
+    });
+  }
+
+  if (acao === 'reset' && interaction.isButton()) {
+    removerPerfil(interaction.guildId, alvoId);
+    return interaction.update({
+      content: '♻️ Perfil restaurado ao padrão.',
+      embeds: [],
+      components: [],
+    });
+  }
+
+  if (acao === 'cancelar' && interaction.isButton()) {
+    return interaction.update({ content: 'Nada foi alterado.', components: [] });
+  }
+
+  return undefined;
+}
+
 /**
  * Roteia botoes e menus. customId segue "grupo:acao:id" (as vezes com um 4o campo).
  */
@@ -328,6 +378,10 @@ export async function tratarComponente(interaction) {
 
   if (grupo === 'faq' && interaction.isStringSelectMenu()) {
     return mostrarRespostaFaq(interaction);
+  }
+
+  if (grupo === 'perfil') {
+    return tratarPerfil(interaction, acao, extra);
   }
 
   if (grupo === 'cargo' && interaction.isButton()) {

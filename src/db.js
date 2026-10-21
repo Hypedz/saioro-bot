@@ -143,6 +143,23 @@ CREATE TABLE IF NOT EXISTS faq (
   criado_em  INTEGER NOT NULL,
   UNIQUE (guild_id, pergunta)
 );
+
+CREATE TABLE IF NOT EXISTS perfis (
+  guild_id          TEXT NOT NULL,
+  user_id           TEXT NOT NULL,
+  titulo            TEXT,
+  bio               TEXT,
+  pronomes          TEXT,
+  cor               TEXT,
+  imagem            TEXT,
+  mostrar_entrada   INTEGER NOT NULL DEFAULT 1,
+  mostrar_cargos    INTEGER NOT NULL DEFAULT 1,
+  mostrar_pronomes  INTEGER NOT NULL DEFAULT 1,
+  mostrar_sugestoes INTEGER NOT NULL DEFAULT 1,
+  mostrar_sorteios  INTEGER NOT NULL DEFAULT 1,
+  atualizado_em     INTEGER,
+  PRIMARY KEY (guild_id, user_id)
+);
 `);
 
 /** Adiciona colunas novas em bancos que ja existiam (migracao). */

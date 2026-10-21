@@ -61,8 +61,11 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/regras <texto> [cargo] [canal]` | Publica as regras **já com o botão de verificação** no mesmo embed; se houver FAQ, inclui o botão **Ver FAQ** |
 | `/evento criar/listar/cancelar` | Evento nativo do Discord (externo, voz ou palco) com lembrete opcional no canal |
 | `/cargos-painel adicionar/remover/listar/publicar` | Painel de cargos que o membro escolhe clicando (staff monta, membro usa) |
+| `/perfil ver/editar/campos/remover` | Cartão personalizável: título, bio, pronomes, cor, imagem e quais campos aparecem |
 
 `/evento criar` aceita `2h`, `30m`, `25/12 20:00`, `25/12/2027 20:00` ou só `20:00` (hoje; se já passou, amanhã). Com a opção `lembrete`, o bot avisa no canal X minutos antes — além do aviso nativo para quem marcar interesse.
+
+O `/perfil` mostra um cartão com título, bio, pronomes, cor e imagem. Em **Campos**, cada pessoa escolhe se aparecem entrada no servidor, cargos, pronomes, sugestões enviadas e sorteios participados. Os botões de edição só aparecem para o dono do cartão.
 
 ### 🎲 Diversão
 | Comando | O que faz |
@@ -166,7 +169,7 @@ bot-discord/
 │  ├─ commands/
 │  │  ├─ util/                 ping, help, serverinfo, userinfo, avatar, botinfo, faq
 │  │  ├─ mod/                  ban, unban, kick, timeout, warn, warns, delwarn, slowmode, lock, unlock, limpar
-│  │  ├─ social/               sorteio, enquete, lembrete
+│  │  ├─ social/               sorteio, enquete, lembrete, evento, regras, perfil
 │  │  ├─ fun/                  dado, moeda, ship, bola8, escolha
 │  │  └─ config/               config
 │  ├─ events/                  ready, interactionCreate, membros, mensagens
@@ -220,6 +223,7 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 - `/snippet` guarda até 1900 caracteres por trecho.
 - `/faq` mostra no máximo 25 perguntas por menu (limite do Discord); o restante continua salvo e aparece em `/faq listar`.
 - Lembrete de `/evento` não é enviado atrasado: se o bot estava offline e o evento já começou, o aviso é descartado.
+- A imagem de fundo do `/perfil` precisa ser uma URL `https://` permanente; links de anexo do Discord expiram.
 - Log de mensagem apagada só mostra o texto com o **MESSAGE CONTENT INTENT** ligado.
 - `/tempban` desbane em até 1 minuto depois do prazo. Se o bot estiver offline na hora, o desbanimento acontece na próxima subida.
 - `/evento` interpreta datas no fuso do PC onde o bot roda (horário local).

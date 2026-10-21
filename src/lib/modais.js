@@ -1,11 +1,16 @@
 import { EmbedBuilder, MessageFlags } from 'discord.js';
 import { CORES, parseCor } from './embeds.js';
+import { tratarModalPerfil } from './perfis.js';
 
 const erro = (interaction, texto) =>
   interaction.reply({ content: texto, flags: MessageFlags.Ephemeral });
 
-/** Trata os formularios (modais) de /anuncio e /embed. */
+/** Trata os formularios (modais) de /anuncio, /embed e /perfil. */
 export async function tratarModal(interaction) {
+  if (interaction.customId.startsWith('perfil:salvar:')) {
+    return tratarModalPerfil(interaction);
+  }
+
   const [tipo, canalId, mencao] = interaction.customId.split(':');
 
   const canal = await interaction.guild?.channels.fetch(canalId).catch(() => null);
