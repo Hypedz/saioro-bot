@@ -1,4 +1,4 @@
-import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { ChannelType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { CORES, embed } from '../../lib/embeds.js';
 import { configuracoes } from '../../lib/settings.js';
 import {
@@ -38,7 +38,8 @@ export default {
         .addChannelOption((o) =>
           o
             .setName('canal')
-            .setDescription('Canal de alerta (padrão: o canal de logs)'),
+            .setDescription('Canal de alerta (padrão: o canal de logs)')
+            .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement),
         )
         .addIntegerOption((o) =>
           o
