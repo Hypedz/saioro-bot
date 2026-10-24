@@ -15,7 +15,8 @@ export const REGRAS = [
     nome: 'Anti-spam',
     triggerType: AutoModerationRuleTriggerType.Spam,
     triggerMetadata: {},
-    timeout: true,
+    // O Discord nao permite TIMEOUT em regras de SPAM (so KEYWORD e MENTION_SPAM).
+    timeout: false,
   },
   {
     tipo: 'mencoes',
@@ -65,14 +66,16 @@ function cargosIsentos(guild) {
 
 /**
  * Cria as regras que ainda não existem. Idempotente: rodar de novo não duplica.
- * @returns {{ criadas: string[], existentes: string[], falhas: string[], isentos: number }}
+ * @returns {{ criadas: string[], existentes: string[], ignoradas: string[], falhas: string[], isentos: number }}
  */
 export async function ativarAutomod(guild, { canalId = null, timeoutSegundos = 600 } = {}) {
   const atuais = await guild.autoModerationRules.fetch();
+  const listaAtuais = [...atuais.values()];
   const banco = new Map(doBanco(guild.id).map((linha) => [linha.tipo, linha.rule_id]));
 
   const criadas = [];
   const existentes = [];
+  const ignoradas = [];
   const falhas = [];
   const isentos = cargosIsentos(guild);
 
@@ -82,6 +85,15 @@ export async function ativarAutomod(guild, { canalId = null, timeoutSegundos = 6
 
     if (existente) {
       existentes.push(modelo.nome);
+      continue;
+    }
+
+    // Todos os tipos usados aqui aceitam no maximo 1 regra por servidor.
+    // Se ja existe uma regra manual, nao adianta tentar criar outra.
+    const conflito = listaAtuais.find((regra) => regra.triggerType === modelo.triggerType);
+
+    if (conflito) {
+      ignoradas.push(`${modelo.nome}: já existe a regra manual "${conflito.name}"`);
       continue;
     }
 
@@ -123,7 +135,7 @@ export async function ativarAutomod(guild, { canalId = null, timeoutSegundos = 6
     }
   }
 
-  return { criadas, existentes, falhas, isentos: isentos.length };
+  return { criadas, existentes, ignoradas, falhas, isentos: isentos.length };
 }
 
 /** Regras criadas pelo bot (não toca nas manuais do painel). */

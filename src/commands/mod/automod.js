@@ -130,6 +130,13 @@ export default {
         { name: 'Cargos isentos', value: String(resultado.isentos), inline: true },
       );
 
+      if (resultado.ignoradas.length) {
+        painel.addFields({
+          name: 'Ignoradas',
+          value: resultado.ignoradas.join('\n').slice(0, 1000),
+        });
+      }
+
       if (resultado.falhas.length) {
         painel.addFields({
           name: '⚠️ Falhas',
@@ -138,7 +145,7 @@ export default {
       }
 
       painel.setFooter({
-        text: 'A badge de AutoMod é concedida pelo Discord após a primeira regra; pode levar alguns minutos.',
+        text: 'Badge AutoMod: são necessárias 100 regras em todos os servidores (máx. 10 por servidor).',
       });
 
       return interaction.reply({ embeds: [painel], flags: MessageFlags.Ephemeral });
@@ -172,10 +179,12 @@ export default {
         name: 'Badge AutoMod',
         value: badge
           ? '✅ concedida'
-          : '⏳ ainda não — pode levar alguns minutos após a primeira regra',
+          : '⏳ ainda não — são necessárias 100 regras em todos os servidores',
       });
 
-      painel.setFooter({ text: 'Só as regras criadas pelo bot são listadas e removidas.' });
+      painel.setFooter({
+        text: 'Só as regras do bot são listadas e removidas. O total da badge soma todos os servidores.',
+      });
 
       return interaction.reply({ embeds: [painel], flags: MessageFlags.Ephemeral });
     }

@@ -51,7 +51,7 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 
 `/automod ativar` cria três regras **nativas** do Discord (sem ler o conteúdo das mensagens). Cargos com **Gerenciar Servidor**, **Moderar Membros** ou **Administrador** ficam isentos para a staff não ser bloqueada. O castigo padrão é de 10 minutos (`0` desliga) e exige **Moderar Membros**; sem essa permissão, as regras só bloqueiam e alertam. Só as regras criadas pelo bot são listadas e removidas — as feitas à mão no painel ficam intactas.
 
-A badge **AutoMod** é uma flag da aplicação (`APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE`), concedida automaticamente pelo Discord depois que o bot cria a primeira regra. Ela aparece no perfil da aplicação, não como cargo, e pode levar alguns minutos. `/automod status` mostra se já foi concedida.
+A badge **AutoMod** (`APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE`) **não** é concedida com uma regra: o Discord exige **100 regras de AutoMod somadas em todos os servidores**. Cada servidor aceita no máximo **10** regras (6 de palavras, 1 anti-spam, 1 preset, 1 menções e 1 perfil), então são necessários pelo menos **10 servidores** com o bot. Depois de atingir 100, a badge pode levar até **24 horas** para aparecer no perfil da aplicação — não é cargo. `/automod status` mostra se a flag já foi concedida, mas só conta as regras deste servidor.
 
 A badge **Comandos** (`APPLICATION_COMMAND_BADGE`) exige um comando **global** — comandos de servidor não contam. Por isso o `/ping` é registrado globalmente e os outros 56 ficam no servidor, para atualizar na hora. O `/ping` não é duplicado: ele existe só no escopo global. Depois de um deploy, ele pode levar até 1 hora para reaparecer; os demais continuam imediatos.
 
@@ -254,7 +254,8 @@ Por padrão o comando é registrado no servidor (efeito imediato). Para registr�
 - `/tempban` desbane em até 1 minuto depois do prazo. Se o bot estiver offline na hora, o desbanimento acontece na próxima subida.
 - `/evento` interpreta datas no fuso do PC onde o bot roda (horário local).
 - `/automod` usa só os gatilhos nativos do Discord (spam, menções, presets e palavras); não há filtro de links ou imagens. As regras valem para todos, menos os cargos de staff isentos.
-- A badge de AutoMod é concedida pelo lado do Discord e pode levar alguns minutos para aparecer no perfil da aplicação.
+- A badge de AutoMod exige 100 regras em todos os servidores (no máximo 10 por servidor) e pode levar até 24 horas para aparecer. Não há atalho com uma regra só.
+- O `/automod ativar` cria até 3 regras por servidor; se já existir uma regra manual do mesmo tipo, ele ignora e informa, em vez de falhar.
 - O `/ping` global pode ficar até 1 hora sem aparecer depois de um deploy global; isso é cache do cliente, não erro de registro.
 
 ---
