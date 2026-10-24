@@ -47,6 +47,11 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/nick <membro> [apelido]` | Troca/remove o apelido |
 | `/punicoes [membro] [limite]` | Histórico de punições do servidor |
 | `/sticky definir/remover/ver` | Mensagem que volta ao fim do canal sempre que alguém fala |
+| `/automod ativar/status/desativar` | Regras nativas de AutoMod: anti-spam, menções em massa e ofensas graves, com alerta e castigo |
+
+`/automod ativar` cria três regras **nativas** do Discord (sem ler o conteúdo das mensagens). Cargos com **Gerenciar Servidor**, **Moderar Membros** ou **Administrador** ficam isentos para a staff não ser bloqueada. O castigo padrão é de 10 minutos (`0` desliga) e exige **Moderar Membros**; sem essa permissão, as regras só bloqueiam e alertam. Só as regras criadas pelo bot são listadas e removidas — as feitas à mão no painel ficam intactas.
+
+A badge **AutoMod** é uma flag da aplicação (`APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE`), concedida automaticamente pelo Discord depois que o bot cria a primeira regra. Ela aparece no perfil da aplicação, não como cargo, e pode levar alguns minutos. `/automod status` mostra se já foi concedida.
 
 ### 🎉 Social
 | Comando | O que faz |
@@ -163,6 +168,7 @@ Permissões que o bot precisa (já vêm no link de convite):
 - Gerenciar canais (lock, slowmode)
 - Gerenciar cargos (cargo automático)
 - Moderar membros, Banir, Expulsar
+- Gerenciar servidor (regras de AutoMod)
 - Ver registro de auditoria (para saber *quem* apagou uma mensagem)
 
 ---
@@ -183,7 +189,7 @@ bot-discord/
 │  ├─ deploy-commands.js       registro dos slash commands
 │  ├─ commands/
 │  │  ├─ util/                 ping, help, serverinfo, userinfo, avatar, botinfo, faq
-│  │  ├─ mod/                  ban, unban, kick, timeout, warn, warns, delwarn, slowmode, lock, unlock, limpar
+│  │  ├─ mod/                  ban, unban, kick, timeout, warn, warns, delwarn, slowmode, lock, unlock, limpar, automod
 │  │  ├─ social/               sorteio, enquete, lembrete, evento, regras, perfil, top
 │  │  ├─ fun/                  dado, moeda, ship, bola8, escolha
 │  │  └─ config/               config
@@ -225,6 +231,7 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 | `Used disallowed intents` | Ligue o **SERVER MEMBERS INTENT** no portal. |
 | `/lock` ou `/slowmode` falham | O bot precisa de **Gerenciar Canais** no canal. |
 | `/ban` falha | Cargo do bot precisa estar **acima** do cargo do alvo. |
+| `/automod` falha | Precisa de **Gerenciar Servidor**; o castigo automático também exige **Moderar Membros**. |
 | Log sem conteúdo | Ligue o **MESSAGE CONTENT INTENT** (opcional). |
 | `Não consegui apagar` | Mensagens com mais de 14 dias o Discord não deixa apagar em massa. |
 | O bot reiniciou sozinho | O supervisor fez o trabalho dele. Veja o motivo em `bot.err.log` e `supervisor.log`. |
@@ -242,6 +249,8 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 - Log de mensagem apagada só mostra o texto com o **MESSAGE CONTENT INTENT** ligado.
 - `/tempban` desbane em até 1 minuto depois do prazo. Se o bot estiver offline na hora, o desbanimento acontece na próxima subida.
 - `/evento` interpreta datas no fuso do PC onde o bot roda (horário local).
+- `/automod` usa só os gatilhos nativos do Discord (spam, menções, presets e palavras); não há filtro de links ou imagens. As regras valem para todos, menos os cargos de staff isentos.
+- A badge de AutoMod é concedida pelo lado do Discord e pode levar alguns minutos para aparecer no perfil da aplicação.
 
 ---
 

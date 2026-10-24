@@ -164,6 +164,13 @@ CREATE TABLE IF NOT EXISTS perfis (
 
 CREATE INDEX IF NOT EXISTS idx_sugestoes_autor ON sugestoes (guild_id, autor_id);
 CREATE INDEX IF NOT EXISTS idx_sorteio_part_user ON sorteio_participantes (user_id);
+
+CREATE TABLE IF NOT EXISTS automod_regras (
+  guild_id TEXT NOT NULL,
+  rule_id  TEXT NOT NULL,
+  tipo     TEXT NOT NULL,
+  PRIMARY KEY (guild_id, rule_id)
+);
 `);
 
 /** Adiciona colunas novas em bancos que ja existiam (migracao). */
