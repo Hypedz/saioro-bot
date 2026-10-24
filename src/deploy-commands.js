@@ -13,36 +13,43 @@ if (!config.token || !config.clientId) {
 
 const base = path.join(aqui, 'commands');
 const categorias = (await readdir(base, { withFileTypes: true })).filter((item) => item.isDirectory());
-const comandos = [];
+const modulos = [];
 
 for (const categoria of categorias) {
   const pasta = path.join(base, categoria.name);
   for (const arquivo of (await readdir(pasta)).filter((f) => f.endsWith('.js'))) {
     const modulo = await import(pathToFileURL(path.join(pasta, arquivo)).href);
     const comando = modulo.default ?? modulo;
-    if (comando?.data) comandos.push(comando.data.toJSON());
+    if (comando?.data) modulos.push(comando);
   }
 }
 
+const globais = modulos.filter((comando) => comando.global === true).map((comando) => comando.data.toJSON());
+const doServidor = modulos.filter((comando) => comando.global !== true).map((comando) => comando.data.toJSON());
+
 const rest = new REST().setToken(config.token);
-const rota = config.guildId
+const rotaGlobal = Routes.applicationCommands(config.clientId);
+const rotaGuild = config.guildId
   ? Routes.applicationGuildCommands(config.clientId, config.guildId)
-  : Routes.applicationCommands(config.clientId);
+  : null;
 
 try {
-  console.log(`[INFO] Registrando ${comandos.length} comando(s)...`);
-  const dados = await rest.put(rota, { body: comandos });
-  console.log(`[OK] ${dados.length} comando(s) registrados.`);
   console.log(
-    config.guildId
-      ? '[OK] Escopo: servidor (aparecem na hora).'
-      : '[OK] Escopo: global (pode levar ate 1 hora para aparecer).',
+    `[INFO] Registrando ${modulos.length} comando(s): ${globais.length} global(is) e ${doServidor.length} no servidor...`,
   );
 
-  // Com GUILD_ID, os comandos globais so duplicariam a lista no cliente.
-  if (config.guildId) {
-    const globais = await rest.put(Routes.applicationCommands(config.clientId), { body: [] });
-    console.log(`[OK] Comandos globais antigos removidos (${globais.length}).`);
+  if (rotaGuild) {
+    // O comando global é o que concede a badge APPLICATION_COMMAND_BADGE.
+    // Os demais ficam no servidor para atualizar na hora.
+    const globaisRegistrados = await rest.put(rotaGlobal, { body: globais });
+    console.log(`[OK] ${globaisRegistrados.length} comando(s) global(is) registrados (badge de comandos).`);
+
+    const servidorRegistrados = await rest.put(rotaGuild, { body: doServidor });
+    console.log(`[OK] ${servidorRegistrados.length} comando(s) registrados no servidor (efeito imediato).`);
+  } else {
+    const todos = [...globais, ...doServidor];
+    const registrados = await rest.put(rotaGlobal, { body: todos });
+    console.log(`[OK] ${registrados.length} comando(s) globais registrados (podem levar ate 1 hora).`);
   }
 } catch (erro) {
   console.error('[ERRO] Falha ao registrar:', erro);

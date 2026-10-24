@@ -3,6 +3,10 @@ import { CORES, embed } from '../../lib/embeds.js';
 import { formatarDuracao } from '../../lib/tempo.js';
 
 export default {
+  // Global de proposito: e o comando que concede a badge APPLICATION_COMMAND_BADGE.
+  // Fica fora do escopo do servidor para nao aparecer duplicado.
+  global: true,
+
   data: new SlashCommandBuilder()
     .setName('ping')
     .setDescription('Mostra a latência e o tempo online do bot.'),

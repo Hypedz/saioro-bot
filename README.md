@@ -53,6 +53,8 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 
 A badge **AutoMod** é uma flag da aplicação (`APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE`), concedida automaticamente pelo Discord depois que o bot cria a primeira regra. Ela aparece no perfil da aplicação, não como cargo, e pode levar alguns minutos. `/automod status` mostra se já foi concedida.
 
+A badge **Comandos** (`APPLICATION_COMMAND_BADGE`) exige um comando **global** — comandos de servidor não contam. Por isso o `/ping` é registrado globalmente e os outros 56 ficam no servidor, para atualizar na hora. O `/ping` não é duplicado: ele existe só no escopo global. Depois de um deploy, ele pode levar até 1 hora para reaparecer; os demais continuam imediatos.
+
 ### 🎉 Social
 | Comando | O que faz |
 |---|---|
@@ -148,7 +150,7 @@ Depois: **`ligar.bat`** liga (segundo plano) e **`parar.bat`** desliga. O bot ta
 |---|---|
 | `DISCORD_TOKEN` | Token do bot (obrigatório) |
 | `CLIENT_ID` | Application ID (obrigatório) |
-| `GUILD_ID` | ID do servidor — comandos aparecem na hora (recomendado) |
+| `GUILD_ID` | ID do servidor — os comandos ficam no servidor e aparecem na hora (o `/ping` é sempre global) |
 | `WELCOME_CHANNEL_ID` | Boas-vindas sem usar `/config` (opcional) |
 | `GOODBYE_CHANNEL_ID` | Despedida sem usar `/config` (opcional) |
 
@@ -220,6 +222,8 @@ export default {
 
 A categoria vem da pasta — o `/help` já organiza sozinho.
 
+Por padrão o comando é registrado no servidor (efeito imediato). Para registrá-lo globalmente, adicione `global: true,` antes de `data` — é assim que o `/ping` mantém a badge de comandos. Não use o mesmo nome nos dois escopos: o deploy remove do servidor o que for global.
+
 ---
 
 ## Problemas comuns
@@ -227,7 +231,7 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 | Sintoma | Causa / solução |
 |---|---|
 | `Cannot find module 'node:sqlite'` | Node antigo. Precisa de **Node 22.5+** (aqui é 24). |
-| Comando não aparece | Rode `npm run deploy` e reinicie. Confira o `GUILD_ID`. |
+| Comando não aparece | Rode `npm run deploy` e reinicie. Confira o `GUILD_ID`. O `/ping` é global e pode levar até 1 hora. |
 | `Used disallowed intents` | Ligue o **SERVER MEMBERS INTENT** no portal. |
 | `/lock` ou `/slowmode` falham | O bot precisa de **Gerenciar Canais** no canal. |
 | `/ban` falha | Cargo do bot precisa estar **acima** do cargo do alvo. |
@@ -251,6 +255,7 @@ A categoria vem da pasta — o `/help` já organiza sozinho.
 - `/evento` interpreta datas no fuso do PC onde o bot roda (horário local).
 - `/automod` usa só os gatilhos nativos do Discord (spam, menções, presets e palavras); não há filtro de links ou imagens. As regras valem para todos, menos os cargos de staff isentos.
 - A badge de AutoMod é concedida pelo lado do Discord e pode levar alguns minutos para aparecer no perfil da aplicação.
+- O `/ping` global pode ficar até 1 hora sem aparecer depois de um deploy global; isso é cache do cliente, não erro de registro.
 
 ---
 
