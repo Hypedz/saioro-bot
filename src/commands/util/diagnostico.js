@@ -71,6 +71,8 @@ export default {
       ['Despedida', cfg.despedida ?? config.goodbyeChannelId],
       ['Logs', cfg.logs],
       ['Sugestões', cfg.sugestoes],
+      ['Denúncias', cfg.denuncias],
+      ['Candidaturas', cfg.candidaturas],
     ];
 
     const checagemCanais = [];
@@ -111,10 +113,14 @@ export default {
 
     // 3) Intents
     const temMembros = client.options.intents.has(GatewayIntentBits.GuildMembers);
+    const temMensagens = client.options.intents.has(GatewayIntentBits.GuildMessages);
     const temConteudo = client.options.intents.has(GatewayIntentBits.MessageContent);
 
     const intents = [
       temMembros ? '✅ SERVER MEMBERS' : '❌ SERVER MEMBERS (boas-vindas e logs não funcionam)',
+      temMensagens
+        ? '✅ GUILD MESSAGES'
+        : '❌ GUILD MESSAGES (sticky e contador de mensagens não funcionam)',
       temConteudo
         ? '✅ MESSAGE CONTENT'
         : '⚠️ MESSAGE CONTENT desligado (log de mensagem apagada fica sem o texto)',
@@ -130,6 +136,8 @@ export default {
       item(cfg.despedida ?? config.goodbyeChannelId, 'Canal de despedida'),
       item(cfg.logs, 'Canal de logs'),
       item(cfg.sugestoes, 'Canal de sugestões'),
+      item(cfg.denuncias, 'Canal de denúncias'),
+      item(cfg.candidaturas && cfg.candidaturaCargo, 'Candidaturas (canal + cargo)'),
       item(cfg.cargoAuto, 'Cargo automático'),
       item(cfg.verificarCargo, 'Cargo de verificação'),
     ].join('\n');
@@ -142,6 +150,8 @@ export default {
       `Sugestões: **${contar('sugestoes')}**`,
       `Canais com sticky: **${contar('sticky')}**`,
       `Cargos no painel: **${contar('cargos_painel')}**`,
+      `Denúncias: **${contar('denuncias')}**`,
+      `Candidaturas: **${contar('candidaturas')}**`,
     ].join('\n');
 
     const painel = embed('🩺 Diagnóstico', null, CORES.principal).addFields(

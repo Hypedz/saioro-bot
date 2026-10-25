@@ -171,6 +171,52 @@ CREATE TABLE IF NOT EXISTS automod_regras (
   tipo     TEXT NOT NULL,
   PRIMARY KEY (guild_id, rule_id)
 );
+
+CREATE TABLE IF NOT EXISTS mensagens (
+  guild_id TEXT NOT NULL,
+  user_id  TEXT NOT NULL,
+  total    INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (guild_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS sorteio_vencedores (
+  message_id TEXT NOT NULL,
+  user_id    TEXT NOT NULL,
+  rodada     INTEGER NOT NULL,
+  PRIMARY KEY (message_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS denuncias (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  guild_id     TEXT NOT NULL,
+  autor_id     TEXT NOT NULL,
+  alvo_id      TEXT NOT NULL,
+  texto        TEXT NOT NULL,
+  provas       TEXT,
+  anonimo      INTEGER NOT NULL DEFAULT 0,
+  status       TEXT NOT NULL DEFAULT 'aberta',
+  channel_id   TEXT NOT NULL,
+  message_id   TEXT NOT NULL,
+  criado_em    INTEGER NOT NULL,
+  decidido_por TEXT,
+  decidido_em  INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS candidaturas (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  guild_id     TEXT NOT NULL,
+  user_id      TEXT NOT NULL,
+  cargo_id     TEXT,
+  respostas    TEXT NOT NULL,
+  status       TEXT NOT NULL DEFAULT 'pendente',
+  channel_id   TEXT NOT NULL,
+  message_id   TEXT NOT NULL,
+  criado_em    INTEGER NOT NULL,
+  decidido_por TEXT,
+  decidido_em  INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS idx_candidaturas_pendentes ON candidaturas (guild_id, user_id, status);
 `);
 
 /** Adiciona colunas novas em bancos que ja existiam (migracao). */
@@ -190,4 +236,13 @@ migrar('configuracoes', 'verificar_cargo', 'TEXT');
 migrar('configuracoes', 'boas_vindas_texto', 'TEXT');
 migrar('configuracoes', 'boas_vindas_dm', 'TEXT');
 migrar('configuracoes', 'boas_vindas_imagem', 'TEXT');
+migrar('configuracoes', 'denuncias', 'TEXT');
+migrar('configuracoes', 'candidaturas', 'TEXT');
+migrar('configuracoes', 'candidatura_cargo', 'TEXT');
 migrar('perfis', 'mostrar_emblemas', 'INTEGER NOT NULL DEFAULT 1');
+
+migrar('candidaturas', 'cargo_id', 'TEXT');
+
+migrar('sorteios', 'requisito_cargo', 'TEXT');
+migrar('sorteios', 'requisito_conta', 'INTEGER NOT NULL DEFAULT 0');
+migrar('sorteios', 'requisito_mensagens', 'INTEGER NOT NULL DEFAULT 0');

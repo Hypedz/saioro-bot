@@ -17,6 +17,9 @@ export function configuracoes(guildId) {
     boasVindasTexto: linha?.boas_vindas_texto ?? null,
     boasVindasDm: linha?.boas_vindas_dm ?? null,
     boasVindasImagem: linha?.boas_vindas_imagem ?? null,
+    denuncias: linha?.denuncias ?? null,
+    candidaturas: linha?.candidaturas ?? null,
+    candidaturaCargo: linha?.candidatura_cargo ?? null,
   };
 
   cache.set(guildId, cfg);
@@ -30,9 +33,10 @@ export function salvarConfiguracoes(guildId, mudancas) {
   db.prepare(`
     INSERT INTO configuracoes (
       guild_id, boas_vindas, despedida, logs, cargo_auto, sugestoes, verificar_cargo,
-      boas_vindas_texto, boas_vindas_dm, boas_vindas_imagem
+      boas_vindas_texto, boas_vindas_dm, boas_vindas_imagem,
+      denuncias, candidaturas, candidatura_cargo
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(guild_id) DO UPDATE SET
       boas_vindas         = excluded.boas_vindas,
       despedida           = excluded.despedida,
@@ -42,7 +46,10 @@ export function salvarConfiguracoes(guildId, mudancas) {
       verificar_cargo     = excluded.verificar_cargo,
       boas_vindas_texto   = excluded.boas_vindas_texto,
       boas_vindas_dm      = excluded.boas_vindas_dm,
-      boas_vindas_imagem  = excluded.boas_vindas_imagem
+      boas_vindas_imagem  = excluded.boas_vindas_imagem,
+      denuncias           = excluded.denuncias,
+      candidaturas        = excluded.candidaturas,
+      candidatura_cargo   = excluded.candidatura_cargo
   `).run(
     guildId,
     atual.boasVindas,
@@ -54,6 +61,9 @@ export function salvarConfiguracoes(guildId, mudancas) {
     atual.boasVindasTexto,
     atual.boasVindasDm,
     atual.boasVindasImagem,
+    atual.denuncias,
+    atual.candidaturas,
+    atual.candidaturaCargo,
   );
 
   cache.set(guildId, atual);

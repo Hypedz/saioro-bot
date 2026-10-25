@@ -7,7 +7,14 @@ import {
 import { montarAjuda } from './ajuda.js';
 import { CORES, embed } from './embeds.js';
 import { listarFaq, menuFaq, obterFaq, resumoFaq } from './faq.js';
-import { embedSorteio, encerrarSorteio, entrarSorteio, obterSorteio } from './sorteios.js';
+import {
+  embedSorteio,
+  encerrarSorteio,
+  entrarSorteio,
+  obterSorteio,
+  rerolarSorteio,
+  verificarRequisitos,
+} from './sorteios.js';
 import { votar } from './enquetes.js';
 import {
   botoesSugestao,
@@ -26,6 +33,22 @@ import {
   salvarCampos,
   selecaoCampos,
 } from './perfis.js';
+import {
+  STATUS_DENUNCIA,
+  atualizarStatusDenuncia,
+  botoesDenuncia,
+  embedDenuncia,
+  obterDenuncia,
+} from './denuncias.js';
+import {
+  atualizarStatusCandidatura,
+  botoesCandidatura,
+  embedCandidatura,
+  modalCandidatura,
+  obterCandidatura,
+  temCandidaturaPendente,
+} from './candidaturas.js';
+import { configuracoes } from './settings.js';
 
 const erro = (interaction, texto, extra = {}) =>
   interaction.reply({ content: texto, flags: MessageFlags.Ephemeral, ...extra });
@@ -35,6 +58,15 @@ async function tratarSorteio(interaction, acao, messageId) {
   if (!sorteio) return erro(interaction, 'Esse sorteio não existe mais.');
 
   if (acao === 'entrar') {
+    const faltas = interaction.member ? verificarRequisitos(sorteio, interaction.member) : [];
+
+    if (faltas.length) {
+      return erro(
+        interaction,
+        `Você ainda não cumpre os requisitos:\n• ${faltas.join('\n• ')}`,
+      );
+    }
+
     const resultado = entrarSorteio(messageId, interaction.user.id);
     if (!resultado.ok) return erro(interaction, resultado.motivo);
 
@@ -61,6 +93,36 @@ async function tratarSorteio(interaction, acao, messageId) {
 
     await interaction.deferUpdate().catch(() => {});
     await encerrarSorteio(interaction.client, messageId);
+    return undefined;
+  }
+
+  if (acao === 'rerolar') {
+    const podeRerolar =
+      interaction.user.id === sorteio.host_id || interaction.memberPermissions?.has('ManageGuild');
+
+    if (!podeRerolar) {
+      return erro(
+        interaction,
+        'Só quem criou o sorteio (ou quem gerencia o servidor) pode sortear novamente.',
+      );
+    }
+
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral }).catch(() => {});
+    const resultado = await rerolarSorteio(interaction.client, messageId);
+
+    if (!resultado.ok) {
+      return interaction.editReply({ content: resultado.motivo }).catch(() => {});
+    }
+
+    return interaction
+      .editReply({
+        content: `🔁 Rodada ${resultado.rodada}: ${
+          resultado.vencedores.length
+            ? resultado.vencedores.map((id) => `<@${id}>`).join(', ')
+            : 'ninguém'
+        }.`,
+      })
+      .catch(() => {});
   }
 
   return undefined;
@@ -288,6 +350,158 @@ async function tratarQuiz(interaction, messageId, indice) {
   });
 }
 
+async function tratarDenuncia(interaction, acao, id) {
+  if (!interaction.memberPermissions?.has('ManageGuild')) {
+    return erro(interaction, 'Só quem gerencia o servidor pode mudar o status de uma denúncia.');
+  }
+
+  const status = STATUS_DENUNCIA[acao];
+  if (!status) return erro(interaction, 'Status inválido.');
+
+  const denuncia = obterDenuncia(id);
+  if (!denuncia) return erro(interaction, 'Essa denúncia não existe mais.');
+
+  await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
+  const atualizada = atualizarStatusDenuncia(id, acao, interaction.user.id);
+
+  await interaction.message
+    .edit({
+      embeds: [embedDenuncia(atualizada)],
+      components: [botoesDenuncia(id)],
+    })
+    .catch((erro) => console.error('[ERRO] Denúncia não atualizada:', erro.message));
+
+  await interaction
+    .editReply({ content: `Status da denúncia #${id}: ${status.rotulo}.` })
+    .catch(() => {});
+
+  const autor = await interaction.client.users.fetch(denuncia.autor_id).catch(() => null);
+  autor
+    ?.send(`Sua denúncia #${id} foi marcada como **${status.rotulo}**.`)
+    .catch(() => {});
+}
+
+async function abrirCandidatura(interaction) {
+  const cfg = configuracoes(interaction.guildId);
+
+  if (!cfg.candidaturas || !cfg.candidaturaCargo) {
+    return erro(interaction, 'As candidaturas não estão abertas. Avise a staff.');
+  }
+
+  if (temCandidaturaPendente(interaction.guildId, interaction.user.id)) {
+    return erro(interaction, 'Você já tem uma candidatura em análise. Aguarde a resposta.');
+  }
+
+  return interaction.showModal(modalCandidatura());
+}
+
+async function tratarCandidatura(interaction, acao, id) {
+  if (!interaction.memberPermissions?.has('ManageGuild')) {
+    return erro(interaction, 'Só quem gerencia o servidor pode decidir candidaturas.');
+  }
+
+  const candidatura = obterCandidatura(id);
+  if (!candidatura) return erro(interaction, 'Essa candidatura não existe mais.');
+  if (candidatura.status !== 'pendente') {
+    return erro(interaction, 'Essa candidatura já foi decidida.');
+  }
+
+  await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
+  const editarPainel = async (atualizada) => {
+    await interaction.message
+      .edit({
+        embeds: [embedCandidatura(atualizada)],
+        components: [botoesCandidatura(atualizada)],
+      })
+      .catch((erro) => console.error('[ERRO] Candidatura não atualizada:', erro.message));
+  };
+
+  if (acao === 'aprovar') {
+    const membro = await interaction.guild.members
+      .fetch(candidatura.user_id)
+      .catch(() => null);
+
+    if (!membro) {
+      return interaction.editReply({
+        content: 'O candidato não está mais no servidor. Recuse a candidatura.',
+      });
+    }
+
+    const cargoId = candidatura.cargo_id ?? configuracoes(interaction.guildId).candidaturaCargo;
+    const cargo = interaction.guild.roles.cache.get(cargoId) ??
+      (await interaction.guild.roles.fetch(cargoId).catch(() => null));
+
+    if (!cargo) {
+      return interaction.editReply({
+        content: 'O cargo combinado não existe mais. Configure outro com `/candidatura configurar`.',
+      });
+    }
+
+    const eu = interaction.guild.members.me;
+    if (!eu.permissions.has('ManageRoles')) {
+      return interaction.editReply({
+        content: 'Preciso da permissão **Gerenciar Cargos** para aprovar.',
+      });
+    }
+    if (cargo.id === interaction.guild.id) {
+      return interaction.editReply({
+        content: 'O cargo **@everyone** não pode ser entregue como aprovação.',
+      });
+    }
+
+    if (cargo.managed || cargo.position >= eu.roles.highest.position) {
+      return interaction.editReply({
+        content: 'Não posso entregar esse cargo: ele está acima do meu ou é de integração.',
+      });
+    }
+
+    const adicionou = await membro.roles
+      .add(cargo, 'Candidatura aprovada')
+      .then(() => true)
+      .catch((erro) => {
+        console.error('[ERRO] Cargo de candidatura não entregue:', erro.message);
+        return false;
+      });
+
+    if (!adicionou) {
+      return interaction.editReply({
+        content: 'Não consegui entregar o cargo. Veja o console do bot.',
+      });
+    }
+
+    const atualizada = atualizarStatusCandidatura(id, 'aprovada', interaction.user.id);
+    await editarPainel(atualizada);
+
+    membro.user
+      .send(`✅ Sua candidatura foi **aprovada**! Você recebeu o cargo **${cargo.name}**.`)
+      .catch(() => {});
+
+    return interaction.editReply({
+      content: `✅ Candidatura de ${membro.user.tag} aprovada.`,
+    });
+  }
+
+  if (acao === 'recusar') {
+    const atualizada = atualizarStatusCandidatura(id, 'recusada', interaction.user.id);
+    await editarPainel(atualizada);
+
+    const candidato = await interaction.client.users
+      .fetch(candidatura.user_id)
+      .catch(() => null);
+    candidato
+      ?.send('❌ Sua candidatura foi **recusada**. Obrigado pelo interesse.')
+      .catch(() => {});
+
+    return interaction.editReply({
+      content: `❌ Candidatura de <@${candidatura.user_id}> recusada.`,
+    });
+  }
+
+  return interaction.editReply({ content: 'Ação inválida.' });
+}
+
 async function tratarPerfil(interaction, acao, alvoId) {
   if (interaction.user.id !== alvoId) {
     return erro(interaction, 'Só a própria pessoa pode alterar este perfil.');
@@ -378,6 +592,15 @@ export async function tratarComponente(interaction) {
 
   if (grupo === 'faq' && interaction.isStringSelectMenu()) {
     return mostrarRespostaFaq(interaction);
+  }
+
+  if (grupo === 'denuncia' && interaction.isButton()) {
+    return tratarDenuncia(interaction, acao, extra);
+  }
+
+  if (grupo === 'candidatura' && interaction.isButton()) {
+    if (acao === 'abrir') return abrirCandidatura(interaction);
+    return tratarCandidatura(interaction, acao, extra);
   }
 
   if (grupo === 'perfil') {

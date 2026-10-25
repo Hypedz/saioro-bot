@@ -19,12 +19,32 @@ export default {
     )
     .addIntegerOption((o) =>
       o.setName('vencedores').setDescription('Quantos vencedores (padrão: 1)').setMinValue(1).setMaxValue(20),
+    )
+    .addRoleOption((o) =>
+      o.setName('cargo').setDescription('Só quem tem este cargo pode participar'),
+    )
+    .addIntegerOption((o) =>
+      o
+        .setName('conta')
+        .setDescription('Idade mínima da conta em dias (padrão: sem exigência)')
+        .setMinValue(0)
+        .setMaxValue(3650),
+    )
+    .addIntegerOption((o) =>
+      o
+        .setName('mensagens')
+        .setDescription('Mínimo de mensagens enviadas no servidor (padrão: sem exigência)')
+        .setMinValue(0)
+        .setMaxValue(1_000_000),
     ),
 
   async execute(interaction) {
     const premio = interaction.options.getString('premio', true);
     const tempoTexto = interaction.options.getString('tempo', true);
     const vencedores = interaction.options.getInteger('vencedores') ?? 1;
+    const requisitoCargo = interaction.options.getRole('cargo')?.id ?? null;
+    const requisitoConta = interaction.options.getInteger('conta') ?? 0;
+    const requisitoMensagens = interaction.options.getInteger('mensagens') ?? 0;
 
     const duracao = parseDuracao(tempoTexto);
     if (!duracao) {
@@ -49,6 +69,9 @@ export default {
         duracaoMs: duracao,
         vencedores,
         hostId: interaction.user.id,
+        requisitoCargo,
+        requisitoConta,
+        requisitoMensagens,
       });
 
       await interaction.editReply({

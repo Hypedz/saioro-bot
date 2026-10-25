@@ -11,7 +11,7 @@ function canalValido(canal) {
 export default {
   data: new SlashCommandBuilder()
     .setName('config')
-    .setDescription('Configura boas-vindas, despedida, logs e cargo automático.')
+    .setDescription('Configura boas-vindas, despedida, logs, denúncias e cargo automático.')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addSubcommand((sub) => sub.setName('ver').setDescription('Mostra a configuração atual'))
     .addSubcommand((sub) =>
@@ -42,6 +42,14 @@ export default {
       sub
         .setName('sugestoes')
         .setDescription('Define o canal onde o /sugestao publica')
+        .addChannelOption((o) =>
+          o.setName('canal').setDescription('Canal de texto').setRequired(true).addChannelTypes(...CANAIS),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub
+        .setName('denuncias')
+        .setDescription('Define o canal que recebe as denúncias do /denunciar')
         .addChannelOption((o) =>
           o.setName('canal').setDescription('Canal de texto').setRequired(true).addChannelTypes(...CANAIS),
         ),
@@ -99,6 +107,7 @@ export default {
               { name: 'Boas-vindas', value: 'boasVindas' },
               { name: 'Despedida', value: 'despedida' },
               { name: 'Logs', value: 'logs' },
+              { name: 'Denúncias', value: 'denuncias' },
               { name: 'Cargo automático', value: 'cargoAuto' },
               { name: 'Sugestões', value: 'sugestoes' },
               { name: 'Cargo de verificação', value: 'verificarCargo' },
@@ -129,6 +138,7 @@ export default {
         { name: 'Boas-vindas', value: valor(cfg.boasVindas, 'canal'), inline: true },
         { name: 'Despedida', value: valor(cfg.despedida, 'canal'), inline: true },
         { name: 'Logs', value: valor(cfg.logs, 'canal'), inline: true },
+        { name: 'Denúncias', value: valor(cfg.denuncias, 'canal'), inline: true },
         { name: 'Sugestões', value: valor(cfg.sugestoes, 'canal'), inline: true },
         { name: 'Cargo automático', value: valor(cfg.cargoAuto, 'cargo'), inline: true },
         { name: 'Cargo de verificação', value: valor(cfg.verificarCargo, 'cargo'), inline: true },
@@ -252,6 +262,7 @@ export default {
       despedida: 'despedida',
       logs: 'logs',
       sugestoes: 'sugestoes',
+      denuncias: 'denuncias',
     };
     const campo = mapa[sub];
 

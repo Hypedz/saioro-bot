@@ -31,7 +31,7 @@ Perguntas iniciais para cadastrar com `/faq adicionar`. Depois disso, o botão *
 ## 5. Denúncias
 
 - **Pergunta:** Como denuncio uma conduta inadequada?
-- **Resposta:** A denúncia deve ser encaminhada à equipe no privado, acompanhada de prints e do contexto. Recomenda-se não responder a provocações no canal.
+- **Resposta:** A denúncia deve ser encaminhada por meio do comando /denunciar, acompanhada do contexto e, quando possível, de links de provas. O envio pode ser anônimo; a equipe analisa o caso e atualiza o status no canal reservado.
 - **Categoria:** Moderação
 
 ## 6. Punições
@@ -39,6 +39,12 @@ Perguntas iniciais para cadastrar com `/faq adicionar`. Depois disso, o botão *
 - **Pergunta:** Como funcionam as punições?
 - **Resposta:** As medidas seguem a ordem advertência, restrição temporária e banimento, conforme a gravidade e a reincidência. O histórico fica registrado para consulta da equipe.
 - **Categoria:** Moderação
+
+## 7. Candidaturas
+
+- **Pergunta:** Como me candidato à equipe?
+- **Resposta:** Quando houver vagas, utilize o comando /candidatura enviar ou o botão publicado no painel de candidaturas. O formulário é analisado pela equipe, e a resposta é encaminhada no privado.
+- **Categoria:** Equipe
 
 ## Manutenção
 

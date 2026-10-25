@@ -53,12 +53,14 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 
 A badge **AutoMod** (`APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE`) **não** é concedida com uma regra: o Discord exige **100 regras de AutoMod somadas em todos os servidores**. Cada servidor aceita no máximo **10** regras (6 de palavras, 1 anti-spam, 1 preset, 1 menções e 1 perfil), então são necessários pelo menos **10 servidores** com o bot. Depois de atingir 100, a badge pode levar até **24 horas** para aparecer no perfil da aplicação — não é cargo. `/automod status` mostra se a flag já foi concedida, mas só conta as regras deste servidor.
 
-A badge **Comandos** (`APPLICATION_COMMAND_BADGE`) exige um comando **global** — comandos de servidor não contam. Por isso o `/ping` é registrado globalmente e os outros 56 ficam no servidor, para atualizar na hora. O `/ping` não é duplicado: ele existe só no escopo global. Depois de um deploy, ele pode levar até 1 hora para reaparecer; os demais continuam imediatos.
+A badge **Comandos** (`APPLICATION_COMMAND_BADGE`) exige um comando **global** — comandos de servidor não contam. Por isso o `/ping` é registrado globalmente e os outros 58 ficam no servidor, para atualizar na hora. O `/ping` não é duplicado: ele existe só no escopo global. Depois de um deploy, ele pode levar até 1 hora para reaparecer; os demais continuam imediatos.
 
 ### 🎉 Social
 | Comando | O que faz |
 |---|---|
-| `/sorteio <prêmio> <tempo> [vencedores]` | Botão **Participar**, contador e sorteio automático |
+| `/sorteio <prêmio> <tempo> [vencedores] [cargo] [conta] [mensagens]` | Botão **Participar**, requisitos opcionais, contador, sorteio automático e **re-sorteio** |
+| `/denunciar <alvo> [anonimo]` | Formulário privado de denúncia; a staff acompanha o status no canal configurado |
+| `/candidatura enviar/configurar/painel/status/desativar` | Formulário de candidatura à staff, com aprovação/recusa e aviso no privado |
 | `/enquete <pergunta> <opções>` | Votação por botões com barra de resultado |
 | `/lembrete criar / listar / cancelar` | Lembretes pessoais (`30s`, `10m`, `2h`, `1d`) |
 | `/sugestao <texto> [anonimo]` | Publica com botões 👍/👎 e aprovação da staff |
@@ -74,6 +76,12 @@ A badge **Comandos** (`APPLICATION_COMMAND_BADGE`) exige um comando **global** �
 `/evento criar` aceita `2h`, `30m`, `25/12 20:00`, `25/12/2027 20:00` ou só `20:00` (hoje; se já passou, amanhã). Com a opção `lembrete`, o bot avisa no canal X minutos antes — além do aviso nativo para quem marcar interesse.
 
 O `/perfil` mostra um cartão com título, bio, pronomes, cor e imagem. Em **Campos**, cada pessoa escolhe se aparecem entrada no servidor, cargos, pronomes, emblemas, sugestões enviadas e sorteios participados. Os botões de edição só aparecem para o dono do cartão.
+
+No `/sorteio`, os requisitos são opcionais: **cargo**, **idade mínima da conta em dias** e **mínimo de mensagens no servidor**. A contagem de mensagens começa a valer a partir desta versão — o bot não tem histórico anterior. Depois de encerrado, o autor ou a staff pode usar **Sortear novamente**; quem já ganhou não participa da nova rodada.
+
+As denúncias vão para o canal definido em `/config denuncias`. O formulário pede o motivo e links de prova; a staff pode marcar **Em análise**, **Resolvida** ou **Arquivada**. Quando a denúncia é anônima, o nome não aparece no painel, mas a autoria fica registrada no banco para coibir abuso.
+
+As candidaturas usam quatro perguntas fixas (nome/idade, motivação, disponibilidade e experiência). `/candidatura configurar` define o canal e o cargo; `/candidatura painel` publica o botão. A aprovação entrega o cargo e avisa no privado; a recusa também avisa. O cargo precisa estar abaixo do cargo do bot.
 
 ### 🎖️ Emblemas
 
@@ -113,6 +121,7 @@ Automáticos, aparecem no cartão e em `/perfil emblemas` (que mostra o progress
 | `boas-vindas <canal>` | Canal de boas-vindas |
 | `despedida <canal>` | Canal de despedida |
 | `logs <canal>` | Canal de auditoria |
+| `denuncias <canal>` | Onde o `/denunciar` publica as denúncias |
 | `sugestoes <canal>` | Onde o `/sugestao` publica |
 | `cargo-auto <cargo>` | Cargo dado automaticamente ao entrar |
 | `verificar-cargo <cargo>` | Cargo entregue pelo botão do `/verificar` |
@@ -128,7 +137,7 @@ O que vai para o canal de logs: mensagem **apagada** (com autor e quem apagou, s
 | Arquivo | Conteúdo |
 |---|---|
 | [`docs/regras.md`](docs/regras.md) | Regras em tom formal, prontas para `/regras`, com versão mais rígida opcional |
-| [`docs/faq.md`](docs/faq.md) | Seis perguntas iniciais com respostas formais para cadastrar em `/faq adicionar` |
+| [`docs/faq.md`](docs/faq.md) | Sete perguntas iniciais com respostas formais para cadastrar em `/faq adicionar` |
 
 ---
 
@@ -163,12 +172,14 @@ No portal do Discord, aba **Bot** → **Privileged Gateway Intents**:
 - ✅ **SERVER MEMBERS INTENT** — obrigatório (boas-vindas, cargo automático, logs de entrada/saída).
 - ⬜ **MESSAGE CONTENT INTENT** — opcional. Sem ele, o log de mensagem apagada mostra "_conteúdo indisponível_" (o Discord não envia o texto). Ligando, o conteúdo aparece.
 
+O bot também usa o intent padrão **Guild Messages** (não privilegiado, não precisa marcar no portal) para contar mensagens dos requisitos de sorteio e manter o `/sticky` funcionando. Esse intent não dá acesso ao conteúdo das mensagens.
+
 Permissões que o bot precisa (já vêm no link de convite):
 
 - Ver canais, Enviar mensagens, Inserir links, Ler histórico
 - Gerenciar mensagens (limpar, logs)
 - Gerenciar canais (lock, slowmode)
-- Gerenciar cargos (cargo automático)
+- Gerenciar cargos (cargo automático, verificação e aprovação de candidaturas)
 - Moderar membros, Banir, Expulsar
 - Gerenciar servidor (regras de AutoMod)
 - Ver registro de auditoria (para saber *quem* apagou uma mensagem)
@@ -192,7 +203,7 @@ bot-discord/
 │  ├─ commands/
 │  │  ├─ util/                 ping, help, serverinfo, userinfo, avatar, botinfo, faq
 │  │  ├─ mod/                  ban, unban, kick, timeout, warn, warns, delwarn, slowmode, lock, unlock, limpar, automod
-│  │  ├─ social/               sorteio, enquete, lembrete, evento, regras, perfil, top
+│  │  ├─ social/               sorteio, denunciar, candidatura, enquete, lembrete, evento, regras, perfil, top
 │  │  ├─ fun/                  dado, moeda, ship, bola8, escolha
 │  │  └─ config/               config
 │  ├─ events/                  ready, interactionCreate, membros, mensagens
@@ -257,6 +268,10 @@ Por padrão o comando é registrado no servidor (efeito imediato). Para registr�
 - A badge de AutoMod exige 100 regras em todos os servidores (no máximo 10 por servidor) e pode levar até 24 horas para aparecer. Não há atalho com uma regra só.
 - O `/automod ativar` cria até 3 regras por servidor; se já existir uma regra manual do mesmo tipo, ele ignora e informa, em vez de falhar.
 - O `/ping` global pode ficar até 1 hora sem aparecer depois de um deploy global; isso é cache do cliente, não erro de registro.
+- O requisito de **mensagens** em `/sorteio` só conta mensagens enviadas depois que esta versão entrou no ar; não há como importar o histórico anterior.
+- O requisito de **mensagens** conta mensagens enviadas, não mensagens que continuam existindo: apagar uma mensagem não diminui o total.
+- Avisos de denúncia e candidatura no privado podem falhar se a pessoa tiver DMs fechadas; o status continua registrado no canal da staff.
+- Aprovar candidatura exige **Gerenciar Cargos** e um cargo abaixo do cargo mais alto do bot.
 
 ---
 
