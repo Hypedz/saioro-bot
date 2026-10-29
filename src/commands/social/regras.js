@@ -10,6 +10,7 @@ import {
 import { CORES, embed } from '../../lib/embeds.js';
 import { configuracoes } from '../../lib/settings.js';
 import { contarFaq } from '../../lib/faq.js';
+import { salvarRegras } from '../../lib/regras.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -105,6 +106,13 @@ export default {
       embeds: [painel],
       components: componentes,
       allowedMentions: { parse: [] },
+    });
+
+    salvarRegras(interaction.guild.id, {
+      titulo,
+      texto,
+      channelId: canal.id,
+      messageId: mensagem.id,
     });
 
     const aviso = cargoInvalido

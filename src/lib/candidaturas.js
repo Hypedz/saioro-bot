@@ -178,3 +178,35 @@ export function contarCandidaturasPendentes(guildId) {
       .get(guildId)?.total ?? 0,
   );
 }
+
+/** Lista candidaturas para a central da staff. */
+export function listarCandidaturas(guildId, { status = null, limite = 10 } = {}) {
+  const filtro = status && STATUS_CANDIDATURA[status] ? status : null;
+  const quantidade = Math.min(Math.max(Number(limite) || 10, 1), 20);
+  const where = filtro ? 'AND status = ?' : '';
+  const parametros = filtro ? [guildId, filtro, quantidade] : [guildId, quantidade];
+
+  return db
+    .prepare(`
+      SELECT * FROM candidaturas
+      WHERE guild_id = ? ${where}
+      ORDER BY id DESC
+      LIMIT ?
+    `)
+    .all(...parametros);
+}
+
+/** Contagem por status, para o rodapé da central. */
+export function contarCandidaturasPorStatus(guildId) {
+  const totais = Object.fromEntries(
+    Object.keys(STATUS_CANDIDATURA).map((status) => [status, 0]),
+  );
+
+  for (const linha of db
+    .prepare('SELECT status, COUNT(*) AS total FROM candidaturas WHERE guild_id = ? GROUP BY status')
+    .all(guildId)) {
+    if (linha.status in totais) totais[linha.status] = Number(linha.total);
+  }
+
+  return totais;
+}

@@ -217,6 +217,36 @@ CREATE TABLE IF NOT EXISTS candidaturas (
 );
 
 CREATE INDEX IF NOT EXISTS idx_candidaturas_pendentes ON candidaturas (guild_id, user_id, status);
+
+CREATE TABLE IF NOT EXISTS regras (
+  guild_id    TEXT PRIMARY KEY,
+  titulo      TEXT NOT NULL,
+  texto       TEXT NOT NULL,
+  channel_id  TEXT,
+  message_id  TEXT,
+  atualizado_em INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS antiraid_config (
+  guild_id   TEXT PRIMARY KEY,
+  ativo      INTEGER NOT NULL DEFAULT 0,
+  canal_id   TEXT,
+  limite     INTEGER NOT NULL DEFAULT 5,
+  janela     INTEGER NOT NULL DEFAULT 30,
+  conta_dias INTEGER NOT NULL DEFAULT 7,
+  acao       TEXT NOT NULL DEFAULT 'alerta',
+  duracao    INTEGER NOT NULL DEFAULT 10
+);
+
+CREATE TABLE IF NOT EXISTS antiraid_lockdown (
+  guild_id   TEXT NOT NULL,
+  channel_id TEXT NOT NULL,
+  anterior   INTEGER,
+  termina    INTEGER NOT NULL,
+  PRIMARY KEY (guild_id, channel_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_antiraid_lockdown_termina ON antiraid_lockdown (termina);
 `);
 
 /** Adiciona colunas novas em bancos que ja existiam (migracao). */

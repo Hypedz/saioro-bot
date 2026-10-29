@@ -24,8 +24,9 @@ import {
   votarSugestao,
 } from './sugestoes.js';
 import { responderQuiz } from './quiz.js';
-import { listarCargosPainel } from './cargosPainel.js';
+import { listarCargosPainel, montarPainelCargos } from './cargosPainel.js';
 import { removerEvento } from './eventos.js';
+import { obterRegras } from './regras.js';
 import {
   modalPerfil,
   obterPerfil,
@@ -38,6 +39,7 @@ import {
   atualizarStatusDenuncia,
   botoesDenuncia,
   embedDenuncia,
+  modalDenunciaPainel,
   obterDenuncia,
 } from './denuncias.js';
 import {
@@ -250,6 +252,81 @@ async function abrirFaq(interaction) {
   return interaction.reply({
     content: resumoFaq(itens),
     components: [menuFaq(itens)],
+    flags: MessageFlags.Ephemeral,
+  });
+}
+
+async function mostrarRegrasPainel(interaction) {
+  const regras = obterRegras(interaction.guildId);
+
+  if (!regras) {
+    return erro(
+      interaction,
+      'As regras ainda não foram publicadas. Avise a staff para usar `/regras`.',
+    );
+  }
+
+  const painel = embed(regras.titulo, regras.texto, CORES.principal);
+  const componentes = [];
+
+  if (regras.channel_id && regras.message_id) {
+    componentes.push(
+      new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setLabel('Abrir no canal')
+          .setEmoji('📜')
+          .setStyle(ButtonStyle.Link)
+          .setURL(
+            `https://discord.com/channels/${interaction.guildId}/${regras.channel_id}/${regras.message_id}`,
+          ),
+      ),
+    );
+  }
+
+  return interaction.reply({
+    embeds: [painel],
+    components: componentes,
+    flags: MessageFlags.Ephemeral,
+  });
+}
+
+async function mostrarCargosPainel(interaction) {
+  const cargos = listarCargosPainel(interaction.guildId);
+
+  if (cargos.length === 0) {
+    return erro(interaction, 'Nenhum cargo de autoatribuição foi configurado. Avise a staff.');
+  }
+
+  const painel = montarPainelCargos(interaction.guild, cargos);
+
+  if (painel.components.length === 0) {
+    return erro(interaction, 'Os cargos do painel não existem mais. Avise a staff.');
+  }
+
+  return interaction.reply({
+    ...painel,
+    flags: MessageFlags.Ephemeral,
+  });
+}
+
+async function escolherDenunciaPainel(interaction) {
+  return interaction.reply({
+    content:
+      '🚨 **Denúncia**\nEscolha como quer enviar. O formulário vai pedir o membro e o que aconteceu.',
+    components: [
+      new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId('denuncia:painel:0')
+          .setLabel('Identificado')
+          .setEmoji('🙋')
+          .setStyle(ButtonStyle.Primary),
+        new ButtonBuilder()
+          .setCustomId('denuncia:painel:1')
+          .setLabel('Anônimo')
+          .setEmoji('🕵️')
+          .setStyle(ButtonStyle.Secondary),
+      ),
+    ],
     flags: MessageFlags.Ephemeral,
   });
 }
@@ -555,6 +632,14 @@ export async function tratarComponente(interaction) {
     return interaction.update(montarAjuda(interaction.client, interaction.values[0]));
   }
 
+  if (grupo === 'painel' && interaction.isButton()) {
+    if (acao === 'regras') return mostrarRegrasPainel(interaction);
+    if (acao === 'cargos') return mostrarCargosPainel(interaction);
+    if (acao === 'faq') return abrirFaq(interaction);
+    if (acao === 'denunciar') return escolherDenunciaPainel(interaction);
+    if (acao === 'candidatura') return abrirCandidatura(interaction);
+  }
+
   if (grupo === 'sorteio' && interaction.isButton()) {
     return tratarSorteio(interaction, acao, extra);
   }
@@ -595,6 +680,7 @@ export async function tratarComponente(interaction) {
   }
 
   if (grupo === 'denuncia' && interaction.isButton()) {
+    if (acao === 'painel') return interaction.showModal(modalDenunciaPainel(extra === '1'));
     return tratarDenuncia(interaction, acao, extra);
   }
 

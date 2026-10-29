@@ -11,6 +11,7 @@ import { config } from '../../config.js';
 import { db } from '../../db.js';
 import { CORES, embed } from '../../lib/embeds.js';
 import { configuracoes } from '../../lib/settings.js';
+import { obterConfigAntiraid } from '../../lib/antiraid.js';
 
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
@@ -57,6 +58,7 @@ export default {
     const { guild, client } = interaction;
     const eu = guild.members.me;
     const cfg = configuracoes(guild.id);
+    const antiraid = obterConfigAntiraid(guild.id);
 
     // 1) Canais configurados (overwrites podem bloquear mesmo com permissao geral)
     const NOMES_PERMISSAO = {
@@ -73,6 +75,7 @@ export default {
       ['Sugestões', cfg.sugestoes],
       ['Denúncias', cfg.denuncias],
       ['Candidaturas', cfg.candidaturas],
+      ['Anti-raid', antiraid.ativo ? (antiraid.canal ?? cfg.logs) : null],
     ];
 
     const checagemCanais = [];
@@ -140,6 +143,7 @@ export default {
       item(cfg.candidaturas && cfg.candidaturaCargo, 'Candidaturas (canal + cargo)'),
       item(cfg.cargoAuto, 'Cargo automático'),
       item(cfg.verificarCargo, 'Cargo de verificação'),
+      item(antiraid.ativo, 'Anti-raid'),
     ].join('\n');
 
     // 5) Banco e carga

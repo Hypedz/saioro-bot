@@ -40,6 +40,40 @@ export function modalDenuncia(alvoId, anonimo) {
     );
 }
 
+/** Modal aberto pelo painel inicial, quando o alvo ainda não foi informado. */
+export function modalDenunciaPainel(anonimo) {
+  return new ModalBuilder()
+    .setCustomId(`denuncia:novo:painel:${anonimo ? 1 : 0}`)
+    .setTitle(anonimo ? 'Denúncia anônima' : 'Fazer uma denúncia')
+    .addComponents(
+      new ActionRowBuilder().addComponents(
+        new TextInputBuilder()
+          .setCustomId('alvo')
+          .setLabel('ID ou @menção do membro')
+          .setPlaceholder('Ex.: 123456789012345678')
+          .setStyle(TextInputStyle.Short)
+          .setRequired(true)
+          .setMaxLength(100),
+      ),
+      new ActionRowBuilder().addComponents(
+        new TextInputBuilder()
+          .setCustomId('motivo')
+          .setLabel('O que aconteceu?')
+          .setStyle(TextInputStyle.Paragraph)
+          .setRequired(true)
+          .setMaxLength(2000),
+      ),
+      new ActionRowBuilder().addComponents(
+        new TextInputBuilder()
+          .setCustomId('provas')
+          .setLabel('Links de provas (opcional)')
+          .setStyle(TextInputStyle.Short)
+          .setRequired(false)
+          .setMaxLength(500),
+      ),
+    );
+}
+
 export function obterDenuncia(id) {
   return db.prepare('SELECT * FROM denuncias WHERE id = ?').get(Number(id)) ?? null;
 }
@@ -136,4 +170,34 @@ export function atualizarStatusDenuncia(id, status, staffId) {
   `).run(status, staffId, Date.now(), Number(id));
 
   return obterDenuncia(id);
+}
+
+/** Lista denúncias para a central da staff. */
+export function listarDenuncias(guildId, { status = null, limite = 10 } = {}) {
+  const filtro = status && STATUS_DENUNCIA[status] ? status : null;
+  const quantidade = Math.min(Math.max(Number(limite) || 10, 1), 20);
+  const where = filtro ? 'AND status = ?' : '';
+  const parametros = filtro ? [guildId, filtro, quantidade] : [guildId, quantidade];
+
+  return db
+    .prepare(`
+      SELECT * FROM denuncias
+      WHERE guild_id = ? ${where}
+      ORDER BY id DESC
+      LIMIT ?
+    `)
+    .all(...parametros);
+}
+
+/** Contagem por status, para o rodapé da central. */
+export function contarDenunciasPorStatus(guildId) {
+  const totais = Object.fromEntries(Object.keys(STATUS_DENUNCIA).map((status) => [status, 0]));
+
+  for (const linha of db
+    .prepare('SELECT status, COUNT(*) AS total FROM denuncias WHERE guild_id = ? GROUP BY status')
+    .all(guildId)) {
+    if (linha.status in totais) totais[linha.status] = Number(linha.total);
+  }
+
+  return totais;
 }

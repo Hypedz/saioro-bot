@@ -2,12 +2,18 @@ import { EmbedBuilder, Events } from 'discord.js';
 import { config } from '../config.js';
 import { CORES_LOG, enviarLog } from '../lib/logs.js';
 import { configuracoes, formatarBoasVindas } from '../lib/settings.js';
+import { processarEntradaAntiraid } from '../lib/antiraid.js';
 
 export default {
   name: Events.GuildMemberAdd,
 
   async execute(member) {
     const cfg = configuracoes(member.guild.id);
+
+    // Anti-raid: roda antes das mensagens para reagir o quanto antes.
+    await processarEntradaAntiraid(member).catch((erro) =>
+      console.error('[ERRO] Anti-raid:', erro),
+    );
 
     // Cargo automatico
     if (cfg.cargoAuto) {

@@ -1,7 +1,4 @@
 import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
   MessageFlags,
   PermissionFlagsBits,
   SlashCommandBuilder,
@@ -10,42 +7,9 @@ import { CORES, embed } from '../../lib/embeds.js';
 import {
   adicionarCargoPainel,
   listarCargosPainel,
+  montarPainelCargos,
   removerCargoPainel,
 } from '../../lib/cargosPainel.js';
-
-function montarPainel(guild, cargos) {
-  const linhas = [];
-  let atual = new ActionRowBuilder();
-
-  for (const item of cargos) {
-    const cargo = guild.roles.cache.get(item.role_id);
-    if (!cargo) continue;
-
-    const botao = new ButtonBuilder()
-      .setCustomId(`cargo:${cargo.id}`)
-      .setLabel(cargo.name.slice(0, 80))
-      .setStyle(ButtonStyle.Secondary);
-
-    if (item.emoji) botao.setEmoji(item.emoji);
-
-    atual.addComponents(botao);
-
-    if (atual.components.length === 5) {
-      linhas.push(atual);
-      atual = new ActionRowBuilder();
-    }
-  }
-
-  if (atual.components.length > 0) linhas.push(atual);
-
-  const painel = embed(
-    '🎭 Escolha seus cargos',
-    'Clique para receber ou remover um cargo. Clique de novo para sair.',
-    CORES.principal,
-  );
-
-  return { embeds: [painel], components: linhas.slice(0, 5) };
-}
 
 export default {
   data: new SlashCommandBuilder()
@@ -176,7 +140,7 @@ export default {
       });
     }
 
-    const mensagem = await canal.send(montarPainel(guild, cargos));
+    const mensagem = await canal.send(montarPainelCargos(guild, cargos));
 
     await interaction.reply({
       content: `✅ Painel publicado em ${canal}: ${mensagem.url}`,

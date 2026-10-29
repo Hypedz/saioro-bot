@@ -4,6 +4,7 @@ import { tickLembretes } from '../lib/lembretes.js';
 import { tickSorteios } from '../lib/sorteios.js';
 import { tickTempbans } from '../lib/tempbans.js';
 import { tickEventos } from '../lib/eventos.js';
+import { tickAntiraid } from '../lib/antiraid.js';
 
 function rodarBackup() {
   try {
@@ -32,11 +33,17 @@ function iniciarRotinas(client) {
     tickEventos(client).catch((erro) => console.error('[ERRO] Eventos:', erro));
   }, 30_000).unref();
 
+  // Anti-raid: encerra lockdowns vencidos e tenta de novo os que falharam.
+  setInterval(() => {
+    tickAntiraid(client).catch((erro) => console.error('[ERRO] Anti-raid:', erro));
+  }, 30_000).unref();
+
   // Roda uma vez no start, para pegar o que venceu enquanto o bot estava off.
   tickSorteios(client);
   tickLembretes(client).catch(() => {});
   tickTempbans(client).catch(() => {});
   tickEventos(client).catch(() => {});
+  tickAntiraid(client).catch(() => {});
 
   // Backup do banco: no start e a cada 6h (so cria um arquivo por dia).
   rodarBackup();

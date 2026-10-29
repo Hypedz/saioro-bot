@@ -16,7 +16,34 @@ async function tratarModalDenuncia(interaction) {
     return erro(interaction, 'Esse formulário só funciona em servidores.');
   }
 
-  const [, , alvoId, anon] = interaction.customId.split(':');
+  const [, , alvoInformado, anon] = interaction.customId.split(':');
+  let alvoId = alvoInformado;
+
+  if (alvoInformado === 'painel') {
+    const bruto = interaction.fields.getTextInputValue('alvo')?.trim() ?? '';
+    const casou = bruto.match(/^<@!?(\d{17,20})>$/) ?? bruto.match(/^(\d{17,20})$/);
+
+    if (!casou) {
+      return erro(interaction, 'Informe o ID numérico ou mencione o membro (@nome) no campo do alvo.');
+    }
+
+    alvoId = casou[1];
+
+    if (alvoId === interaction.user.id) {
+      return erro(interaction, 'Você não pode denunciar a si mesmo.');
+    }
+
+    const alvo =
+      interaction.client.users.cache.get(alvoId) ??
+      (await interaction.client.users.fetch(alvoId).catch(() => null));
+    if (!alvo) {
+      return erro(interaction, 'Não encontrei esse membro. Confira o ID e tente novamente.');
+    }
+    if (alvo.bot) {
+      return erro(interaction, 'Não é possível denunciar um bot.');
+    }
+  }
+
   const canalId = configuracoes(interaction.guild.id).denuncias;
   const canal = canalId
     ? interaction.guild.channels.cache.get(canalId) ??

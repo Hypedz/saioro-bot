@@ -27,6 +27,7 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/status` | Uptime, ping, memória, banco, versões |
 | `/botinfo` | Servidores, usuários, memória, versões, uptime |
 | `/diagnostico` | Confere permissões, canais configurados, intents e o que ainda falta configurar |
+| `/painel publicar [canal]` | Publica o painel inicial com atalhos para regras, cargos, FAQ, denúncias e candidaturas |
 
 ### 🛡️ Moderação
 | Comando | O que faz |
@@ -48,12 +49,15 @@ Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, s
 | `/punicoes [membro] [limite]` | Histórico de punições do servidor |
 | `/sticky definir/remover/ver` | Mensagem que volta ao fim do canal sempre que alguém fala |
 | `/automod ativar/status/desativar` | Regras nativas de AutoMod: anti-spam, menções em massa e ofensas graves, com alerta e castigo |
+| `/antiraid ativar/desativar/status` | Detecta entradas em massa ou contas novas; alerta a staff e, opcionalmente, tranca os canais |
+| `/denuncias listar [status] [limite]` | Central da staff: lista denúncias com link para o painel original |
+| `/candidaturas listar [status] [limite]` | Central da staff: lista candidaturas com link para o painel original |
 
 `/automod ativar` cria três regras **nativas** do Discord (sem ler o conteúdo das mensagens). Cargos com **Gerenciar Servidor**, **Moderar Membros** ou **Administrador** ficam isentos para a staff não ser bloqueada. O castigo padrão é de 10 minutos (`0` desliga) e exige **Moderar Membros**; sem essa permissão, as regras só bloqueiam e alertam. Só as regras criadas pelo bot são listadas e removidas — as feitas à mão no painel ficam intactas.
 
 A badge **AutoMod** (`APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE`) **não** é concedida com uma regra: o Discord exige **100 regras de AutoMod somadas em todos os servidores**. Cada servidor aceita no máximo **10** regras (6 de palavras, 1 anti-spam, 1 preset, 1 menções e 1 perfil), então são necessários pelo menos **10 servidores** com o bot. Depois de atingir 100, a badge pode levar até **24 horas** para aparecer no perfil da aplicação — não é cargo. `/automod status` mostra se a flag já foi concedida, mas só conta as regras deste servidor.
 
-A badge **Comandos** (`APPLICATION_COMMAND_BADGE`) exige um comando **global** — comandos de servidor não contam. Por isso o `/ping` é registrado globalmente e os outros 58 ficam no servidor, para atualizar na hora. O `/ping` não é duplicado: ele existe só no escopo global. Depois de um deploy, ele pode levar até 1 hora para reaparecer; os demais continuam imediatos.
+A badge **Comandos** (`APPLICATION_COMMAND_BADGE`) exige um comando **global** — comandos de servidor não contam. Por isso o `/ping` é registrado globalmente e os outros 62 ficam no servidor, para atualizar na hora. O `/ping` não é duplicado: ele existe só no escopo global. Depois de um deploy, ele pode levar até 1 hora para reaparecer; os demais continuam imediatos.
 
 ### 🎉 Social
 | Comando | O que faz |
@@ -82,6 +86,20 @@ No `/sorteio`, os requisitos são opcionais: **cargo**, **idade mínima da conta
 As denúncias vão para o canal definido em `/config denuncias`. O formulário pede o motivo e links de prova; a staff pode marcar **Em análise**, **Resolvida** ou **Arquivada**. Quando a denúncia é anônima, o nome não aparece no painel, mas a autoria fica registrada no banco para coibir abuso.
 
 As candidaturas usam quatro perguntas fixas (nome/idade, motivação, disponibilidade e experiência). `/candidatura configurar` define o canal e o cargo; `/candidatura painel` publica o botão. A aprovação entrega o cargo e avisa no privado; a recusa também avisa. O cargo precisa estar abaixo do cargo do bot.
+
+### Painel inicial
+
+`/painel publicar` cria uma mensagem fixa com cinco botões: **Regras**, **Cargos**, **FAQ**, **Candidatar-se** e **Denunciar**. As respostas são privadas, então ninguém precisa sair do canal para consultar. O botão **Regras** usa a última publicação de `/regras`; se as regras foram publicadas antes desta versão, rode `/regras` uma vez para guardar a cópia no banco. O botão **Cargos** usa os cargos de `/cargos-painel`; **FAQ**, o `/faq`; **Denunciar**, o canal de `/config denuncias`; e **Candidatar-se**, a configuração de `/candidatura configurar`. O comando avisa quais desses itens ainda faltam configurar.
+
+### Central da staff
+
+`/denuncias listar` e `/candidaturas listar` mostram os registros mais recentes, com filtro por status e limite de 1 a 20. Cada item traz o alvo/candidato, a data e um link para o painel original, onde ficam os botões de decisão. As respostas são privadas e exigem **Gerenciar Servidor**.
+
+### Anti-raid
+
+`/antiraid ativar` liga a detecção de entradas em massa. Os padrões são **5 entradas em 30 segundos** e **7 dias** de idade mínima da conta; o disparo acontece pelo volume de entradas **ou** quando metade do limite (no mínimo 2) for de contas novas. O alerta vai para o canal informado ou para o canal de logs.
+
+Com `acao:lockdown`, o bot também aplica **Enviar mensagens: negado** para `@everyone` nos canais de texto, anúncio e fórum, guardando o estado anterior. Depois de `duracao` minutos, ele restaura cada canal sozinho (a verificação roda a cada 30 segundos). O lockdown exige **Gerenciar Canais**; `/antiraid desativar` também destranca na hora. O histórico de entradas fica em memória e reinicia junto com o bot.
 
 ### 🎖️ Emblemas
 
@@ -201,8 +219,8 @@ bot-discord/
 │  ├─ db.js                    schema do SQLite
 │  ├─ deploy-commands.js       registro dos slash commands
 │  ├─ commands/
-│  │  ├─ util/                 ping, help, serverinfo, userinfo, avatar, botinfo, faq
-│  │  ├─ mod/                  ban, unban, kick, timeout, warn, warns, delwarn, slowmode, lock, unlock, limpar, automod
+│  │  ├─ util/                 ping, help, serverinfo, userinfo, avatar, botinfo, faq, painel
+│  │  ├─ mod/                  ban, unban, kick, timeout, warn, warns, delwarn, slowmode, lock, unlock, limpar, automod, antiraid, denuncias, candidaturas
 │  │  ├─ social/               sorteio, denunciar, candidatura, enquete, lembrete, evento, regras, perfil, top
 │  │  ├─ fun/                  dado, moeda, ship, bola8, escolha
 │  │  └─ config/               config
@@ -272,6 +290,10 @@ Por padrão o comando é registrado no servidor (efeito imediato). Para registr�
 - O requisito de **mensagens** conta mensagens enviadas, não mensagens que continuam existindo: apagar uma mensagem não diminui o total.
 - Avisos de denúncia e candidatura no privado podem falhar se a pessoa tiver DMs fechadas; o status continua registrado no canal da staff.
 - Aprovar candidatura exige **Gerenciar Cargos** e um cargo abaixo do cargo mais alto do bot.
+- O anti-raid conta as entradas em memória: reiniciar o bot zera o histórico da janela atual. O lockdown persiste no banco e é restaurado no prazo mesmo após um reinício.
+- O lockdown do anti-raid tranca **todos** os canais de texto, anúncio e fórum para `@everyone`; cargos com **Administrador** continuam podendo falar. Canais que já estavam trancados não são alterados.
+- O botão **Regras** do painel inicial só funciona depois de uma publicação de `/regras` feita nesta versão ou posterior; publicações antigas não têm cópia salva.
+- `/denuncias listar` e `/candidaturas listar` mostram até 20 itens por vez; os mais antigos continuam acessíveis pelos painéis originais.
 
 ---
 
