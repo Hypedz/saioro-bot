@@ -600,6 +600,33 @@ a:hover {
   color: var(--texto-suave);
 }
 
+.comando .exemplo {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--borda);
+  color: var(--texto-fraco);
+  font-size: 0.76rem;
+}
+
+.comando .exemplo span {
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-size: 0.68rem;
+}
+
+.comando .exemplo code {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: rgba(88, 101, 242, 0.1);
+  border: 1px solid var(--borda);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: #c9cfff;
+  overflow-wrap: anywhere;
+}
+
 .subs {
   display: flex;
   flex-wrap: wrap;
