@@ -819,5 +819,11 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+      window.scrollTo(0, 0);
+    }
+  </script>
 </body>
 </html>
