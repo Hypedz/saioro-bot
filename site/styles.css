@@ -730,12 +730,54 @@ a:hover {
 .grupo-titulo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin: 0 0 12px;
   font-size: 0.92rem;
   text-transform: uppercase;
   letter-spacing: 0.9px;
   color: var(--texto-suave);
+}
+
+.icone-categoria {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--tom) 28%, transparent),
+    color-mix(in srgb, var(--tom) 5%, transparent)
+  );
+  border: 2px solid color-mix(in srgb, var(--tom) 50%, transparent);
+  color: color-mix(in srgb, var(--tom) 68%, white);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--tom) 14%, transparent);
+}
+
+.icone-categoria[data-cor="azul"] {
+  --tom: #5865f2;
+}
+
+.icone-categoria[data-cor="laranja"] {
+  --tom: #e0713e;
+}
+
+.icone-categoria[data-cor="rosa"] {
+  --tom: #eb459e;
+}
+
+.icone-categoria[data-cor="teal"] {
+  --tom: #2dd4bf;
+}
+
+.icone-categoria[data-cor="ciano"] {
+  --tom: #22d3ee;
+}
+
+.icone-categoria svg {
+  width: 22px;
+  height: 22px;
 }
 
 .grupo-titulo::after {
@@ -838,30 +880,62 @@ a:hover {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  counter-reset: passo;
 }
 
 .passo {
   position: relative;
   background: var(--superficie);
-  border: 1px solid var(--borda);
+  border: 2px solid var(--borda);
+  border-color: color-mix(in srgb, var(--tom) 45%, transparent);
   border-radius: var(--raio);
   padding: 26px 22px 22px;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.passo::before {
-  counter-increment: passo;
-  content: counter(passo);
+.passo:hover {
+  border-color: color-mix(in srgb, var(--tom) 85%, transparent);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--tom) 16%, transparent);
+  transform: translateY(-2px);
+}
+
+.passo[data-cor="azul"] {
+  --tom: #5865f2;
+}
+
+.passo[data-cor="verde"] {
+  --tom: #57f287;
+}
+
+.passo[data-cor="roxo"] {
+  --tom: #a78bfa;
+}
+
+.icone-passo {
+  width: 56px;
+  height: 56px;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(88, 101, 242, 0.16);
-  border: 1px solid rgba(88, 101, 242, 0.5);
-  color: #cfd4ff;
-  font-weight: 700;
+  border-radius: 14px;
   margin-bottom: 16px;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--tom) 30%, transparent),
+    color-mix(in srgb, var(--tom) 6%, transparent)
+  );
+  border: 2px solid color-mix(in srgb, var(--tom) 45%, transparent);
+  color: color-mix(in srgb, var(--tom) 68%, white);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--tom) 16%, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.passo:hover .icone-passo {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--tom) 26%, transparent);
+}
+
+.icone-passo svg {
+  width: 28px;
+  height: 28px;
 }
 
 .passo h3 {
