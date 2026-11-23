@@ -552,14 +552,20 @@ a:hover {
 }
 
 .recurso .icone {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: rgba(88, 101, 242, 0.14);
-  font-size: 1.25rem;
+  background: linear-gradient(140deg, rgba(88, 101, 242, 0.26), rgba(88, 101, 242, 0.05));
+  border: 1px solid rgba(88, 101, 242, 0.28);
+  color: #bcc4ff;
   margin-bottom: 14px;
+}
+
+.recurso .icone svg {
+  width: 22px;
+  height: 22px;
 }
 
 .recurso h3 {
