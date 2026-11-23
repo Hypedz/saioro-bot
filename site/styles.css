@@ -539,20 +539,22 @@ a:hover {
 }
 
 .recurso {
+  --tom: #5865f2;
   background: var(--superficie);
   border: 1px solid var(--borda);
+  border-color: color-mix(in srgb, var(--tom) 32%, transparent);
   border-radius: var(--raio);
   padding: 22px;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .recurso:hover {
-  border-color: rgba(88, 101, 242, 0.45);
+  border-color: color-mix(in srgb, var(--tom) 68%, transparent);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--tom) 14%, transparent);
   transform: translateY(-2px);
 }
 
 .recurso .icone {
-  --tom: #5865f2;
   width: 52px;
   height: 52px;
   display: grid;
@@ -578,41 +580,41 @@ a:hover {
   box-shadow: 0 10px 24px color-mix(in srgb, var(--tom) 26%, transparent);
 }
 
-.recurso .icone[data-cor="azul"] {
+.recurso[data-cor="azul"] {
   --tom: #5865f2;
 }
 
-.recurso .icone[data-cor="ciano"] {
+.recurso[data-cor="ciano"] {
   --tom: #22d3ee;
 }
 
-.recurso .icone[data-cor="verde"] {
+.recurso[data-cor="verde"] {
   --tom: #57f287;
 }
 
-.recurso .icone[data-cor="amarelo"] {
+.recurso[data-cor="amarelo"] {
   --tom: #f1c40f;
 }
 
-.recurso .icone[data-cor="laranja"] {
+.recurso[data-cor="laranja"] {
   --tom: #e0713e;
 }
 
-.recurso .icone[data-cor="rosa"] {
+.recurso[data-cor="rosa"] {
   --tom: #eb459e;
 }
 
-.recurso .icone[data-cor="roxo"] {
+.recurso[data-cor="roxo"] {
   --tom: #a78bfa;
 }
 
-.recurso .icone[data-cor="teal"] {
+.recurso[data-cor="teal"] {
   --tom: #2dd4bf;
 }
 
 .recurso .icone svg {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
 }
 
 .recurso h3 {
