@@ -56,24 +56,30 @@
           </p>
         </div>
 
-        <aside class="previa" aria-label="Exemplo do painel inicial">
+        <aside class="previa" aria-label="Demonstração do painel inicial">
           <div class="linha">
             <img src="assets/avatar.png" alt="" width="34" height="34">
             <strong>Saioro</strong>
-            <span>Painel</span>
+            <span class="selo-demo">demo</span>
           </div>
           <p class="titulo-painel">Bem-vindo(a) ao servidor</p>
           <p class="texto-painel">
             Use os botões abaixo para consultar as regras, escolher seus cargos, tirar dúvidas,
             denunciar algo ou se candidatar à staff.
           </p>
-          <div class="botoes-painel">
-            <span class="destaque">Regras</span>
-            <span>Cargos</span>
-            <span>FAQ</span>
-            <span>Denunciar</span>
-            <span class="destaque">Candidatar-se</span>
+          <div class="botoes-painel" role="group" aria-label="Botões do painel (demonstração)">
+            <button type="button" class="destaque" data-painel="regras" aria-expanded="false" aria-controls="resposta-painel">Regras</button>
+            <button type="button" data-painel="cargos" aria-expanded="false" aria-controls="resposta-painel">Cargos</button>
+            <button type="button" data-painel="faq" aria-expanded="false" aria-controls="resposta-painel">FAQ</button>
+            <button type="button" data-painel="denunciar" aria-expanded="false" aria-controls="resposta-painel">Denunciar</button>
+            <button type="button" class="destaque" data-painel="candidatura" aria-expanded="false" aria-controls="resposta-painel">Candidatar-se</button>
           </div>
+
+          <div class="resposta-painel" id="resposta-painel" hidden aria-live="polite"></div>
+
+          <p class="nota-painel">
+            Demonstração: no Discord, cada botão responde em uma mensagem privada.
+          </p>
         </aside>
       </div>
     </section>
