@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Saioro — bot de Discord para utilidade, moderação e comunidade</title>
+  <meta name="description" content="Saioro é um bot independente de Discord com 63 comandos: moderação completa, anti-raid, AutoMod nativo, sorteios, enquetes, painel inicial, perfil personalizável e central da staff.">
+  <meta name="theme-color" content="#080a10">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Saioro — bot de Discord">
+  <meta property="og:description" content="63 comandos para cuidar do seu servidor: moderação, anti-raid, AutoMod, sorteios, enquetes e comunidade.">
+  <meta property="og:image" content="assets/avatar.png">
+  <link rel="icon" href="assets/avatar.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body id="topo">
+
+  <header class="topo">
+    <div class="container">
+      <a class="marca" href="#topo">
+        <img src="assets/avatar.png" alt="" width="40" height="40">
+        <span>Saioro<small>bot de Discord</small></span>
+      </a>
+
+      <nav aria-label="Navegação principal">
+        <a href="#recursos">Recursos</a>
+        <a href="#comandos">Comandos</a>
+        <a href="#comecar">Como começar</a>
+        <a href="#duvidas">Dúvidas</a>
+      </nav>
+
+      <a class="botao botao-primario" href="https://discord.com/oauth2/authorize?client_id=1562002253450182666&amp;permissions=1520821595222&amp;scope=bot%20applications.commands" target="_blank" rel="noopener">Adicionar ao servidor</a>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+        <div>
+          <span class="etiqueta"><span class="ponto"></span>63 comandos · 5 categorias</span>
+          <h1>Um bot completo para <span>o seu servidor</span></h1>
+          <p class="lead">
+            O Saioro reúne moderação, proteção contra raids, AutoMod nativo, sorteios, enquetes e
+            ferramentas de comunidade em um só bot — com tudo configurado por comandos de barra,
+            sem painel externo e sem depender de outros projetos.
+          </p>
+
+          <div class="acoes">
+            <a class="botao botao-primario" href="https://discord.com/oauth2/authorize?client_id=1562002253450182666&amp;permissions=1520821595222&amp;scope=bot%20applications.commands" target="_blank" rel="noopener">Adicionar ao servidor</a>
+            <a class="botao botao-secundario" href="#comandos">Ver os 63 comandos</a>
+          </div>
+
+          <p class="nota">
+            O convite pede apenas as permissões usadas pelo bot. Administrador não é necessário.
+          </p>
+        </div>
+
+        <aside class="previa" aria-label="Exemplo do painel inicial">
+          <div class="linha">
+            <img src="assets/avatar.png" alt="" width="34" height="34">
+            <strong>Saioro</strong>
+            <span>Painel</span>
+          </div>
+          <p class="titulo-painel">Bem-vindo(a) ao servidor</p>
+          <p class="texto-painel">
+            Use os botões abaixo para consultar as regras, escolher seus cargos, tirar dúvidas,
+            denunciar algo ou se candidatar à staff.
+          </p>
+          <div class="botoes-painel">
+            <span class="destaque">Regras</span>
+            <span>Cargos</span>
+            <span>FAQ</span>
+            <span>Denunciar</span>
+            <span class="destaque">Candidatar-se</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="numeros" aria-label="Números do bot">
+      <div class="container">
+        <div class="numero"><strong>63</strong><span>comandos de barra</span></div>
+        <div class="numero"><strong>5</strong><span>categorias</span></div>
+        <div class="numero"><strong>100%</strong><span>comandos de barra</span></div>
+        <div class="numero"><strong>SQLite</strong><span>dados locais</span></div>
+      </div>
+    </section>
+
+    <section class="secao" id="recursos">
+      <div class="container">
+        <div class="cabecalho-secao">
+          <h2>O que o Saioro faz</h2>
+          <p>
+            Recursos pensados para o dia a dia de um servidor: proteger, organizar e dar vida à
+            comunidade. Cada item abaixo é um comando real, já disponível.
+          </p>
+        </div>
+
+        <div class="grade-recursos">
+          <article class="recurso">
+            <div class="icone" aria-hidden="true">🧭</div>
+            <h3>Painel inicial</h3>
+            <p>Um único painel com botões para regras, cargos, FAQ, denúncias e candidaturas. As respostas são privadas, então ninguém precisa sair do canal. <code>/painel publicar</code></p>
+          </article>
+
+          <article class="recurso">
+            <div class="icone" aria-hidden="true">🗂️</div>
+            <h3>Central da staff</h3>
+            <p>Liste denúncias e candidaturas com filtro por status, limite de itens e link direto para o painel original onde ficam as decisões. <code>/denuncias listar</code> <code>/candidaturas listar</code></p>
+          </article>
+
+          <article class="recurso">
+            <div class="icone" aria-hidden="true">🛡️</div>
+            <h3>Anti-raid</h3>
+            <p>Detecta entradas em massa e contas recém-criadas, avisa a staff e, se quiser, tranca os canais por tempo limitado e restaura tudo sozinho. <code>/antiraid</code></p>
+          </article>
+
+          <article class="recurso">
+            <div class="icone" aria-hidden="true">🤖</div>
+            <h3>AutoMod nativo</h3>
+            <p>Três regras nativas do Discord contra spam, menções em massa e ofensas graves — sem ler o conteúdo das mensagens. Cargos da staff ficam isentos. <code>/automod</code></p>
+          </article>
+
+          <article class="recurso">
+            <div class="icone" aria-hidden="true">🔨</div>
+            <h3>Moderação completa</h3>
+            <p>Ban, banimento temporário, softban, expulsão, castigo, advertências com histórico, limpeza de mensagens, modo lento, trancar canais e mensagem fixa. <code>/warn</code> <code>/tempban</code></p>
+          </article>
+
+          <article class="recurso">
+            <div class="icone" aria-hidden="true">🎉</div>
+            <h3>Comunidade</h3>
+            <p>Sorteios com requisitos e re-sorteio, enquetes por botões, sugestões com aprovação, eventos no calendário do Discord e lembretes pessoais. <code>/sorteio</code> <code>/enquete</code></p>
+          </article>
+
+          <article class="recurso">
+            <div class="icone" aria-hidden="true">🪪</div>
+            <h3>Perfil personalizável</h3>
+            <p>Cartão de membro com título, bio, pronomes, cor, imagem e campos configuráveis, além de emblemas automáticos por participação. <code>/perfil</code></p>
+          </article>
+
+          <article class="recurso">
+            <div class="icone" aria-hidden="true">⚙️</div>
+            <h3>Boas-vindas e cargos</h3>
+            <p>Canais de boas-vindas, despedida e logs, mensagem no privado, cargo automático e painel de cargos que o membro escolhe clicando. <code>/config</code> <code>/cargos-painel</code></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao" id="comandos">
+      <div class="container">
+        <div class="cabecalho-secao">
+          <h2>Comandos</h2>
+          <p>
+            Todos os 63 comandos, agrupados por categoria. No Discord, use <code>/help</code>
+            para abrir o menu interativo ou consultar os detalhes de um comando específico.
+          </p>
+        </div>
+
+        <div class="ferramentas">
+          <div class="busca">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+            <input id="buscar" type="search" placeholder="Buscar comando..." aria-label="Buscar comando" autocomplete="off" spellcheck="false">
+          </div>
+
+          <div class="filtros" role="group" aria-label="Filtrar por categoria">
+            <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todos <span class="contagem">63</span></button>
+            <button class="filtro" type="button" data-filtro="util" aria-pressed="false">Utilidade <span class="contagem">17</span></button>
+            <button class="filtro" type="button" data-filtro="mod" aria-pressed="false">Moderação <span class="contagem">20</span></button>
+            <button class="filtro" type="button" data-filtro="fun" aria-pressed="false">Diversão <span class="contagem">11</span></button>
+            <button class="filtro" type="button" data-filtro="social" aria-pressed="false">Social <span class="contagem">14</span></button>
+            <button class="filtro" type="button" data-filtro="config" aria-pressed="false">Configuração <span class="contagem">1</span></button>
+          </div>
+        </div>
+
+        <p class="rodape-busca" id="resultado" aria-live="polite">63 comandos</p>
+
+        <!-- COMANDOS:INICIO -->
+
+        <div class="grupo-comandos" data-categoria="util">
+          <h3 class="grupo-titulo">🧰 Utilidade · 17</h3>
+          <div class="grade-comandos">
+            <article class="comando" data-categoria="util" data-busca="avatar mostra o avatar de um membro em tamanho cheio.">
+              <div class="nome">/avatar</div>
+              <p>Mostra o avatar de um membro em tamanho cheio.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="banner mostra o banner de um usuario.">
+              <div class="nome">/banner</div>
+              <p>Mostra o banner de um usuário.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="botinfo mostra informacoes tecnicas do bot.">
+              <div class="nome">/botinfo</div>
+              <p>Mostra informações técnicas do bot.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="canalinfo mostra informacoes de um canal.">
+              <div class="nome">/canalinfo</div>
+              <p>Mostra informações de um canal.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="cargos lista os cargos do servidor.">
+              <div class="nome">/cargos</div>
+              <p>Lista os cargos do servidor.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="diagnostico confere permissoes, intents e configuracoes que faltam.">
+              <div class="nome">/diagnostico</div>
+              <p>Confere permissões, intents e configurações que faltam.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="emoji mostra os dados de um emoji (funciona para emojis do servidor e unicode).">
+              <div class="nome">/emoji</div>
+              <p>Mostra os dados de um emoji (funciona para emojis do servidor e unicode).</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="faq perguntas frequentes do servidor. ver abre o menu de perguntas adicionar adiciona ou atualiza uma pergunta (staff) remover remove uma pergunta (staff) listar lista todas as perguntas (staff)">
+              <div class="nome">/faq</div>
+              <p>Perguntas frequentes do servidor.</p>
+              <div class="subs">
+                <span title="Abre o menu de perguntas">ver</span>
+                <span title="Adiciona ou atualiza uma pergunta (staff)">adicionar</span>
+                <span title="Remove uma pergunta (staff)">remover</span>
+                <span title="Lista todas as perguntas (staff)">listar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="help mostra os comandos do bot, separados por categoria.">
+              <div class="nome">/help</div>
+              <p>Mostra os comandos do bot, separados por categoria.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="painel publica o painel inicial com atalhos para regras, cargos, faq, denuncias e candidaturas. publicar publica o painel no canal">
+              <div class="nome">/painel</div>
+              <p>Publica o painel inicial com atalhos para regras, cargos, FAQ, denúncias e candidaturas.</p>
+              <div class="subs">
+                <span title="Publica o painel no canal">publicar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="ping mostra a latencia e o tempo online do bot.">
+              <div class="nome">/ping</div>
+              <p>Mostra a latência e o tempo online do bot.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="servericon mostra o icone e o banner do servidor em tamanho cheio.">
+              <div class="nome">/servericon</div>
+              <p>Mostra o ícone e o banner do servidor em tamanho cheio.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="serverinfo mostra as informacoes do servidor.">
+              <div class="nome">/serverinfo</div>
+              <p>Mostra as informações do servidor.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="snippet salva e consulta trechos de codigo. criar cria ou atualiza um snippet ver mostra um snippet listar lista os snippets do servidor apagar apaga um snippet">
+              <div class="nome">/snippet</div>
+              <p>Salva e consulta trechos de código.</p>
+              <div class="subs">
+                <span title="Cria ou atualiza um snippet">criar</span>
+                <span title="Mostra um snippet">ver</span>
+                <span title="Lista os snippets do servidor">listar</span>
+                <span title="Apaga um snippet">apagar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="status mostra o estado atual do bot.">
+              <div class="nome">/status</div>
+              <p>Mostra o estado atual do bot.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="timestamp gera codigos de data/hora para usar nas mensagens.">
+              <div class="nome">/timestamp</div>
+              <p>Gera códigos de data/hora para usar nas mensagens.</p>
+            </article>
+            <article class="comando" data-categoria="util" data-busca="userinfo mostra informacoes de um membro.">
+              <div class="nome">/userinfo</div>
+              <p>Mostra informações de um membro.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="grupo-comandos" data-categoria="mod">
+          <h3 class="grupo-titulo">🛡️ Moderação · 20</h3>
+          <div class="grade-comandos">
+            <article class="comando" data-categoria="mod" data-busca="antiraid protecao contra raids: alerta a staff e, opcionalmente, tranca os canais. ativar liga a deteccao de raid desativar desliga a protecao e destranca canais se preciso status mostra a configuracao e o lockdown atual">
+              <div class="nome">/antiraid</div>
+              <p>Proteção contra raids: alerta a staff e, opcionalmente, tranca os canais.</p>
+              <div class="subs">
+                <span title="Liga a detecção de raid">ativar</span>
+                <span title="Desliga a proteção e destranca canais se preciso">desativar</span>
+                <span title="Mostra a configuração e o lockdown atual">status</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="automod regras nativas de automod do discord (sem intent de mensagens). ativar cria as regras que ainda nao existem status mostra as regras do bot e a badge de automod desativar remove as regras criadas pelo bot">
+              <div class="nome">/automod</div>
+              <p>Regras nativas de AutoMod do Discord (sem intent de mensagens).</p>
+              <div class="subs">
+                <span title="Cria as regras que ainda não existem">ativar</span>
+                <span title="Mostra as regras do bot e a badge de AutoMod">status</span>
+                <span title="Remove as regras criadas pelo bot">desativar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="ban bane um membro do servidor.">
+              <div class="nome">/ban</div>
+              <p>Bane um membro do servidor.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="candidaturas central da staff: lista as candidaturas recebidas. listar lista as candidaturas, da mais recente para a mais antiga">
+              <div class="nome">/candidaturas</div>
+              <p>Central da staff: lista as candidaturas recebidas.</p>
+              <div class="subs">
+                <span title="Lista as candidaturas, da mais recente para a mais antiga">listar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="delwarn apaga uma advertencia pelo numero do registro.">
+              <div class="nome">/delwarn</div>
+              <p>Apaga uma advertência pelo número do registro.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="denuncias central da staff: lista as denuncias recebidas. listar lista as denuncias, da mais recente para a mais antiga">
+              <div class="nome">/denuncias</div>
+              <p>Central da staff: lista as denúncias recebidas.</p>
+              <div class="subs">
+                <span title="Lista as denúncias, da mais recente para a mais antiga">listar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="kick expulsa um membro do servidor.">
+              <div class="nome">/kick</div>
+              <p>Expulsa um membro do servidor.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="limpar apaga mensagens deste canal (ate 100).">
+              <div class="nome">/limpar</div>
+              <p>Apaga mensagens deste canal (até 100).</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="lock tranca o canal para @everyone.">
+              <div class="nome">/lock</div>
+              <p>Tranca o canal para @everyone.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="nick troca o apelido de um membro (vazio para restaurar).">
+              <div class="nome">/nick</div>
+              <p>Troca o apelido de um membro (vazio para restaurar).</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="punicoes mostra o historico de punicoes do servidor.">
+              <div class="nome">/punicoes</div>
+              <p>Mostra o histórico de punições do servidor.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="slowmode define o modo lento de um canal.">
+              <div class="nome">/slowmode</div>
+              <p>Define o modo lento de um canal.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="softban bane e desbane na hora, so para apagar as mensagens recentes.">
+              <div class="nome">/softban</div>
+              <p>Bane e desbane na hora, só para apagar as mensagens recentes.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="sticky mensagem que fica sempre no fim do canal. definir define a mensagem fixa deste canal remover remove a mensagem fixa ver mostra a mensagem fixa atual">
+              <div class="nome">/sticky</div>
+              <p>Mensagem que fica sempre no fim do canal.</p>
+              <div class="subs">
+                <span title="Define a mensagem fixa deste canal">definir</span>
+                <span title="Remove a mensagem fixa">remover</span>
+                <span title="Mostra a mensagem fixa atual">ver</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="tempban bane um membro por um tempo e desbane sozinho depois.">
+              <div class="nome">/tempban</div>
+              <p>Bane um membro por um tempo e desbane sozinho depois.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="timeout silencia um membro por um tempo (0 minutos = remover o castigo).">
+              <div class="nome">/timeout</div>
+              <p>Silencia um membro por um tempo (0 minutos = remover o castigo).</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="unban remove o banimento de um usuario.">
+              <div class="nome">/unban</div>
+              <p>Remove o banimento de um usuário.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="unlock destranca o canal para @everyone.">
+              <div class="nome">/unlock</div>
+              <p>Destranca o canal para @everyone.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="warn da uma advertencia a um membro.">
+              <div class="nome">/warn</div>
+              <p>Dá uma advertência a um membro.</p>
+            </article>
+            <article class="comando" data-categoria="mod" data-busca="warns mostra o historico de advertencias de um membro.">
+              <div class="nome">/warns</div>
+              <p>Mostra o histórico de advertências de um membro.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="grupo-comandos" data-categoria="fun">
+          <h3 class="grupo-titulo">🎲 Diversão · 11</h3>
+          <div class="grade-comandos">
+            <article class="comando" data-categoria="fun" data-busca="abraco manda um abraco para alguem.">
+              <div class="nome">/abraco</div>
+              <p>Manda um abraço para alguém.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="beijo manda um beijo para alguem.">
+              <div class="nome">/beijo</div>
+              <p>Manda um beijo para alguém.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="bola8 faz uma pergunta para a bola de cristal.">
+              <div class="nome">/bola8</div>
+              <p>Faz uma pergunta para a bola de cristal.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="dado rola dados.">
+              <div class="nome">/dado</div>
+              <p>Rola dados.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="escolha sorteia uma opcao entre as que voce der.">
+              <div class="nome">/escolha</div>
+              <p>Sorteia uma opção entre as que você der.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="gato manda uma foto aleatoria de gato.">
+              <div class="nome">/gato</div>
+              <p>Manda uma foto aleatória de gato.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="moeda joga uma moeda para o alto.">
+              <div class="nome">/moeda</div>
+              <p>Joga uma moeda para o alto.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="piada conta uma piada.">
+              <div class="nome">/piada</div>
+              <p>Conta uma piada.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="ppt pedra, papel e tesoura contra o bot.">
+              <div class="nome">/ppt</div>
+              <p>Pedra, papel e tesoura contra o bot.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="quiz pergunta de conhecimentos gerais com botoes.">
+              <div class="nome">/quiz</div>
+              <p>Pergunta de conhecimentos gerais com botões.</p>
+            </article>
+            <article class="comando" data-categoria="fun" data-busca="ship calcula a compatibilidade entre duas pessoas.">
+              <div class="nome">/ship</div>
+              <p>Calcula a compatibilidade entre duas pessoas.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="grupo-comandos" data-categoria="social">
+          <h3 class="grupo-titulo">🎉 Social · 14</h3>
+          <div class="grade-comandos">
+            <article class="comando" data-categoria="social" data-busca="anuncio publica um anuncio em embed.">
+              <div class="nome">/anuncio</div>
+              <p>Publica um anúncio em embed.</p>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="candidatura candidaturas a staff: enviar, configurar, painel e status. enviar envia sua candidatura configurar define o canal e o cargo da staff painel publica o botao de candidatura status mostra a configuracao atual desativar desliga as candidaturas">
+              <div class="nome">/candidatura</div>
+              <p>Candidaturas à staff: enviar, configurar, painel e status.</p>
+              <div class="subs">
+                <span title="Envia sua candidatura">enviar</span>
+                <span title="Define o canal e o cargo da staff">configurar</span>
+                <span title="Publica o botão de candidatura">painel</span>
+                <span title="Mostra a configuração atual">status</span>
+                <span title="Desliga as candidaturas">desativar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="cargos-painel painel de cargos que os membros escolhem sozinhos. adicionar adiciona um cargo ao painel remover remove um cargo do painel listar lista os cargos do painel publicar publica o painel no canal">
+              <div class="nome">/cargos-painel</div>
+              <p>Painel de cargos que os membros escolhem sozinhos.</p>
+              <div class="subs">
+                <span title="Adiciona um cargo ao painel">adicionar</span>
+                <span title="Remove um cargo do painel">remover</span>
+                <span title="Lista os cargos do painel">listar</span>
+                <span title="Publica o painel no canal">publicar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="denunciar envia uma denuncia privada para a staff.">
+              <div class="nome">/denunciar</div>
+              <p>Envia uma denúncia privada para a staff.</p>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="embed cria um embed personalizado.">
+              <div class="nome">/embed</div>
+              <p>Cria um embed personalizado.</p>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="enquete cria uma enquete com votacao por botoes.">
+              <div class="nome">/enquete</div>
+              <p>Cria uma enquete com votação por botões.</p>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="evento cria e gerencia eventos no calendario do discord. criar agenda um evento listar lista os proximos eventos cancelar cancela um evento pelo menu">
+              <div class="nome">/evento</div>
+              <p>Cria e gerencia eventos no calendário do Discord.</p>
+              <div class="subs">
+                <span title="Agenda um evento">criar</span>
+                <span title="Lista os próximos eventos">listar</span>
+                <span title="Cancela um evento pelo menu">cancelar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="lembrete cria e gerencia lembretes. criar cria um lembrete listar mostra seus lembretes cancelar cancela um lembrete">
+              <div class="nome">/lembrete</div>
+              <p>Cria e gerencia lembretes.</p>
+              <div class="subs">
+                <span title="Cria um lembrete">criar</span>
+                <span title="Mostra seus lembretes">listar</span>
+                <span title="Cancela um lembrete">cancelar</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="perfil cartao de membro personalizavel: bio, cor, imagem e campos. ver mostra o cartao (o seu ou de outro membro) editar abre o formulario de edicao campos escolhe o que aparece no cartao emblemas lista os emblemas automaticos e seu progresso remover volta o cartao ao padrao (apaga a personalizacao)">
+              <div class="nome">/perfil</div>
+              <p>Cartão de membro personalizável: bio, cor, imagem e campos.</p>
+              <div class="subs">
+                <span title="Mostra o cartão (o seu ou de outro membro)">ver</span>
+                <span title="Abre o formulário de edição">editar</span>
+                <span title="Escolhe o que aparece no cartão">campos</span>
+                <span title="Lista os emblemas automáticos e seu progresso">emblemas</span>
+                <span title="Volta o cartão ao padrão (apaga a personalização)">remover</span>
+              </div>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="regras publica as regras com o botao de verificacao junto.">
+              <div class="nome">/regras</div>
+              <p>Publica as regras com o botão de verificação junto.</p>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="sorteio cria um sorteio com botao de participar.">
+              <div class="nome">/sorteio</div>
+              <p>Cria um sorteio com botão de participar.</p>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="sugestao envia uma sugestao para o canal de sugestoes.">
+              <div class="nome">/sugestao</div>
+              <p>Envia uma sugestão para o canal de sugestões.</p>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="top ranking de participacao do servidor.">
+              <div class="nome">/top</div>
+              <p>Ranking de participação do servidor.</p>
+            </article>
+            <article class="comando" data-categoria="social" data-busca="verificar publica o painel de verificacao com botao de cargo.">
+              <div class="nome">/verificar</div>
+              <p>Publica o painel de verificação com botão de cargo.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="grupo-comandos" data-categoria="config">
+          <h3 class="grupo-titulo">⚙️ Configuração · 1</h3>
+          <div class="grade-comandos">
+            <article class="comando" data-categoria="config" data-busca="config configura boas-vindas, despedida, logs, denuncias e cargo automatico. ver mostra a configuracao atual boas-vindas define o canal de boas-vindas despedida define o canal de despedida logs define o canal de logs (mensagens apagadas, punicoes, entradas) sugestoes define o canal onde o /sugestao publica denuncias define o canal que recebe as denuncias do /denunciar verificar-cargo cargo entregue pelo botao do painel /verificar cargo-auto define o cargo dado automaticamente a quem entra boas-vindas-texto texto da mensagem de boas-vindas boas-vindas-dm mensagem enviada no privado de quem entra boas-vindas-imagem imagem que aparece nas boas-vindas desativar desliga uma das configuracoes">
+              <div class="nome">/config</div>
+              <p>Configura boas-vindas, despedida, logs, denúncias e cargo automático.</p>
+              <div class="subs">
+                <span title="Mostra a configuração atual">ver</span>
+                <span title="Define o canal de boas-vindas">boas-vindas</span>
+                <span title="Define o canal de despedida">despedida</span>
+                <span title="Define o canal de logs (mensagens apagadas, punições, entradas)">logs</span>
+                <span title="Define o canal onde o /sugestao publica">sugestoes</span>
+                <span title="Define o canal que recebe as denúncias do /denunciar">denuncias</span>
+                <span title="Cargo entregue pelo botão do painel /verificar">verificar-cargo</span>
+                <span title="Define o cargo dado automaticamente a quem entra">cargo-auto</span>
+                <span title="Texto da mensagem de boas-vindas">boas-vindas-texto</span>
+                <span title="Mensagem enviada no privado de quem entra">boas-vindas-dm</span>
+                <span title="Imagem que aparece nas boas-vindas">boas-vindas-imagem</span>
+                <span title="Desliga uma das configurações">desativar</span>
+              </div>
+            </article>
+          </div>
+        </div>
+        <!-- COMANDOS:FIM -->
+
+        <p class="vazio" id="sem-resultado" hidden>Nenhum comando encontrado para essa busca.</p>
+      </div>
+    </section>
+
+    <section class="secao" id="comecar">
+      <div class="container">
+        <div class="cabecalho-secao">
+          <h2>Como começar</h2>
+          <p>Três passos e o servidor já está configurado. Tudo é feito por comandos de barra.</p>
+        </div>
+
+        <div class="passos">
+          <article class="passo">
+            <h3>Convide o bot</h3>
+            <p>
+              Clique em <strong>Adicionar ao servidor</strong> e autorize as permissões pedidas.
+              O Saioro não precisa de Administrador: só de enviar mensagens, gerenciar canais e
+              cargos quando você usar esses recursos.
+            </p>
+          </article>
+
+          <article class="passo">
+            <h3>Configure o básico</h3>
+            <p>
+              Use <code>/config boas-vindas</code>, <code>/config logs</code> e
+              <code>/config denuncias</code> para apontar os canais. O
+              <code>/diagnostico</code> mostra o que ainda falta.
+            </p>
+          </article>
+
+          <article class="passo">
+            <h3>Publique os painéis</h3>
+            <p>
+              Rode <code>/regras</code> uma vez, depois <code>/painel publicar</code>. O painel
+              inicial passa a reunir regras, cargos, FAQ, denúncias e candidaturas em um só lugar.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao" id="duvidas">
+      <div class="container">
+        <div class="cabecalho-secao">
+          <h2>Dúvidas frequentes</h2>
+          <p>Informações objetivas sobre permissões, dados e funcionamento.</p>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>O Saioro é gratuito?</summary>
+            <p>
+              Sim. O bot é um projeto independente, sem plano pago, sem anúncios e sem cobrança
+              por recurso. Ele é mantido pelo próprio desenvolvedor.
+            </p>
+          </details>
+
+          <details>
+            <summary>Preciso dar Administrador ao bot?</summary>
+            <p>
+              Não. O convite solicita apenas as permissões efetivamente usadas, entre elas enviar
+              mensagens, incorporar links, gerenciar mensagens, canais, cargos e apelidos, expulsar,
+              banir e aplicar castigos. Recursos como o lockdown do anti-raid exigem
+              <strong>Gerenciar Canais</strong>, e os painéis de cargos exigem
+              <strong>Gerenciar Cargos</strong>.
+            </p>
+          </details>
+
+          <details>
+            <summary>Funciona em qualquer servidor?</summary>
+            <p>
+              Sim. O bot é multi-servidor e cada servidor guarda a própria configuração — canais,
+              cargos, regras, FAQ, denúncias e candidaturas não se misturam entre servidores.
+            </p>
+          </details>
+
+          <details>
+            <summary>Onde ficam os dados?</summary>
+            <p>
+              Em um banco SQLite local, na máquina onde o bot está hospedado. Não há envio de dados
+              para serviços externos nem venda de informações. Denúncias anônimas não mostram o
+              autor no painel, mas a autoria fica registrada internamente para coibir abusos.
+            </p>
+          </details>
+
+          <details>
+            <summary>O bot tem música, economia ou inteligência artificial?</summary>
+            <p>
+              Não. O foco é utilidade, moderação e comunidade. Música, economia e comandos de IA não
+              fazem parte do projeto.
+            </p>
+          </details>
+
+          <details>
+            <summary>Como vejo os detalhes de um comando?</summary>
+            <p>
+              Use <code>/help</code> para abrir o menu por categoria ou
+              <code>/help comando</code> para ver os subcomandos e opções de um comando específico.
+              A lista completa também está nesta página.
+            </p>
+          </details>
+
+          <details>
+            <summary>Como removo o bot do servidor?</summary>
+            <p>
+              Expulse o Saioro pelo menu de membros ou pela página de integrações do Discord. As
+              configurações continuam no banco local até serem apagadas pelo responsável pelo bot.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="chamada">
+      <div class="container">
+        <div class="caixa">
+          <div>
+            <h2>Pronto para organizar o servidor?</h2>
+            <p>Adicione o Saioro, rode <code>/painel publicar</code> e deixe a comunidade se virar sozinha — com regras claras e staff no controle.</p>
+          </div>
+          <a class="botao botao-primario" href="https://discord.com/oauth2/authorize?client_id=1562002253450182666&amp;permissions=1520821595222&amp;scope=bot%20applications.commands" target="_blank" rel="noopener">Adicionar ao servidor</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="container">
+      <a class="marca" href="#topo">
+        <img src="assets/avatar.png" alt="" width="32" height="32">
+        <span>Saioro<small>bot de Discord</small></span>
+      </a>
+
+      <nav aria-label="Links do rodapé">
+        <a href="#recursos">Recursos</a>
+        <a href="#comandos">Comandos</a>
+        <a href="#comecar">Como começar</a>
+        <a href="#duvidas">Dúvidas</a>
+      </nav>
+
+      <p class="legal">
+        © 2026 Saioro. Projeto independente, não afiliado, associado ou endossado pela Discord Inc.
+        Dados armazenados localmente em SQLite.
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

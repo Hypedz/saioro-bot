@@ -4,6 +4,9 @@ Bot em JavaScript (Node.js + discord.js v14) com comandos de utilidade, moderaç
 
 Dados ficam em SQLite (`dados/bot.db`), então advertências, configurações, sorteios e lembretes sobrevivem a reinícios.
 
+O site de apresentação fica em [`site/`](site/README.md): página estática com os 63 comandos,
+recursos e instruções de convite, pronta para GitHub Pages, Netlify ou Cloudflare Pages.
+
 ---
 
 ## Comandos
