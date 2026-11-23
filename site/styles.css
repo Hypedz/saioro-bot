@@ -424,10 +424,10 @@ a:hover {
   overflow-wrap: anywhere;
 }
 
-.resposta-painel .fechar {
+.resposta-painel .fechar,
+.resposta-painel .copiar {
   position: absolute;
   top: 8px;
-  right: 8px;
   width: 24px;
   height: 24px;
   display: grid;
@@ -437,13 +437,32 @@ a:hover {
   background: transparent;
   color: var(--texto-fraco);
   cursor: pointer;
-  font-size: 0.9rem;
   line-height: 1;
 }
 
-.resposta-painel .fechar:hover {
+.resposta-painel .fechar {
+  right: 8px;
+  font-size: 0.9rem;
+}
+
+.resposta-painel .copiar {
+  right: 38px;
+}
+
+.resposta-painel .copiar svg {
+  width: 14px;
+  height: 14px;
+}
+
+.resposta-painel .fechar:hover,
+.resposta-painel .copiar:hover {
   color: var(--texto);
   background: var(--superficie-2);
+}
+
+.resposta-painel .copiar[aria-label="Copiado!"] {
+  color: var(--secundaria);
+  border-color: var(--secundaria);
 }
 
 .selo-demo {
