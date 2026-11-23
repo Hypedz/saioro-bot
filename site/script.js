@@ -65,7 +65,7 @@
   aplicar();
 })();
 
-/* Demonstração do painel inicial: cada botão mostra a resposta que o bot daria. */
+/* Demonstração do painel inicial: cada botão mostra o comando para configurar aquela função. */
 (function () {
   const cartao = document.querySelector('.previa');
   if (!cartao) return;
@@ -76,36 +76,39 @@
 
   const CONTEUDO = {
     regras: {
-      titulo: 'Regras do servidor',
+      titulo: 'Regras — configure primeiro',
       itens: [
-        'Respeite todos os membros.',
-        'Sem spam, flood ou divulgação.',
-        'Conteúdo impróprio é proibido.',
+        { cmd: '/regras regras:"1. Respeite todos. 2. Sem spam."', desc: 'Publica as regras com botão de verificação' },
+        { cmd: '/regras regras:"..." cargo:@Verificado canal:#regras', desc: 'Com cargo de verificação e canal específico' },
       ],
     },
     cargos: {
-      titulo: 'Cargos disponíveis',
-      itens: ['Notificações', 'Eventos', 'Memes'],
+      titulo: 'Cargos — configure o painel de auto-cargos',
+      itens: [
+        { cmd: '/cargos-painel adicionar cargo:@Gamer emoji:🎮', desc: 'Adiciona um cargo ao painel' },
+        { cmd: '/cargos-painel publicar canal:#cargos', desc: 'Publica o painel para membros escolherem' },
+      ],
     },
     faq: {
-      titulo: 'Perguntas frequentes',
+      titulo: 'FAQ — cadastre as perguntas',
       itens: [
-        'Como pego meus cargos? Use o painel de cargos.',
-        'Como denuncio alguém? Use o botão Denunciar.',
-        'Como entro na staff? Use o botão Candidatar-se.',
+        { cmd: '/faq adicionar pergunta:"Como pego cargo?" resposta:"Use o painel de cargos." categoria:Geral', desc: 'Adiciona uma pergunta (apenas staff)' },
+        { cmd: '/faq ver', desc: 'Abre o menu de perguntas para membros' },
       ],
     },
     denunciar: {
-      titulo: 'Denúncia privada',
+      titulo: 'Denunciar — configure o canal de recebimento',
       itens: [
-        'Você informa o alvo, o motivo e links de prova.',
-        'Pode escolher denunciar anonimamente.',
-        'Só a staff vê o conteúdo.',
+        { cmd: '/config denuncias canal:#denuncias', desc: 'Define onde as denúncias chegam para a staff' },
+        { cmd: '/denunciar alvo:@membro anonimo:true', desc: 'Como o membro usa (já funciona após configurar)' },
       ],
     },
     candidatura: {
-      titulo: 'Candidatura à staff',
-      itens: ['Nome e idade', 'Motivação', 'Disponibilidade', 'Experiência anterior'],
+      titulo: 'Candidatar-se — configure o canal e cargo da staff',
+      itens: [
+        { cmd: '/candidatura configurar canal:#staff cargo:@Staff', desc: 'Define onde chegam as candidaturas e qual cargo entregar' },
+        { cmd: '/candidatura painel canal:#entrada', desc: 'Publica o botão para membros se candidatarem' },
+      ],
     },
   };
 
@@ -135,14 +138,14 @@
     const lista = document.createElement('ul');
     for (const item of dados.itens) {
       const linha = document.createElement('li');
-      linha.textContent = item;
+      linha.innerHTML = `<code>${item.cmd}</code> — ${item.desc}`;
       lista.append(linha);
     }
 
     const fecharBotao = document.createElement('button');
     fecharBotao.type = 'button';
     fecharBotao.className = 'fechar';
-    fecharBotao.setAttribute('aria-label', 'Fechar resposta');
+    fecharBotao.setAttribute('aria-label', 'Fechar');
     fecharBotao.textContent = '×';
     fecharBotao.addEventListener('click', fechar);
 

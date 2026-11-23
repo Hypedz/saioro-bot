@@ -413,7 +413,15 @@ a:hover {
 }
 
 .resposta-painel li + li {
-  margin-top: 4px;
+  margin-top: 8px;
+}
+
+.resposta-painel li code {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.74rem;
+  color: #c9cfff;
+  overflow-wrap: anywhere;
 }
 
 .resposta-painel .fechar {
