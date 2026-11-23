@@ -552,20 +552,67 @@ a:hover {
 }
 
 .recurso .icone {
-  width: 44px;
-  height: 44px;
+  --tom: #5865f2;
+  width: 52px;
+  height: 52px;
   display: grid;
   place-items: center;
-  border-radius: 12px;
-  background: linear-gradient(140deg, rgba(88, 101, 242, 0.26), rgba(88, 101, 242, 0.05));
-  border: 1px solid rgba(88, 101, 242, 0.28);
+  border-radius: 14px;
+  margin-bottom: 16px;
+  background: linear-gradient(150deg, rgba(88, 101, 242, 0.28), rgba(88, 101, 242, 0.05));
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--tom) 30%, transparent),
+    color-mix(in srgb, var(--tom) 6%, transparent)
+  );
+  border: 1px solid rgba(88, 101, 242, 0.32);
+  border-color: color-mix(in srgb, var(--tom) 45%, transparent);
   color: #bcc4ff;
-  margin-bottom: 14px;
+  color: color-mix(in srgb, var(--tom) 68%, white);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--tom) 16%, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recurso:hover .icone {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--tom) 26%, transparent);
+}
+
+.recurso .icone[data-cor="azul"] {
+  --tom: #5865f2;
+}
+
+.recurso .icone[data-cor="ciano"] {
+  --tom: #22d3ee;
+}
+
+.recurso .icone[data-cor="verde"] {
+  --tom: #57f287;
+}
+
+.recurso .icone[data-cor="amarelo"] {
+  --tom: #f1c40f;
+}
+
+.recurso .icone[data-cor="laranja"] {
+  --tom: #e0713e;
+}
+
+.recurso .icone[data-cor="rosa"] {
+  --tom: #eb459e;
+}
+
+.recurso .icone[data-cor="roxo"] {
+  --tom: #a78bfa;
+}
+
+.recurso .icone[data-cor="teal"] {
+  --tom: #2dd4bf;
 }
 
 .recurso .icone svg {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
 }
 
 .recurso h3 {
