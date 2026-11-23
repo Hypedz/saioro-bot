@@ -567,7 +567,7 @@ a:hover {
     color-mix(in srgb, var(--tom) 30%, transparent),
     color-mix(in srgb, var(--tom) 6%, transparent)
   );
-  border: 1px solid rgba(88, 101, 242, 0.32);
+  border: 2px solid rgba(88, 101, 242, 0.32);
   border-color: color-mix(in srgb, var(--tom) 45%, transparent);
   color: #bcc4ff;
   color: color-mix(in srgb, var(--tom) 68%, white);
