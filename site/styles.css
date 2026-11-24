@@ -158,13 +158,13 @@ a:hover {
 }
 
 .botao-primario {
-  background: #a78bfa;
-  color: #0d0d14;
-  box-shadow: 0 10px 24px rgba(167, 139, 250, 0.32);
+  background: #e74c3c;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(231, 76, 60, 0.32);
 }
 
 .botao-primario:hover {
-  background: #9370fa;
+  background: #c0392b;
 }
 
 .botao-secundario {
