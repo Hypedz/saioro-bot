@@ -494,32 +494,71 @@ a:hover {
 
 .numeros {
   border-bottom: 1px solid var(--borda);
-  background: var(--fundo-2);
+  background: var(--fundo);
 }
 
 .numeros .container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  padding-top: 26px;
-  padding-bottom: 26px;
+  gap: 24px;
+  padding: 48px 0;
 }
 
 .numero {
+  position: relative;
   text-align: center;
+  padding: 32px 20px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.numero:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra);
+  border-color: var(--borda-forte);
+}
+
+.numero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primaria), var(--primaria-clara));
+  border-radius: 0 0 3px 3px;
+}
+
+.numero:nth-child(2)::before {
+  background: linear-gradient(90deg, #57f287, #86f5a8);
+}
+
+.numero:nth-child(3)::before {
+  background: linear-gradient(90deg, #f1c40f, #f5d75e);
+}
+
+.numero:nth-child(4)::before {
+  background: linear-gradient(90deg, #22d3ee, #5eead4);
 }
 
 .numero strong {
   display: block;
-  font-size: 1.6rem;
-  letter-spacing: -0.5px;
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 8px;
 }
 
 .numero span {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.7px;
-  color: var(--texto-fraco);
+  letter-spacing: 0.8px;
+  color: var(--texto-suave);
+  font-weight: 500;
 }
 
 /* ---------- Seções ---------- */
