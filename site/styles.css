@@ -112,8 +112,13 @@ a:hover {
   font-weight: 400;
 }
 
+nav {
+  margin-left: auto;
+  display: flex;
+  gap: 32px;
+}
+
 nav a {
-  margin-left: 24px;
   color: var(--texto-suave);
   font-size: 0.9rem;
   font-weight: 500;
