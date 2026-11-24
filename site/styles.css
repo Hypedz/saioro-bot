@@ -541,7 +541,7 @@ a:hover {
 }
 
 .numero:nth-child(4)::before {
-  background: linear-gradient(90deg, #7c3aed, #a78bfa);
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
 }
 
 .numero strong {
