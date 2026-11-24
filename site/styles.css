@@ -608,35 +608,35 @@ a:hover {
 }
 
 .recurso[data-cor="azul"] {
-  --tom: #ffffff;
+  --tom: #5865f2;
 }
 
 .recurso[data-cor="ciano"] {
-  --tom: #ffffff;
+  --tom: #22d3ee;
 }
 
 .recurso[data-cor="verde"] {
-  --tom: #ffffff;
+  --tom: #57f287;
 }
 
 .recurso[data-cor="amarelo"] {
-  --tom: #ffffff;
+  --tom: #f1c40f;
 }
 
 .recurso[data-cor="laranja"] {
-  --tom: #ffffff;
+  --tom: #e0713e;
 }
 
 .recurso[data-cor="rosa"] {
-  --tom: #ffffff;
+  --tom: #eb459e;
 }
 
 .recurso[data-cor="roxo"] {
-  --tom: #ffffff;
+  --tom: #a78bfa;
 }
 
 .recurso[data-cor="teal"] {
-  --tom: #ffffff;
+  --tom: #2dd4bf;
 }
 
 .recurso .icone svg {
@@ -783,23 +783,23 @@ a:hover {
 }
 
 .icone-categoria[data-cor="azul"] {
-  --tom: #ffffff;
+  --tom: #5865f2;
 }
 
 .icone-categoria[data-cor="laranja"] {
-  --tom: #ffffff;
+  --tom: #e0713e;
 }
 
 .icone-categoria[data-cor="rosa"] {
-  --tom: #ffffff;
+  --tom: #eb459e;
 }
 
 .icone-categoria[data-cor="teal"] {
-  --tom: #ffffff;
+  --tom: #2dd4bf;
 }
 
 .icone-categoria[data-cor="ciano"] {
-  --tom: #ffffff;
+  --tom: #22d3ee;
 }
 
 .icone-categoria svg {
@@ -926,15 +926,15 @@ a:hover {
 }
 
 .passo[data-cor="azul"] {
-  --tom: #ffffff;
+  --tom: #5865f2;
 }
 
 .passo[data-cor="verde"] {
-  --tom: #ffffff;
+  --tom: #57f287;
 }
 
 .passo[data-cor="roxo"] {
-  --tom: #ffffff;
+  --tom: #a78bfa;
 }
 
 .icone-passo {
