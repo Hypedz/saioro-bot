@@ -871,6 +871,12 @@ nav a:hover {
 
 /* ---------- Passos ---------- */
 
+.passos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
 .passo {
   position: relative;
   background: var(--superficie);
@@ -1224,6 +1230,10 @@ nav a:hover {
   .destaques-lista {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .passos {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
@@ -1289,6 +1299,10 @@ nav a:hover {
   }
 
   .grade-comandos {
+    grid-template-columns: 1fr;
+  }
+
+  .passos {
     grid-template-columns: 1fr;
   }
 
