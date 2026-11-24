@@ -395,7 +395,7 @@ nav a:hover {
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: linear-gradient(90deg, var(--primaria), var(--primaria-clara));
+  background: linear-gradient(90deg, #e74c3c, #ff6b5b);
   border-radius: 0 0 3px 3px;
 }
 
