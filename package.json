@@ -15,5 +15,8 @@
   "dependencies": {
     "discord.js": "^14.27.0",
     "dotenv": "^18.0.8"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5"
   }
 }
