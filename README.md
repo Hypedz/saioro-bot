@@ -1,4 +1,4 @@
-# Saioro — bot multiuso de Discord
+# Saioro — Bot Discord
 
 Bot em JavaScript (Node.js + discord.js v14) com comandos de utilidade, moderação, diversão, sorteios, enquetes e lembretes. Projeto **independente**: não depende de nenhuma outra pasta ou projeto.
 
@@ -297,18 +297,3 @@ Por padrão o comando é registrado no servidor (efeito imediato). Para registr�
 - O lockdown do anti-raid tranca **todos** os canais de texto, anúncio e fórum para `@everyone`; cargos com **Administrador** continuam podendo falar. Canais que já estavam trancados não são alterados.
 - O botão **Regras** do painel inicial só funciona depois de uma publicação de `/regras` feita nesta versão ou posterior; publicações antigas não têm cópia salva.
 - `/denuncias listar` e `/candidaturas listar` mostram até 20 itens por vez; os mais antigos continuam acessíveis pelos painéis originais.
-
----
-
-## Deixar ligado 24h
-
-Já configurado: atalho em `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\Bot Discord.vbs`, que roda `scripts/iniciar-oculto.ps1` sem janela e sem abrir duas cópias.
-
-Quem mantém o bot de pé é o **`scripts/supervisor.ps1`**: se o processo do Node cair, ele religa em 5 segundos (e espera mais se o erro se repetir muitas vezes seguidas). Tudo fica registrado em `supervisor.log`.
-
-- `ligar.bat` → inicia o supervisor
-- `parar.bat` → para o supervisor e o bot
-
-**Backup automático:** na subida e a cada 6 horas, o bot cria uma cópia consistente do banco em `dados/backups/bot-AAAA-MM-DD.db` (uma por dia, mantendo as 7 últimas). Para restaurar, pare o bot e copie o arquivo escolhido por cima de `dados/bot.db`.
-
-Isso vale enquanto o PC estiver ligado. Para 24h de verdade, hospede na nuvem (Railway, Fly.io, Discloud, VPS): suba o repositório, defina as variáveis do `.env` no painel e use `npm start`. Nesse caso, troque o SQLite por um volume persistente, senão os dados somem a cada deploy.
