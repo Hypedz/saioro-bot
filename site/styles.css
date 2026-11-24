@@ -1174,9 +1174,16 @@ a:hover {
   color: var(--primaria-clara);
 }
 
+.botao svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
 .links-membro svg {
   width: 20px;
   height: 20px;
+  flex-shrink: 0;
 }
 
 /* ---------- Rodapé ---------- */
