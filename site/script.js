@@ -186,11 +186,13 @@
 
 /* Navegação: apenas a aba "Equipe" alterna visibilidade; as demais rolam suavemente. */
 (function () {
+  console.log('[DEBUG] Equipe nav script started');
   const navPrincipal = document.getElementById('navegacao-principal');
   const navRodape = document.getElementById('navegacao-rodape');
   if (!navPrincipal && !navRodape) return;
 
   const todasAbas = [...(navPrincipal?.querySelectorAll('[data-section]') || []), ...(navRodape?.querySelectorAll('[data-section]') || [])];
+  console.log('[DEBUG] Total links found:', todasAbas.length);
   const secoes = new Map();
   for (const aba of todasAbas) {
     const id = aba.dataset.section;
@@ -200,6 +202,7 @@
 
   // Esconde apenas a seção "equipe" no carregamento
   const equipeSecao = secoes.get('equipe');
+  console.log('[DEBUG] Equipe secao found:', !!equipeSecao);
   if (equipeSecao) equipeSecao.hidden = true;
 
   function toggleEquipe() {
@@ -222,9 +225,11 @@
   }
 
   for (const aba of todasAbas) {
+    const id = aba.dataset.section;
+    console.log('[DEBUG] Adding click listener for:', id);
     aba.addEventListener('click', (e) => {
-      const id = aba.dataset.section;
       if (id === 'equipe') {
+        console.log('[DEBUG] Equipe click!');
         e.preventDefault();
         toggleEquipe();
       } else if (secoes.has(id)) {
