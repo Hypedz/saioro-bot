@@ -1,0 +1,22 @@
+{
+  "name": "Saioro",
+  "short_name": "Saioro",
+  "description": "Bot de Discord para utilidade, moderação e comunidade",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080a10",
+  "theme_color": "#5865f2",
+  "icons": [
+    {
+      "src": "/assets/avatar.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
