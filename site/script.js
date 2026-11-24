@@ -183,3 +183,53 @@
     if (evento.key === 'Escape' && aberto) fechar();
   });
 })();
+
+/* Navegação por abas: mostra apenas a seção clicada. */
+(function () {
+  const navPrincipal = document.getElementById('navegacao-principal');
+  const navRodape = document.getElementById('navegacao-rodape');
+  if (!navPrincipal && !navRodape) return;
+
+  const todasAbas = [...(navPrincipal?.querySelectorAll('[data-section]') || []), ...(navRodape?.querySelectorAll('[data-section]') || [])];
+  const secoes = new Map();
+  for (const aba of todasAbas) {
+    const id = aba.dataset.section;
+    const secao = document.getElementById(id);
+    if (secao) secoes.set(id, secao);
+  }
+
+  function mostrar(id) {
+    for (const [sid, secao] of secoes) {
+      secao.hidden = sid !== id;
+    }
+    for (const aba of todasAbas) {
+      aba.setAttribute('aria-current', aba.dataset.section === id ? 'page' : 'false');
+    }
+    // Atualiza hash sem rolar
+    history.replaceState(null, '', `#${id}`);
+  }
+
+  // Inicial: mostra apenas hero (todas sections hidden)
+  // O hero não está em secoes, então fica visível
+
+  for (const aba of todasAbas) {
+    aba.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = aba.dataset.section;
+      if (secoes.has(id)) {
+        mostrar(id);
+        // Scroll suave para o topo da seção
+        const secao = secoes.get(id);
+        if (secao) secao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+
+  // Suporte a hash na URL ao carregar
+  const hash = window.location.hash.slice(1);
+  if (hash && secoes.has(hash)) {
+    mostrar(hash);
+    // Pequeno delay para o scroll funcionar após render
+    requestAnimationFrame(() => secoes.get(hash).scrollIntoView({ behavior: 'auto', block: 'start' }));
+  }
+})();
