@@ -1082,6 +1082,103 @@ a:hover {
   max-width: 52ch;
 }
 
+/* ---------- Equipe ---------- */
+
+.grade-equipe {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.membro {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 28px 24px;
+  text-align: center;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.membro:hover {
+  border-color: rgba(88, 101, 242, 0.4);
+  box-shadow: 0 12px 30px rgba(88, 101, 242, 0.12);
+  transform: translateY(-4px);
+}
+
+.avatar-membro {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(150deg, rgba(88, 101, 242, 0.2), rgba(88, 101, 242, 0.05));
+  border: 2px solid rgba(88, 101, 242, 0.3);
+  color: #bcc4ff;
+  flex-shrink: 0;
+}
+
+.avatar-membro svg {
+  width: 56px;
+  height: 56px;
+}
+
+.membro h3 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  color: var(--texto);
+}
+
+.cargo {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(88, 101, 242, 0.15);
+  border: 1px solid rgba(88, 101, 242, 0.3);
+  color: #cfd4ff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.membro .bio {
+  margin: 0 0 20px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--texto-suave);
+}
+
+.links-membro {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.links-membro a {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--borda);
+  background: var(--superficie-2);
+  color: var(--texto-suave);
+  transition: all 0.15s ease;
+}
+
+.links-membro a:hover {
+  border-color: var(--primaria);
+  background: rgba(88, 101, 242, 0.15);
+  color: var(--primaria-clara);
+}
+
+.links-membro svg {
+  width: 20px;
+  height: 20px;
+}
+
 /* ---------- Rodapé ---------- */
 
 .rodape {
@@ -1168,7 +1265,8 @@ a:hover {
 
   .grade-recursos,
   .grade-comandos,
-  .passos {
+  .passos,
+  .grade-equipe {
     grid-template-columns: 1fr;
   }
 

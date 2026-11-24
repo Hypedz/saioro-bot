@@ -184,7 +184,7 @@
   });
 })();
 
-/* Navegação por abas: mostra apenas a seção clicada. */
+/* Navegação: apenas a aba "Equipe" alterna visibilidade; as demais rolam suavemente. */
 (function () {
   const navPrincipal = document.getElementById('navegacao-principal');
   const navRodape = document.getElementById('navegacao-rodape');
@@ -198,38 +198,52 @@
     if (secao) secoes.set(id, secao);
   }
 
-  function mostrar(id) {
-    for (const [sid, secao] of secoes) {
-      secao.hidden = sid !== id;
-    }
-    for (const aba of todasAbas) {
-      aba.setAttribute('aria-current', aba.dataset.section === id ? 'page' : 'false');
-    }
-    // Atualiza hash sem rolar
-    history.replaceState(null, '', `#${id}`);
-  }
+  // Esconde apenas a seção "equipe" no carregamento
+  const equipeSecao = secoes.get('equipe');
+  if (equipeSecao) equipeSecao.hidden = true;
 
-  // Inicial: mostra apenas hero (todas sections hidden)
-  // O hero não está em secoes, então fica visível
+  function toggleEquipe() {
+    if (!equipeSecao) return;
+    const vaiMostrar = equipeSecao.hidden;
+    equipeSecao.hidden = !vaiMostrar;
+    
+    // Atualiza aria-current nas abas
+    for (const aba of todasAbas) {
+      const isEquipe = aba.dataset.section === 'equipe';
+      aba.setAttribute('aria-current', isEquipe && vaiMostrar ? 'page' : 'false');
+    }
+
+    if (vaiMostrar) {
+      history.replaceState(null, '', '#equipe');
+      requestAnimationFrame(() => equipeSecao.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    } else {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }
 
   for (const aba of todasAbas) {
     aba.addEventListener('click', (e) => {
-      e.preventDefault();
       const id = aba.dataset.section;
-      if (secoes.has(id)) {
-        mostrar(id);
-        // Scroll suave para o topo da seção
+      if (id === 'equipe') {
+        e.preventDefault();
+        toggleEquipe();
+      } else if (secoes.has(id)) {
+        // Demais seções: scroll suave normal
+        e.preventDefault();
         const secao = secoes.get(id);
         if (secao) secao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', `#${id}`);
       }
     });
   }
 
   // Suporte a hash na URL ao carregar
   const hash = window.location.hash.slice(1);
-  if (hash && secoes.has(hash)) {
-    mostrar(hash);
-    // Pequeno delay para o scroll funcionar após render
-    requestAnimationFrame(() => secoes.get(hash).scrollIntoView({ behavior: 'auto', block: 'start' }));
+  if (hash === 'equipe' && equipeSecao) {
+    equipeSecao.hidden = false;
+    for (const aba of todasAbas) {
+      aba.setAttribute('aria-current', aba.dataset.section === 'equipe' ? 'page' : 'false');
+    }
+    requestAnimationFrame(() => equipeSecao.scrollIntoView({ behavior: 'auto', block: 'start' }));
   }
 })();
