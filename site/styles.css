@@ -196,8 +196,8 @@ a:hover {
   position: absolute;
   inset: -40% 20% auto -10%;
   height: 520px;
-  background: radial-gradient(circle at 30% 40%, rgba(88, 101, 242, 0.28), transparent 60%),
-    radial-gradient(circle at 75% 20%, rgba(87, 242, 135, 0.12), transparent 55%);
+  background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.1), transparent 60%),
+    radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.05), transparent 55%);
   filter: blur(10px);
   pointer-events: none;
 }
@@ -216,9 +216,9 @@ a:hover {
   gap: 8px;
   padding: 6px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(88, 101, 242, 0.4);
-  background: rgba(88, 101, 242, 0.12);
-  color: #c3c9ff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--primaria-clara);
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -229,8 +229,8 @@ a:hover {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--secundaria);
-  box-shadow: 0 0 0 4px rgba(87, 242, 135, 0.16);
+  background: var(--primaria-clara);
+  box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
 }
 
 .hero h1 {
@@ -241,7 +241,7 @@ a:hover {
 }
 
 .hero h1 span {
-  background: linear-gradient(120deg, var(--primaria-clara), var(--secundaria));
+  background: linear-gradient(120deg, var(--primaria-clara), var(--primaria));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -282,7 +282,7 @@ a:hover {
   position: absolute;
   inset: 0;
   border-radius: 18px;
-  background: linear-gradient(160deg, rgba(88, 101, 242, 0.14), transparent 45%);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent 45%);
   pointer-events: none;
 }
 
@@ -363,9 +363,9 @@ a:hover {
 }
 
 .previa .botoes-painel button.destaque {
-  background: rgba(88, 101, 242, 0.18);
-  border-color: rgba(88, 101, 242, 0.5);
-  color: #cfd4ff;
+  background: rgba(231, 76, 60, 0.18);
+  border-color: rgba(231, 76, 60, 0.5);
+  color: var(--primaria-clara);
 }
 
 .previa .botoes-painel button[aria-expanded="true"] {
@@ -375,9 +375,9 @@ a:hover {
 }
 
 .previa .botoes-painel span.destaque {
-  background: rgba(88, 101, 242, 0.18);
-  border-color: rgba(88, 101, 242, 0.5);
-  color: #cfd4ff;
+  background: rgba(231, 76, 60, 0.18);
+  border-color: rgba(231, 76, 60, 0.5);
+  color: var(--primaria-clara);
 }
 
 .previa .botoes-painel span:last-child:nth-child(odd),
@@ -420,7 +420,7 @@ a:hover {
   display: block;
   margin-bottom: 2px;
   font-size: 0.74rem;
-  color: #c9cfff;
+  color: var(--primaria-clara);
   overflow-wrap: anywhere;
 }
 
@@ -470,9 +470,9 @@ a:hover {
   font-size: 0.62rem;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  color: #a9b1ff;
-  border: 1px solid rgba(88, 101, 242, 0.45);
-  background: rgba(88, 101, 242, 0.12);
+  color: var(--primaria-clara);
+  border: 1px solid rgba(231, 76, 60, 0.45);
+  background: rgba(231, 76, 60, 0.12);
   border-radius: 999px;
   padding: 2px 8px;
 }
@@ -566,7 +566,7 @@ a:hover {
 }
 
 .recurso {
-  --tom: #5865f2;
+  --tom: #ffffff;
   background: var(--superficie);
   border: 2px solid var(--borda);
   border-color: color-mix(in srgb, var(--tom) 45%, transparent);
@@ -588,15 +588,15 @@ a:hover {
   place-items: center;
   border-radius: 14px;
   margin-bottom: 16px;
-  background: linear-gradient(150deg, rgba(88, 101, 242, 0.28), rgba(88, 101, 242, 0.05));
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03));
   background: linear-gradient(
     150deg,
     color-mix(in srgb, var(--tom) 30%, transparent),
     color-mix(in srgb, var(--tom) 6%, transparent)
   );
-  border: 1px solid rgba(88, 101, 242, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-color: color-mix(in srgb, var(--tom) 45%, transparent);
-  color: #bcc4ff;
+  color: #ffffff;
   color: color-mix(in srgb, var(--tom) 68%, white);
   box-shadow: 0 8px 20px color-mix(in srgb, var(--tom) 16%, transparent);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -608,35 +608,35 @@ a:hover {
 }
 
 .recurso[data-cor="azul"] {
-  --tom: #5865f2;
+  --tom: #ffffff;
 }
 
 .recurso[data-cor="ciano"] {
-  --tom: #22d3ee;
+  --tom: #ffffff;
 }
 
 .recurso[data-cor="verde"] {
-  --tom: #57f287;
+  --tom: #ffffff;
 }
 
 .recurso[data-cor="amarelo"] {
-  --tom: #f1c40f;
+  --tom: #ffffff;
 }
 
 .recurso[data-cor="laranja"] {
-  --tom: #e0713e;
+  --tom: #ffffff;
 }
 
 .recurso[data-cor="rosa"] {
-  --tom: #eb459e;
+  --tom: #ffffff;
 }
 
 .recurso[data-cor="roxo"] {
-  --tom: #a78bfa;
+  --tom: #ffffff;
 }
 
 .recurso[data-cor="teal"] {
-  --tom: #2dd4bf;
+  --tom: #ffffff;
 }
 
 .recurso .icone svg {
@@ -658,8 +658,8 @@ a:hover {
 .recurso code {
   font-family: var(--mono);
   font-size: 0.8rem;
-  color: #b9c0ff;
-  background: rgba(88, 101, 242, 0.12);
+  color: var(--primaria-clara);
+  background: rgba(231, 76, 60, 0.12);
   padding: 1px 5px;
   border-radius: 5px;
 }
@@ -698,7 +698,7 @@ a:hover {
 .busca input:focus {
   border-color: var(--primaria);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.25);
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.25);
 }
 
 .busca svg {
@@ -783,23 +783,23 @@ a:hover {
 }
 
 .icone-categoria[data-cor="azul"] {
-  --tom: #5865f2;
+  --tom: #ffffff;
 }
 
 .icone-categoria[data-cor="laranja"] {
-  --tom: #e0713e;
+  --tom: #ffffff;
 }
 
 .icone-categoria[data-cor="rosa"] {
-  --tom: #eb459e;
+  --tom: #ffffff;
 }
 
 .icone-categoria[data-cor="teal"] {
-  --tom: #2dd4bf;
+  --tom: #ffffff;
 }
 
 .icone-categoria[data-cor="ciano"] {
-  --tom: #22d3ee;
+  --tom: #ffffff;
 }
 
 .icone-categoria svg {
@@ -834,7 +834,7 @@ a:hover {
 .comando .nome {
   font-family: var(--mono);
   font-size: 0.92rem;
-  color: #c9cfff;
+  color: var(--primaria-clara);
   font-weight: 600;
 }
 
@@ -863,11 +863,11 @@ a:hover {
   margin-top: 4px;
   padding: 3px 7px;
   border-radius: 6px;
-  background: rgba(88, 101, 242, 0.1);
+  background: rgba(231, 76, 60, 0.12);
   border: 1px solid var(--borda);
   font-family: var(--mono);
   font-size: 0.76rem;
-  color: #c9cfff;
+  color: var(--primaria-clara);
   overflow-wrap: anywhere;
 }
 
@@ -926,15 +926,15 @@ a:hover {
 }
 
 .passo[data-cor="azul"] {
-  --tom: #5865f2;
+  --tom: #ffffff;
 }
 
 .passo[data-cor="verde"] {
-  --tom: #57f287;
+  --tom: #ffffff;
 }
 
 .passo[data-cor="roxo"] {
-  --tom: #a78bfa;
+  --tom: #ffffff;
 }
 
 .icone-passo {
@@ -985,7 +985,7 @@ a:hover {
   border: 1px solid var(--borda);
   padding: 1px 5px;
   border-radius: 5px;
-  color: #c9cfff;
+  color: var(--primaria-clara);
 }
 
 /* ---------- FAQ ---------- */
@@ -1004,7 +1004,7 @@ a:hover {
 }
 
 .faq details[open] {
-  border-color: rgba(88, 101, 242, 0.4);
+  border-color: rgba(231, 76, 60, 0.4);
 }
 
 .faq summary {
@@ -1059,8 +1059,8 @@ a:hover {
 .chamada .caixa {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(88, 101, 242, 0.22), rgba(87, 242, 135, 0.08));
-  border: 1px solid rgba(88, 101, 242, 0.35);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 22px;
   padding: 46px 40px;
   display: flex;
@@ -1100,8 +1100,8 @@ a:hover {
 }
 
 .membro:hover {
-  border-color: rgba(88, 101, 242, 0.4);
-  box-shadow: 0 12px 30px rgba(88, 101, 242, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 30px rgba(231, 76, 60, 0.15);
   transform: translateY(-4px);
 }
 
@@ -1112,9 +1112,9 @@ a:hover {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(150deg, rgba(88, 101, 242, 0.2), rgba(88, 101, 242, 0.05));
-  border: 2px solid rgba(88, 101, 242, 0.3);
-  color: #bcc4ff;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   flex-shrink: 0;
 }
 
@@ -1134,9 +1134,9 @@ a:hover {
   margin-bottom: 12px;
   padding: 3px 10px;
   border-radius: 999px;
-  background: rgba(88, 101, 242, 0.15);
-  border: 1px solid rgba(88, 101, 242, 0.3);
-  color: #cfd4ff;
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  color: var(--primaria-clara);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -1173,7 +1173,7 @@ a:hover {
 
 .links-membro a:hover {
   border-color: var(--primaria);
-  background: rgba(88, 101, 242, 0.15);
+  background: rgba(231, 76, 60, 0.15);
   color: var(--primaria-clara);
 }
 
