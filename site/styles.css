@@ -2,22 +2,22 @@
    Estático, sem dependências externas. */
 
 :root {
-  --fundo: #080a10;
-  --fundo-2: #0d1018;
-  --superficie: #12151f;
-  --superficie-2: #171b27;
-  --borda: rgba(255, 255, 255, 0.08);
-  --borda-forte: rgba(255, 255, 255, 0.16);
-  --texto: #e9ebf3;
-  --texto-suave: #a3abc0;
-  --texto-fraco: #767f96;
-  --primaria: #5865f2;
-  --primaria-clara: #7c86ff;
-  --secundaria: #57f287;
+  --fundo: #000000;
+  --fundo-2: #0a0a0a;
+  --superficie: #111111;
+  --superficie-2: #1a1a1a;
+  --borda: rgba(255, 255, 255, 0.1);
+  --borda-forte: rgba(255, 255, 255, 0.2);
+  --texto: #ffffff;
+  --texto-suave: #b3b3b3;
+  --texto-fraco: #808080;
+  --primaria: #e74c3c;
+  --primaria-clara: #ff6b5b;
+  --secundaria: #ff6b5b;
   --aviso: #f1c40f;
   --raio: 16px;
   --raio-pequeno: 10px;
-  --sombra: 0 18px 50px rgba(0, 0, 0, 0.45);
+  --sombra: 0 18px 50px rgba(0, 0, 0, 0.6);
   --largura: 1120px;
   --fonte: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --mono: "Cascadia Code", "Consolas", "SFMono-Regular", ui-monospace, monospace;
@@ -74,7 +74,7 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(8, 10, 16, 0.82);
+  background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--borda);
 }
