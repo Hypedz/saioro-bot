@@ -82,7 +82,6 @@ a:hover {
 .topo .container {
   display: flex;
   align-items: center;
-  gap: 80px;
   height: 72px;
 }
 
@@ -112,13 +111,24 @@ a:hover {
   font-weight: 400;
 }
 
+nav {
+  margin-left: auto;
+  display: flex;
+  gap: 32px;
+}
+
 nav a {
-  margin-left: 24px;
   color: var(--texto-suave);
   font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
   transition: color 0.15s ease;
+}
+
+.topo .botao {
+  margin-left: 24px;
+  padding: 10px 16px;
+  font-size: 0.88rem;
 }
 
 nav a:hover {
@@ -394,7 +404,7 @@ nav a:hover {
 }
 
 .numero:nth-child(3)::before {
-  background: linear-gradient(90deg, #f1c40f, #f5d75e);
+  background: linear-gradient(90deg, var(--primaria), var(--primaria-clara));
 }
 
 .numero:nth-child(4)::before {
@@ -845,7 +855,7 @@ nav a:hover {
 }
 
 .numero:nth-child(3)::before {
-  background: linear-gradient(90deg, #f1c40f, #f5d75e);
+  background: linear-gradient(90deg, var(--primaria), var(--primaria-clara));
 }
 
 .numero:nth-child(4)::before {
