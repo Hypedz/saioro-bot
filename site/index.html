@@ -72,33 +72,54 @@
           </p>
         </div>
 
-        <aside class="previa" aria-label="Guia rápido de configuração do painel">
-          <div class="linha">
-            <picture>
-              <source srcset="assets/avatar.webp" type="image/webp">
-              <img src="assets/avatar.png" alt="" width="34" height="34">
-            </picture>
-            <strong>Saioro</strong>
-            <span class="selo-demo">configuração</span>
+        <div class="destaques" aria-label="Principais recursos">
+          <p class="destaques-titulo">Tudo que seu servidor precisa</p>
+          <p class="destaques-sub">Recursos nativos, sem depender de outros bots.</p>
+          <div class="destaques-lista" role="list">
+            <article class="destaque-item" role="listitem">
+              <div class="destaque-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>
+              </div>
+              <h3>Anti-Raid</h3>
+              <p>Proteção contra entradas em massa e contas novas, com lockdown automático.</p>
+            </article>
+            <article class="destaque-item" role="listitem">
+              <div class="destaque-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+              </div>
+              <h3>AutoMod Nativo</h3>
+              <p>Regras oficiais do Discord contra spam, menções em massa e ofensas — sem ler mensagens.</p>
+            </article>
+            <article class="destaque-item" role="listitem">
+              <div class="destaque-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
+              </div>
+              <h3>Painel Inicial</h3>
+              <p>Um só painel com botões para regras, cargos, FAQ, denúncias e candidaturas.</p>
+            </article>
+            <article class="destaque-item" role="listitem">
+              <div class="destaque-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+              </div>
+              <h3>Perfil Personalizável</h3>
+              <p>Bio, cor, imagem, campos, emblemas automáticos — seu cartão, do seu jeito.</p>
+            </article>
+            <article class="destaque-item" role="listitem">
+              <div class="destaque-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/></svg>
+              </div>
+              <h3>Cargos por Botão</h3>
+              <p>Painel visual onde o membro escolhe os próprios cargos clicando.</p>
+            </article>
+            <article class="destaque-item" role="listitem">
+              <div class="destaque-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+              </div>
+              <h3>Sorteios & Enquetes</h3>
+              <p>Sorteios com requisitos, re-sorteio, enquetes por botões, sugestões com aprovação.</p>
+            </article>
           </div>
-          <p class="titulo-painel">Configure o painel inicial</p>
-          <p class="texto-painel">
-            Cada botão do painel depende de uma configuração prévia. Clique para ver o comando exato.
-          </p>
-          <div class="botoes-painel" role="group" aria-label="Passos de configuração">
-            <button type="button" class="destaque" data-painel="regras" aria-expanded="false" aria-controls="resposta-painel">Regras</button>
-            <button type="button" data-painel="cargos" aria-expanded="false" aria-controls="resposta-painel">Cargos</button>
-            <button type="button" data-painel="faq" aria-expanded="false" aria-controls="resposta-painel">FAQ</button>
-            <button type="button" data-painel="denunciar" aria-expanded="false" aria-controls="resposta-painel">Denunciar</button>
-            <button type="button" class="destaque" data-painel="candidatura" aria-expanded="false" aria-controls="resposta-painel">Candidatar-se</button>
-          </div>
-
-          <div class="resposta-painel" id="resposta-painel" hidden aria-live="polite"></div>
-
-          <p class="nota-painel">
-            Depois de configurar tudo, rode <code>/painel publicar</code> para publicar o painel completo.
-          </p>
-        </aside>
+        </div>
       </div>
     </section>
 
