@@ -404,7 +404,7 @@ nav a:hover {
 }
 
 .numero:nth-child(3)::before {
-  background: linear-gradient(90deg, var(--primaria), var(--primaria-clara));
+  background: linear-gradient(90deg, #f1c40f, #f5d75e);
 }
 
 .numero:nth-child(4)::before {
@@ -855,7 +855,7 @@ nav a:hover {
 }
 
 .numero:nth-child(3)::before {
-  background: linear-gradient(90deg, var(--primaria), var(--primaria-clara));
+  background: linear-gradient(90deg, #f1c40f, #f5d75e);
 }
 
 .numero:nth-child(4)::before {
