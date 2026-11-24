@@ -3,14 +3,14 @@
 
 :root {
   --fundo: #000000;
-  --fundo-2: #0a0a0a;
-  --superficie: #111111;
-  --superficie-2: #1a1a1a;
-  --borda: rgba(255, 255, 255, 0.1);
-  --borda-forte: rgba(255, 255, 255, 0.2);
+  --fundo-2: #000000;
+  --superficie: #000000;
+  --superficie-2: #000000;
+  --borda: #333333;
+  --borda-forte: #666666;
   --texto: #ffffff;
-  --texto-suave: #b3b3b3;
-  --texto-fraco: #808080;
+  --texto-suave: #cccccc;
+  --texto-fraco: #999999;
   --primaria: #e74c3c;
   --primaria-clara: #ff6b5b;
   --secundaria: #ff6b5b;
@@ -196,8 +196,7 @@ a:hover {
   position: absolute;
   inset: -40% 20% auto -10%;
   height: 520px;
-  background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.1), transparent 60%),
-    radial-gradient(circle at 75% 20%, rgba(255, 255, 255, 0.05), transparent 55%);
+  background: none;
   filter: blur(10px);
   pointer-events: none;
 }
@@ -241,10 +240,7 @@ a:hover {
 }
 
 .hero h1 span {
-  background: linear-gradient(120deg, var(--primaria-clara), var(--primaria));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--primaria);
 }
 
 .hero p.lead {
@@ -270,7 +266,7 @@ a:hover {
 
 .previa {
   position: relative;
-  background: linear-gradient(180deg, var(--superficie-2), var(--superficie));
+  background: var(--superficie);
   border: 1px solid var(--borda);
   border-radius: 18px;
   padding: 22px;
@@ -278,12 +274,7 @@ a:hover {
 }
 
 .previa::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent 45%);
-  pointer-events: none;
+  display: none;
 }
 
 .previa .linha {
@@ -588,17 +579,10 @@ a:hover {
   place-items: center;
   border-radius: 14px;
   margin-bottom: 16px;
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03));
-  background: linear-gradient(
-    150deg,
-    color-mix(in srgb, var(--tom) 30%, transparent),
-    color-mix(in srgb, var(--tom) 6%, transparent)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-color: color-mix(in srgb, var(--tom) 45%, transparent);
-  color: #ffffff;
-  color: color-mix(in srgb, var(--tom) 68%, white);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--tom) 16%, transparent);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  color: var(--tom);
+  box-shadow: var(--sombra);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -772,14 +756,10 @@ a:hover {
   place-items: center;
   border-radius: 10px;
   flex-shrink: 0;
-  background: linear-gradient(
-    150deg,
-    color-mix(in srgb, var(--tom) 28%, transparent),
-    color-mix(in srgb, var(--tom) 5%, transparent)
-  );
-  border: 2px solid color-mix(in srgb, var(--tom) 50%, transparent);
-  color: color-mix(in srgb, var(--tom) 68%, white);
-  box-shadow: 0 6px 16px color-mix(in srgb, var(--tom) 14%, transparent);
+  background: var(--superficie);
+  border: 2px solid var(--tom);
+  color: var(--tom);
+  box-shadow: var(--sombra);
 }
 
 .icone-categoria[data-cor="azul"] {
@@ -944,14 +924,10 @@ a:hover {
   place-items: center;
   border-radius: 14px;
   margin-bottom: 16px;
-  background: linear-gradient(
-    150deg,
-    color-mix(in srgb, var(--tom) 30%, transparent),
-    color-mix(in srgb, var(--tom) 6%, transparent)
-  );
-  border: 2px solid color-mix(in srgb, var(--tom) 45%, transparent);
-  color: color-mix(in srgb, var(--tom) 68%, white);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--tom) 16%, transparent);
+  background: var(--superficie);
+  border: 2px solid var(--tom);
+  color: var(--tom);
+  box-shadow: var(--sombra);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -1059,8 +1035,8 @@ a:hover {
 .chamada .caixa {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
   border-radius: 22px;
   padding: 46px 40px;
   display: flex;
@@ -1112,9 +1088,9 @@ a:hover {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: var(--superficie);
+  border: 2px solid var(--borda);
+  color: var(--texto);
   flex-shrink: 0;
 }
 
