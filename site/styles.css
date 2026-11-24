@@ -82,7 +82,7 @@ a:hover {
 .topo .container {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 80px;
   height: 72px;
 }
 
