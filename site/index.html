@@ -30,17 +30,20 @@
       </a>
 
       <nav aria-label="Navegação principal" id="navegacao-principal">
-        <a href="#recursos" data-section="recursos">Recursos</a>
-        <a href="#comandos" data-section="comandos">Comandos</a>
-        <a href="#comecar" data-section="comecar">Como começar</a>
-        <a href="#duvidas" data-section="duvidas">Dúvidas</a>
-        <a href="#equipe" data-section="equipe">Equipe</a>
+        <a href="#recursos" data-section="recursos" data-i18n="nav.recursos">Recursos</a>
+        <a href="#comandos" data-section="comandos" data-i18n="nav.comandos">Comandos</a>
+        <a href="#comecar" data-section="comecar" data-i18n="nav.comecar">Como começar</a>
+        <a href="#duvidas" data-section="duvidas" data-i18n="nav.duvidas">Dúvidas</a>
+        <a href="#equipe" data-section="equipe" data-i18n="nav.equipe">Equipe</a>
       </nav>
 
       <a class="botao botao-primario" href="https://discord.com/oauth2/authorize?client_id=1562002253450182666&permissions=1520821595222&scope=bot%20applications.commands" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-              Adicione o Saioro
+              <span data-i18n="btn.add">Adicione o Saioro</span>
             </a>
+      <button class="botao botao-idioma" id="btn-idioma" aria-label="Trocar idioma" title="Trocar idioma">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 6v12M6 12h12"/></svg>
+      </button>
     </div>
   </header>
 
@@ -49,9 +52,9 @@
     <section class="hero">
       <div class="container">
         <div>
-          <span class="etiqueta"><span class="ponto"></span>63 comandos · 5 categorias</span>
-          <h1>Um bot completo para <span>o seu servidor</span></h1>
-          <p class="lead">
+          <span class="etiqueta"><span class="ponto"></span><span data-i18n="hero.badge">63 comandos · 5 categorias</span></span>
+          <h1 data-i18n="hero.title">Um bot completo para <span>o seu servidor</span></h1>
+          <p class="lead" data-i18n="hero.lead">
             O Saioro reúne moderação, proteção contra raids, AutoMod nativo, sorteios, enquetes e
             ferramentas de comunidade em um só bot, com tudo configurado por comandos de barra,
             sem painel externo e sem depender de outros projetos.
@@ -60,14 +63,14 @@
           <div class="acoes">
             <a class="botao botao-primario" href="https://discord.com/oauth2/authorize?client_id=1562002253450182666&permissions=1520821595222&scope=bot%20applications.commands" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="24" height="24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-              Adicione o Saioro
+              <span data-i18n="btn.add.hero">Adicione o Saioro</span>
             </a>
-            <a class="botao botao-secundario" href="https://discord.gg/tpMacGtMMd" target="_blank" rel="noopener">Entrar no servidor
+            <a class="botao botao-secundario" href="https://discord.gg/tpMacGtMMd" target="_blank" rel="noopener"><span data-i18n="btn.server">Entrar no servidor</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="22" height="22" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </a>
           </div>
 
-          <p class="nota">
+          <p class="nota" data-i18n="hero.note">
             O convite pede apenas as permissões usadas pelo bot. Administrador não é necessário.
           </p>
         </div>
@@ -78,29 +81,29 @@
               <div class="destaque-icone" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>
               </div>
-              <h3>Anti-Raid</h3>
-              <p>Proteção contra entradas em massa e contas novas, com lockdown automático.</p>
+              <h3 data-i18n="feature.antiraid.title">Anti-Raid</h3>
+              <p data-i18n="feature.antiraid.desc">Proteção contra entradas em massa e contas novas, com lockdown automático.</p>
             </article>
             <article class="destaque-item" role="listitem">
               <div class="destaque-icone" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
               </div>
-              <h3>AutoMod Nativo</h3>
-              <p>Regras oficiais do Discord contra spam, menções em massa e ofensas, sem ler mensagens.</p>
+              <h3 data-i18n="feature.automod.title">AutoMod Nativo</h3>
+              <p data-i18n="feature.automod.desc">Regras oficiais do Discord contra spam, menções em massa e ofensas, sem ler mensagens.</p>
             </article>
             <article class="destaque-item" role="listitem">
               <div class="destaque-icone" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
               </div>
-              <h3>Painel Inicial</h3>
-              <p>Um só painel com botões para regras, cargos, FAQ, denúncias e candidaturas.</p>
+              <h3 data-i18n="feature.painel.title">Painel Inicial</h3>
+              <p data-i18n="feature.painel.desc">Um só painel com botões para regras, cargos, FAQ, denúncias e candidaturas.</p>
             </article>
             <article class="destaque-item" role="listitem">
               <div class="destaque-icone" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
               </div>
-              <h3>Perfil Personalizável</h3>
-              <p>Bio, cor, imagem, campos, emblemas automáticos, seu cartão, do seu jeito.</p>
+              <h3 data-i18n="feature.perfil.title">Perfil Personalizável</h3>
+              <p data-i18n="feature.perfil.desc">Bio, cor, imagem, campos, emblemas automáticos, seu cartão, do seu jeito.</p>
             </article>
             
           </div>
@@ -110,18 +113,18 @@
 
     <section class="numeros" aria-label="Números do bot">
       <div class="container">
-        <div class="numero"><strong>63</strong><span>comandos</span></div>
-        <div class="numero"><strong>5</strong><span>categorias</span></div>
-        <div class="numero"><strong>100%</strong><span>comandos de barra</span></div>
-        <div class="numero"><strong>SQLite</strong><span>dados locais</span></div>
+        <div class="numero"><strong>63</strong><span data-i18n="nums.63">comandos</span></div>
+        <div class="numero"><strong>5</strong><span data-i18n="nums.5">categorias</span></div>
+        <div class="numero"><strong>100%</strong><span data-i18n="nums.100">comandos de barra</span></div>
+        <div class="numero"><strong>SQLite</strong><span data-i18n="nums.sqlite">dados locais</span></div>
       </div>
     </section>
 
     <section class="secao" id="recursos">
       <div class="container">
         <div class="cabecalho-secao">
-          <h2>O que o Saioro faz</h2>
-          <p>
+          <h2 data-i18n="recursos.title">O que o Saioro faz</h2>
+          <p data-i18n="recursos.desc">
             Recursos pensados para o dia a dia de um servidor: proteger, organizar e dar vida à
             comunidade. Cada item abaixo é um comando real, já disponível.
           </p>
@@ -136,8 +139,8 @@
                 <path d="M12 9h6M12 13h6M12 17h4"></path>
               </svg>
             </div>
-            <h3>Painel inicial</h3>
-            <p>Um único painel com botões para regras, cargos, FAQ, denúncias e candidaturas. As respostas são privadas, então ninguém precisa sair do canal. <code>/painel publicar</code></p>
+            <h3 data-i18n="recurso.painel">Painel inicial</h3>
+            <p data-i18n="recurso.painel.desc">Um único painel com botões para regras, cargos, FAQ, denúncias e candidaturas. As respostas são privadas, então ninguém precisa sair do canal. <code>/painel publicar</code></p>
           </article>
 
           <article class="recurso" data-cor="ciano">
@@ -148,8 +151,8 @@
                 <path d="M4 13.5V18a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4.5"></path>
               </svg>
             </div>
-            <h3>Central da staff</h3>
-            <p>Liste denúncias e candidaturas com filtro por status, limite de itens e link direto para o painel original onde ficam as decisões. <code>/denuncias listar</code> <code>/candidaturas listar</code></p>
+            <h3 data-i18n="recurso.staff">Central da staff</h3>
+            <p data-i18n="recurso.staff.desc">Liste denúncias e candidaturas com filtro por status, limite de itens e link direto para o painel original onde ficam as decisões. <code>/denuncias listar</code> <code>/candidaturas listar</code></p>
           </article>
 
           <article class="recurso" data-cor="verde">
@@ -159,8 +162,8 @@
                 <path d="M8 12h2l1.3-2.2 1.8 4 1.2-1.8H16"></path>
               </svg>
             </div>
-            <h3>Anti-raid</h3>
-            <p>Detecta entradas em massa e contas recém-criadas, avisa a staff e, se quiser, tranca os canais por tempo limitado e restaura tudo sozinho. <code>/antiraid</code></p>
+            <h3 data-i18n="recurso.antiraid">Anti-raid</h3>
+            <p data-i18n="recurso.antiraid.desc">Detecta entradas em massa e contas recém-criadas, avisa a staff e, se quiser, tranca os canais por tempo limitado e restaura tudo sozinho. <code>/antiraid</code></p>
           </article>
 
           <article class="recurso" data-cor="amarelo">
@@ -174,8 +177,8 @@
                 <circle cx="17" cy="17" r="2"></circle>
               </svg>
             </div>
-            <h3>AutoMod nativo</h3>
-            <p>Três regras nativas do Discord contra spam, menções em massa e ofensas graves — sem ler o conteúdo das mensagens. Cargos da staff ficam isentos. <code>/automod</code></p>
+            <h3 data-i18n="recurso.automod">AutoMod nativo</h3>
+            <p data-i18n="recurso.automod.desc">Três regras nativas do Discord contra spam, menções em massa e ofensas graves — sem ler o conteúdo das mensagens. Cargos da staff ficam isentos. <code>/automod</code></p>
           </article>
 
           <article class="recurso" data-cor="laranja">
@@ -188,8 +191,8 @@
                 <path d="m21 11-8-8"></path>
               </svg>
             </div>
-            <h3>Moderação completa</h3>
-            <p>Ban, banimento temporário, softban, expulsão, castigo, advertências com histórico, limpeza de mensagens, modo lento, trancar canais e mensagem fixa. <code>/warn</code> <code>/tempban</code></p>
+            <h3 data-i18n="recurso.mod">Moderação completa</h3>
+            <p data-i18n="recurso.mod.desc">Ban, banimento temporário, softban, expulsão, castigo, advertências com histórico, limpeza de mensagens, modo lento, trancar canais e mensagem fixa. <code>/warn</code> <code>/tempban</code></p>
           </article>
 
           <article class="recurso" data-cor="rosa">
@@ -203,8 +206,8 @@
                 <path d="M10 20c0-2 .8-3.2 2-4 1.2.8 2 2 2 4"></path>
               </svg>
             </div>
-            <h3>Comunidade</h3>
-            <p>Sorteios com requisitos e re-sorteio, enquetes por botões, sugestões com aprovação, eventos no calendário do Discord e lembretes pessoais. <code>/sorteio</code> <code>/enquete</code></p>
+            <h3 data-i18n="recurso.comunidade">Comunidade</h3>
+            <p data-i18n="recurso.comunidade.desc">Sorteios com requisitos e re-sorteio, enquetes por botões, sugestões com aprovação, eventos no calendário do Discord e lembretes pessoais. <code>/sorteio</code> <code>/enquete</code></p>
           </article>
 
           <article class="recurso" data-cor="roxo">
@@ -216,8 +219,8 @@
                 <path d="M14 10h4M14 13h4M14 16h2.5"></path>
               </svg>
             </div>
-            <h3>Perfil personalizável</h3>
-            <p>Cartão de membro com título, bio, pronomes, cor, imagem e campos configuráveis, além de emblemas automáticos por participação. <code>/perfil</code></p>
+            <h3 data-i18n="recurso.perfil">Perfil personalizável</h3>
+            <p data-i18n="recurso.perfil.desc">Cartão de membro com título, bio, pronomes, cor, imagem e campos configuráveis, além de emblemas automáticos por participação. <code>/perfil</code></p>
           </article>
 
           <article class="recurso" data-cor="teal">
@@ -228,8 +231,8 @@
                 <path d="M18 12v6M15 15h6"></path>
               </svg>
             </div>
-            <h3>Boas-vindas e cargos</h3>
-            <p>Canais de boas-vindas, despedida e logs, mensagem no privado, cargo automático e painel de cargos que o membro escolhe clicando. <code>/config</code> <code>/cargos-painel</code></p>
+            <h3 data-i18n="recurso.boasvindas">Boas-vindas e cargos</h3>
+            <p data-i18n="recurso.boasvindas.desc">Canais de boas-vindas, despedida e logs, mensagem no privado, cargo automático e painel de cargos que o membro escolhe clicando. <code>/config</code> <code>/cargos-painel</code></p>
           </article>
         </div>
       </div>
@@ -238,8 +241,8 @@
     <section class="secao" id="comandos">
       <div class="container">
         <div class="cabecalho-secao">
-          <h2>Comandos</h2>
-          <p>
+          <h2 data-i18n="comandos.title">Comandos</h2>
+          <p data-i18n="comandos.desc">
             Todos os 63 comandos, agrupados por categoria. No Discord, use <code>/help</code>
             para abrir o menu interativo ou consultar os detalhes de um comando específico.
           </p>
@@ -255,16 +258,16 @@
           </div>
 
           <div class="filtros" role="group" aria-label="Filtrar por categoria">
-            <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todos <span class="contagem">63</span></button>
-            <button class="filtro" type="button" data-filtro="util" aria-pressed="false">Utilidade <span class="contagem">17</span></button>
-            <button class="filtro" type="button" data-filtro="mod" aria-pressed="false">Moderação <span class="contagem">20</span></button>
-            <button class="filtro" type="button" data-filtro="fun" aria-pressed="false">Diversão <span class="contagem">11</span></button>
-            <button class="filtro" type="button" data-filtro="social" aria-pressed="false">Social <span class="contagem">14</span></button>
-            <button class="filtro" type="button" data-filtro="config" aria-pressed="false">Configuração <span class="contagem">1</span></button>
+            <button class="filtro" type="button" data-filtro="todos" aria-pressed="true" data-i18n="cmd.filter.all">Todos <span class="contagem">63</span></button>
+            <button class="filtro" type="button" data-filtro="util" aria-pressed="false" data-i18n="cmd.filter.util">Utilidade <span class="contagem">17</span></button>
+            <button class="filtro" type="button" data-filtro="mod" aria-pressed="false" data-i18n="cmd.filter.mod">Moderação <span class="contagem">20</span></button>
+            <button class="filtro" type="button" data-filtro="fun" aria-pressed="false" data-i18n="cmd.filter.fun">Diversão <span class="contagem">11</span></button>
+            <button class="filtro" type="button" data-filtro="social" aria-pressed="false" data-i18n="cmd.filter.social">Social <span class="contagem">14</span></button>
+            <button class="filtro" type="button" data-filtro="config" aria-pressed="false" data-i18n="cmd.filter.config">Configuração <span class="contagem">1</span></button>
           </div>
         </div>
 
-        <p class="rodape-busca" id="resultado" aria-live="polite">63 comandos</p>
+        <p class="rodape-busca" id="resultado" aria-live="polite" data-i18n="cmd.result">63 comandos</p>
 
         <!-- COMANDOS:INICIO -->
 
@@ -751,8 +754,8 @@
     <section class="secao" id="comecar">
       <div class="container">
         <div class="cabecalho-secao">
-          <h2>Como começar</h2>
-          <p>Três passos e o servidor já está configurado. Tudo é feito por comandos de barra.</p>
+          <h2 data-i18n="comecar.title">Como começar</h2>
+          <p data-i18n="comecar.desc">Três passos e o servidor já está configurado. Tudo é feito por comandos de barra.</p>
         </div>
 
         <div class="passos">
@@ -764,8 +767,8 @@
                 <line x1="12" y1="3" x2="12" y2="15"></line>
               </svg>
             </div>
-            <h3>Convide o bot</h3>
-            <p>
+            <h3 data-i18n="passo1.title">Convide o bot</h3>
+            <p data-i18n="passo1.desc">
               Clique em <strong>Adicione o Saioro</strong> e autorize as permissões pedidas.
               O Saioro não precisa de Administrador: só de enviar mensagens, gerenciar canais e
               cargos quando você usar esses recursos.
@@ -776,11 +779,11 @@
             <div class="icone-passo" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
               </svg>
             </div>
-            <h3>Configure o básico</h3>
-            <p>
+            <h3 data-i18n="passo2.title">Configure o básico</h3>
+            <p data-i18n="passo2.desc">
               Use <code>/config boas-vindas</code>, <code>/config logs</code> e
               <code>/config denuncias</code> para apontar os canais. O
               <code>/diagnostico</code> mostra o que ainda falta.
@@ -796,8 +799,8 @@
                 <path d="M3 15h18"></path>
               </svg>
             </div>
-            <h3>Publique os painéis</h3>
-            <p>
+            <h3 data-i18n="passo3.title">Publique os painéis</h3>
+            <p data-i18n="passo3.desc">
               Rode <code>/regras</code> uma vez, depois <code>/painel publicar</code>. O painel
               inicial passa a reunir regras, cargos, FAQ, denúncias e candidaturas em um só lugar.
             </p>
@@ -809,22 +812,22 @@
     <section class="secao" id="duvidas">
       <div class="container">
         <div class="cabecalho-secao">
-          <h2>Dúvidas frequentes</h2>
-          <p>Informações objetivas sobre permissões, dados e funcionamento.</p>
+          <h2 data-i18n="duvidas.title">Dúvidas frequentes</h2>
+          <p data-i18n="duvidas.desc">Informações objetivas sobre permissões, dados e funcionamento.</p>
         </div>
 
         <div class="faq">
           <details>
-            <summary>O Saioro é gratuito?</summary>
-            <p>
+            <summary data-i18n="faq.free.q">O Saioro é gratuito?</summary>
+            <p data-i18n="faq.free.a">
               Sim. O bot é um projeto independente, sem plano pago, sem anúncios e sem cobrança
               por recurso. Ele é mantido pelo próprio desenvolvedor.
             </p>
           </details>
 
           <details>
-            <summary>Preciso dar Administrador ao bot?</summary>
-            <p>
+            <summary data-i18n="faq.admin.q">Preciso dar Administrador ao bot?</summary>
+            <p data-i18n="faq.admin.a">
               Não. O convite solicita apenas as permissões efetivamente usadas, entre elas enviar
               mensagens, incorporar links, gerenciar mensagens, canais, cargos e apelidos, expulsar,
               banir e aplicar castigos. Recursos como o lockdown do anti-raid exigem
@@ -834,16 +837,16 @@
           </details>
 
           <details>
-            <summary>Funciona em qualquer servidor?</summary>
-            <p>
+            <summary data-i18n="faq.any.q">Funciona em qualquer servidor?</summary>
+            <p data-i18n="faq.any.a">
               Sim. O bot é multi-servidor e cada servidor guarda a própria configuração — canais,
               cargos, regras, FAQ, denúncias e candidaturas não se misturam entre servidores.
             </p>
           </details>
 
           <details>
-            <summary>Onde ficam os dados?</summary>
-            <p>
+            <summary data-i18n="faq.data.q">Onde ficam os dados?</summary>
+            <p data-i18n="faq.data.a">
               Em um banco SQLite local, na máquina onde o bot está hospedado. Não há envio de dados
               para serviços externos nem venda de informações. Denúncias anônimas não mostram o
               autor no painel, mas a autoria fica registrada internamente para coibir abusos.
@@ -851,16 +854,16 @@
           </details>
 
           <details>
-            <summary>O bot tem música, economia ou inteligência artificial?</summary>
-            <p>
+            <summary data-i18n="faq.features.q">O bot tem música, economia ou inteligência artificial?</summary>
+            <p data-i18n="faq.features.a">
               Não. O foco é utilidade, moderação e comunidade. Música, economia e comandos de IA não
               fazem parte do projeto.
             </p>
           </details>
 
           <details>
-            <summary>Como vejo os detalhes de um comando?</summary>
-            <p>
+            <summary data-i18n="faq.help.q">Como vejo os detalhes de um comando?</summary>
+            <p data-i18n="faq.help.a">
               Use <code>/help</code> para abrir o menu por categoria ou
               <code>/help comando</code> para ver os subcomandos e opções de um comando específico.
               A lista completa também está nesta página.
@@ -868,8 +871,8 @@
           </details>
 
           <details>
-            <summary>Como removo o bot do servidor?</summary>
-            <p>
+            <summary data-i18n="faq.remove.q">Como removo o bot do servidor?</summary>
+            <p data-i18n="faq.remove.a">
               Expulse o Saioro pelo menu de membros ou pela página de integrações do Discord. As
               configurações continuam no banco local até serem apagadas pelo responsável pelo bot.
             </p>
@@ -909,6 +912,7 @@
       </div>
     </footer>
 
+  <script src="i18n.js"></script>
   <script src="script.js"></script>
   <script>
     if (window.location.hash) {

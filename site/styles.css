@@ -131,6 +131,33 @@ nav a {
   font-size: 0.88rem;
 }
 
+.botao-idioma {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  color: var(--texto-suave);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.botao-idioma:hover {
+  background: var(--superficie-2);
+  border-color: var(--borda-forte);
+  color: var(--primaria);
+}
+
+.botao-idioma svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 nav a:hover {
   color: var(--texto);
 }
