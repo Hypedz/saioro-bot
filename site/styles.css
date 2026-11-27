@@ -838,18 +838,6 @@ nav a:hover {
   border-color: var(--borda-forte);
 }
 
-.numero::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, var(--primaria), var(--primia-clara));
-  border-radius: 0 0 3px 3px;
-}
-
 .numero:nth-child(2)::before {
   background: linear-gradient(90deg, #57f287, #86f5a8);
 }
